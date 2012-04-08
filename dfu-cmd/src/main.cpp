@@ -252,7 +252,7 @@ static bool deviceInfo( void )
     }
     mem_target info;
     const int id = 0; // !!! Don't know what it is yet.
-    int res = stm32mem_get_target( f.dfuDev, id, &info );
+    int res = stm32mem_get_target( f.dfuDev, f.usbIface, &info );
     if ( res )
     {
         echo << "Error: failed to get FLASH info";
@@ -278,7 +278,7 @@ static bool deviceInfo( void )
     for ( int i=0; i<info.num_sectors; i++ )
     {
         mem_sector sect;
-        int res = stm32mem_get_sector( f.dfuDev, id, i, &sect );
+        int res = stm32mem_get_sector( f.dfuDev, f.usbIface, i, &sect );
         if ( res )
         {
             echo << "Error: failed to get sector info";
