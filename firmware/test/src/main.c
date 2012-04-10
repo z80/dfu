@@ -77,10 +77,11 @@ int main(void)
     lcdPower( 1 );
     dataInit();
 
-    //xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    xTaskCreate( vTaskAdc,  (signed char *)"a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    xTaskCreate( vTaskPlot, (signed char *)"b", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
+    xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
+    //xTaskCreate( vTaskAdc,  (signed char *)"a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
+    //xTaskCreate( vTaskPlot, (signed char *)"b", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
     vTaskStartScheduler();
+    /*
     //prepareData();
     //LcdInit();
     while (1)
@@ -97,10 +98,6 @@ int main(void)
         lcdGotoXy( 5, 5 );
         lcdStrConst( FONT_1X, "Hello!" );
         lcdUpdate();
-        /*LcdClsScr();
-        LcdPutString( 3, 3, "Hi!" );
-        LcdPutString( 3, 5, "Hello!!!" );
-        LcdDrawBitmap( 1, 1, g_data, 24, 3 );*/
         delay();
         lcdClear();
         //lcdLine( 0, 0, 80, 30, PIXEL_ON );
@@ -109,7 +106,7 @@ int main(void)
         lcdGotoXy( 5, 5 );
         lcdStrConst( FONT_1X, "Hi!" );
         lcdUpdate(); 
-  }
+  }*/
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -192,14 +189,14 @@ void vTaskDisplay( void * args )
 
 void vApplicationMallocFailedHook( void )
 {
-    int i=0;
+    volatile uint8_t i=0;
     for ( ;; )
         i++;
 }
 
 void vApplicationStackOverflowHook( xTaskHandle task, signed char * pcTaskName )
 {
-    int i=0;
+    volatile uint8_t i=0;
     for ( ;; )
         i++;
 }
