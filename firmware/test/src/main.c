@@ -77,11 +77,11 @@ int main(void)
     lcdPower( 1 );
     dataInit();
 
-    xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
+    //xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
     //xTaskCreate( vTaskAdc,  (signed char *)"a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
     //xTaskCreate( vTaskPlot, (signed char *)"b", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    vTaskStartScheduler();
-    /*
+    //vTaskStartScheduler();
+    
     //prepareData();
     //LcdInit();
     while (1)
@@ -106,7 +106,7 @@ int main(void)
         lcdGotoXy( 5, 5 );
         lcdStrConst( FONT_1X, "Hi!" );
         lcdUpdate(); 
-  }*/
+  }
 }
 
 #ifdef  USE_FULL_ASSERT
