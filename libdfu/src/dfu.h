@@ -1,11 +1,11 @@
 /*
- * This file is part of the stm32dfu project.
+ * dfu-programmer
  *
- * Copyright (C) 2010 Gareth McMullin <gareth@blacksphere.co.nz>
+ * $Id: dfu.h,v 1.2 2005/09/25 01:27:42 schmidtw Exp $
  *
- * This program is free software: you can redistribute it and/or modify
+ * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -14,114 +14,124 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __DFU_H
-#define __DFU_H
+#ifndef __DFU_H__
+#define __DFU_H__
 
-#include <usb.h>
-#include <stdint.h>
+#include <libusb.h>
+#include "usb_dfu.h"
 
-enum dfu_req {
-	DFU_DETACH,
-	DFU_DNLOAD,
-	DFU_UPLOAD,
-	DFU_GETSTATUS,
-	DFU_CLRSTATUS,
-	DFU_GETSTATE,
-	DFU_ABORT
-};
+/* DFU states */
+#define STATE_APP_IDLE                  0x00
+#define STATE_APP_DETACH                0x01
+#define STATE_DFU_IDLE                  0x02
+#define STATE_DFU_DOWNLOAD_SYNC         0x03
+#define STATE_DFU_DOWNLOAD_BUSY         0x04
+#define STATE_DFU_DOWNLOAD_IDLE         0x05
+#define STATE_DFU_MANIFEST_SYNC         0x06
+#define STATE_DFU_MANIFEST              0x07
+#define STATE_DFU_MANIFEST_WAIT_RESET   0x08
+#define STATE_DFU_UPLOAD_IDLE           0x09
+#define STATE_DFU_ERROR                 0x0a
 
-enum dfu_status_e {
-	DFU_STATUS_OK,
-	DFU_STATUS_ERR_TARGET,
-	DFU_STATUS_ERR_FILE,
-	DFU_STATUS_ERR_WRITE,
-	DFU_STATUS_ERR_ERASE,
-	DFU_STATUS_ERR_CHECK_ERASED,
-	DFU_STATUS_ERR_PROG,
-	DFU_STATUS_ERR_VERIFY,
-	DFU_STATUS_ERR_ADDRESS,
-	DFU_STATUS_ERR_NOTDONE,
-	DFU_STATUS_ERR_FIRMWARE,
-	DFU_STATUS_ERR_VENDOR,
-	DFU_STATUS_ERR_USBR,
-	DFU_STATUS_ERR_POR,
-	DFU_STATUS_ERR_UNKNOWN,
-	DFU_STATUS_ERR_STALLEDPKT,
-};
 
-enum dfu_state {
-	STATE_APP_IDLE,
-	STATE_APP_DETACH,
-	STATE_DFU_IDLE,
-	STATE_DFU_DNLOAD_SYNC,
-	STATE_DFU_DNBUSY,
-	STATE_DFU_DNLOAD_IDLE,
-	STATE_DFU_MANIFEST_SYNC,
-	STATE_DFU_MANIFEST,
-	STATE_DFU_MANIFEST_WAIT_RESET,
-	STATE_DFU_UPLOAD_IDLE,
-	STATE_DFU_ERROR,
-};
+/* DFU status */
+#define DFU_STATUS_OK                   0x00
+#define DFU_STATUS_ERROR_TARGET         0x01
+#define DFU_STATUS_ERROR_FILE           0x02
+#define DFU_STATUS_ERROR_WRITE          0x03
+#define DFU_STATUS_ERROR_ERASE          0x04
+#define DFU_STATUS_ERROR_CHECK_ERASED   0x05
+#define DFU_STATUS_ERROR_PROG           0x06
+#define DFU_STATUS_ERROR_VERIFY         0x07
+#define DFU_STATUS_ERROR_ADDRESS        0x08
+#define DFU_STATUS_ERROR_NOTDONE        0x09
+#define DFU_STATUS_ERROR_FIRMWARE       0x0a
+#define DFU_STATUS_ERROR_VENDOR         0x0b
+#define DFU_STATUS_ERROR_USBR           0x0c
+#define DFU_STATUS_ERROR_POR            0x0d
+#define DFU_STATUS_ERROR_UNKNOWN        0x0e
+#define DFU_STATUS_ERROR_STALLEDPKT     0x0f
 
-#define USB_DT_DFU			0x21
-struct usb_dfu_descriptor {
-	uint8_t bLength;
-	uint8_t bDescriptorType;
-	uint8_t bmAttributes;
-#define USB_DFU_CAN_DOWNLOAD		0x01
-#define USB_DFU_CAN_UPLOAD		0x02
-#define USB_DFU_MANIFEST_TOLERANT	0x04
-#define USB_DFU_WILL_DETACH		0x08
+/* DFU commands */
+#define DFU_DETACH      0
+#define DFU_DNLOAD      1
+#define DFU_UPLOAD      2
+#define DFU_GETSTATUS   3
+#define DFU_CLRSTATUS   4
+#define DFU_GETSTATE    5
+#define DFU_ABORT       6
 
-	uint16_t wDetachTimeout;
-	uint16_t wTransferSize;
-	uint16_t bcdDFUVersion;	
-} __attribute__((packed));
+/* DFU interface */
+#define DFU_IFF_DFU             0x0001  /* DFU Mode, (not Runtime) */
+#define DFU_IFF_VENDOR          0x0100
+#define DFU_IFF_PRODUCT         0x0200
+#define DFU_IFF_CONFIG          0x0400
+#define DFU_IFF_IFACE           0x0800
+#define DFU_IFF_ALT             0x1000
+#define DFU_IFF_DEVNUM          0x2000
+#define DFU_IFF_PATH            0x4000
+
+/* This is based off of DFU_GETSTATUS
+ *
+ *  1 unsigned byte bStatus
+ *  3 unsigned byte bwPollTimeout
+ *  1 unsigned byte bState
+ *  1 unsigned byte iString
+*/
 
 struct dfu_status {
-        uint8_t bStatus;
-        uint32_t bwPollTimeout:24;
-        uint8_t bState;
-        uint8_t iString;
-} __attribute__((packed));
+    unsigned char bStatus;
+    unsigned int  bwPollTimeout;
+    unsigned char bState;
+    unsigned char iString;
+};
 
+struct dfu_if {
+    u_int16_t vendor;
+    u_int16_t product;
+    u_int8_t configuration;
+    u_int8_t interface;
+    u_int8_t altsetting;
+    unsigned char *alt_name;
+    int bus;
+    u_int8_t devnum;
+    const char *path;
+    unsigned int flags;
+    unsigned int count;
+    libusb_device *dev;
+    libusb_device_handle *dev_handle;
+};
 
-typedef struct dfu_device {
-	struct usb_device *dev;
-	usb_dev_handle *h;
-	uint8_t conf;
-	uint16_t iface;
-	int num_altsetting;
-	struct usb_interface_descriptor *ifdesc;
-	struct usb_dfu_descriptor *dfudesc;
+void dfu_init( const int timeout );
+void dfu_debug( const int level );
+int dfu_detach( libusb_device_handle *device,
+                const unsigned short interface,
+                const unsigned short timeout );
+int dfu_download( libusb_device_handle *device,
+                  const unsigned short interface,
+                  const unsigned short length,
+                  unsigned char* data );
+int dfu_upload( libusb_device_handle *device,
+                const unsigned short interface,
+                const unsigned short length,
+                unsigned char* data );
+int dfu_get_status( libusb_device_handle *device,
+                    const unsigned short interface,
+                    struct dfu_status *status );
+int dfu_clear_status( libusb_device_handle *device,
+                      const unsigned short interface );
+int dfu_get_state( libusb_device_handle *device,
+                   const unsigned short interface );
+int dfu_abort( libusb_device_handle *device,
+               const unsigned short interface );
 
-	/* These fields are used by memory driver */
-	void *priv;
-	void (*priv_destroy)(void *);
-} dfu_device;
+char* dfu_state_to_string( int state );
 
-typedef void (*dfu_enum_func)( void * context, struct usb_device *dev, 
-		uint8_t config, uint16_t iface);
+const char *dfu_status_to_string(int status);
 
-/* Enumerate DFU capable devs */
-int dfu_find_devs( void * context, dfu_enum_func callback );
-
-dfu_device *dfu_open(struct usb_device *dev, uint8_t config, 
-			uint16_t iface);
-void dfu_close(dfu_device *dev); 
-
-int dfu_detach(dfu_device *dev, uint16_t wTimeout);
-int dfu_dnload(dfu_device *dev, uint16_t wBlockNum, void *data, uint16_t size);
-int dfu_upload(dfu_device *dev, uint16_t wBlockNum, void *data, uint16_t size);
-int dfu_getstatus(dfu_device *dev, struct dfu_status *status);
-int dfu_clrstatus(dfu_device *dev);
-int dfu_getstate(dfu_device *dev);
-int dfu_abort(dfu_device *dev);
-
-int dfu_makeidle(dfu_device *dev);
-
+int debug;
 #endif
-
