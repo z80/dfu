@@ -1,10 +1,13 @@
 
 cmake_minimum_required(VERSION 2.8)
 
+include( "../cmake/findlibusb-1.0.cmake" )
+message( STATUS ${LIBUSB_1_DEFINITIONS} )
+
 include_directories( "./src" 
                      ${GLOB_BIN_DIR} )
 if ( UNIX )
-    include_directories( "/usr/include/libusb-1.0" )
+    include_directories( "${LIBUSB_1_INCLUDE_DIRS}" )
 elseif ( WIN32 )
 
 endif ( UNIX )
@@ -14,9 +17,5 @@ aux_source_directory( "./src" src )
 message( STATUS "src: \"${src}\"" )
 add_library( dfu ${src} )
 
-find_library( libusb NAMES libusb-1.0.a PATHS $ENV{PATH} ${LIBUSB_PATH} )
-find_library( libpthread NAMES libpthread.a PATHS $ENV{PATH} )
-find_library( libc NAMES libc.a PATHS $ENV{PATH} )
-
-target_link_libraries( dfu ${libusb} ${libpthread} ${libc} )
+target_link_libraries( dfu ${lLIBUSB_1_LIBRARIES} )
 
