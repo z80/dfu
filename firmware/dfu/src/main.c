@@ -64,6 +64,7 @@ int main(void)
       Jump_To_Application = (pFunction) JumpAddress;
       /* Initialize user application's Stack Pointer */
       __set_MSP(*(__IO uint32_t*) ApplicationAddress);
+      // NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 ); // This should be done in target shifted firmware :)
       Jump_To_Application();
     }
   } /* Otherwise enters DFU mode to allow user to program his application */

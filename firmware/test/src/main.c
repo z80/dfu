@@ -71,16 +71,17 @@ void delay()
   */
 int main(void)
 {
+    NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 );
     clockConfig();
     //gpioConfig();
     adcInit();
     lcdPower( 1 );
     dataInit();
 
-    //xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
+    xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
     //xTaskCreate( vTaskAdc,  (signed char *)"a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
     //xTaskCreate( vTaskPlot, (signed char *)"b", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    //vTaskStartScheduler();
+    vTaskStartScheduler();
     
     //prepareData();
     //LcdInit();
