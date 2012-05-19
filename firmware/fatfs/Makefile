@@ -1,14 +1,4 @@
-###############################################################################
-#
-#  	    File        : Makefile
-#
-#       Abstract    : Example Makefile for a C Project
-#
-#       Environment : Atollic TrueSTUDIO(R)
-#
-###############################################################################
-
-OPTIMIZATION = s
+OPTIMIZATION = s 
 #CROSS_PATH   = c:/programs/codesourcery/arm-2011.09-70
 #CROSS_PATH   = c:/programs/codesourcery/arm-2011.03-41
 CROSS_PATH   = ~/programs/code-sourcery/2011.03-42
@@ -20,21 +10,10 @@ LINKER_LD    = cmsis/linker/stm32_flash.ld
 OBJECT_DIR = target
 BIN_DIR = $(OBJECT_DIR)
 
-#F_XTAL   = 8000000
-#SYSCLOCK_CL = SYSCLK_FREQ_72MHz=72000000
-
 DEFS=
-DEFS+=-DHSE_VALUE=12000000UL
-DEFS += -DSYSCLK_FREQ_48MHz=48000000
+DEFS+=-DHSE_VALUE=12000000
 DEFS += -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD
-# Parameters for tuning SDC card access.
-BOARD    = EK_STM32F
-#BOARD    = MINI_STM32
-DFEFS += -DUSE_$(BOARD)
-#DEFS += -DSTM32_SD_USE_DMA
-DEFS += -DSTARTUP_DELAY
 
-#
 CROSS = $(CROSS_PATH)/bin/$(CROSS_PREFIX)
 
 # System configuration
@@ -54,9 +33,9 @@ LINKER_FLAGS+=-Wl,--defsym=malloc_getpagesize_P=0x1000
 ASSEMBLER_FLAGS=
 ASSEMBLER_FLAGS+=-c -g -O$(OPTIMIZATION) -mcpu=cortex-m3 -mthumb 
 ASSEMBLER_FLAGS+=-x assembler-with-cpp 
-ASSEMBLER_FLAGS+=-Isrc 
-ASSEMBLER_FLAGS+=-Istdperiph
-ASSEMBLER_FLAGS+=-Icmsis/src 
+ASSEMBLER_FLAGS+=-Isrc
+ASSEMBLER_FLAGS+=-Iperiph
+ASSEMBLER_FLAGS+=-Icmsis
 ASSEMBLER_FLAGS+=-Iusb
 
 COMPILER_FLAGS=
@@ -65,12 +44,9 @@ COMPILER_FLAGS+=-Wall -ffunction-sections
 COMPILER_FLAGS+=-fdata-sections -mthumb 
 COMPILER_FLAGS+=$(DEFS) 
 COMPILER_FLAGS+=-Isrc 
-COMPILER_FLAGS+=-Istdperiph 
-COMPILER_FLAGS+=-Icmsis/src 
-COMPILER_FLAGS+=-I3310 
+COMPILER_FLAGS+=-Iperiph 
+COMPILER_FLAGS+=-Icmsis
 COMPILER_FLAGS+=-Iusb 
-COMPILER_FLAGS+=-Ifreertos
-COMPILER_FLAGS+=-Ifreertos/cm3
 
 # Define sources and objects
 SRC := $(wildcard */*/*/*/*/*/*/*.c) \
