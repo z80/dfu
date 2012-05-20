@@ -54,27 +54,27 @@
 //#define USE_MINI_STM32
 
 #if defined(USE_EK_STM32F)
- #define CARD_SUPPLY_SWITCHABLE   0
- #define GPIO_PWR                 GPIOD
- #define RCC_APB2Periph_GPIO_PWR  RCC_APB2Periph_GPIOD
- #define GPIO_Pin_PWR             GPIO_Pin_10
+ #define CARD_SUPPLY_SWITCHABLE   1
+ #define GPIO_PWR                 GPIOB
+ #define RCC_APB2Periph_GPIO_PWR  RCC_APB2Periph_GPIOB
+ #define GPIO_Pin_PWR             GPIO_Pin_11
  #define GPIO_Mode_PWR            GPIO_Mode_Out_OD /* pull-up resistor at power FET */
  #define SOCKET_WP_CONNECTED      0
  #define SOCKET_CP_CONNECTED      0
- #define SPI_SD                   SPI1
- #define GPIO_CS                  GPIOD
- #define RCC_APB2Periph_GPIO_CS   RCC_APB2Periph_GPIOD
- #define GPIO_Pin_CS              GPIO_Pin_9
+ #define SPI_SD                   SPI2
+ #define GPIO_CS                  GPIOB
+ #define RCC_APB2Periph_GPIO_CS   RCC_APB2Periph_GPIOB
+ #define GPIO_Pin_CS              GPIO_Pin_12
  #define DMA_Channel_SPI_SD_RX    DMA1_Channel2
  #define DMA_Channel_SPI_SD_TX    DMA1_Channel3
  #define DMA_FLAG_SPI_SD_TC_RX    DMA1_FLAG_TC2
  #define DMA_FLAG_SPI_SD_TC_TX    DMA1_FLAG_TC3
- #define GPIO_SPI_SD              GPIOA
- #define GPIO_Pin_SPI_SD_SCK      GPIO_Pin_5
- #define GPIO_Pin_SPI_SD_MISO     GPIO_Pin_6
- #define GPIO_Pin_SPI_SD_MOSI     GPIO_Pin_7
- #define RCC_APBPeriphClockCmd_SPI_SD  RCC_APB2PeriphClockCmd
- #define RCC_APBPeriph_SPI_SD     RCC_APB2Periph_SPI1
+ #define GPIO_SPI_SD              GPIOB
+ #define GPIO_Pin_SPI_SD_SCK      GPIO_Pin_13
+ #define GPIO_Pin_SPI_SD_MISO     GPIO_Pin_14
+ #define GPIO_Pin_SPI_SD_MOSI     GPIO_Pin_15
+ #define RCC_APBPeriphClockCmd_SPI_SD  RCC_APB1PeriphClockCmd
+ #define RCC_APBPeriph_SPI_SD     RCC_APB1Periph_SPI2
  /* - for SPI1 and full-speed APB2: 72MHz/4 */
  #define SPI_BaudRatePrescaler_SPI_SD  SPI_BaudRatePrescaler_4
 
@@ -286,24 +286,29 @@ static void card_power(BOOL on)		/* switch FET for card-socket VCC */
 	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_PWR;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIO_PWR, &GPIO_InitStructure);
-	if (on) {
-		GPIO_ResetBits(GPIO_PWR, GPIO_Pin_PWR);
-	} else {
+	if (on)
+    {
 		/* Chip select internal pull-down (to avoid parasite powering) */
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_CS;
 		GPIO_Init(GPIO_CS, &GPIO_InitStructure);
-
 		GPIO_SetBits(GPIO_PWR, GPIO_Pin_PWR);
+	}
+    else
+    {
+		GPIO_ResetBits(GPIO_PWR, GPIO_Pin_PWR);
 	}
 }
 
 #if (STM32_SD_DISK_IOCTRL == 1)
 static int chk_power(void)		/* Socket power state: 0=off, 1=on */
 {
-	if ( GPIO_ReadOutputDataBit(GPIO_PWR, GPIO_Pin_PWR) == Bit_SET ) {
-		return 0;
-	} else {
-		return 1;
+	if ( GPIO_ReadOutputDataBit(GPIO_PWR, GPIO_Pin_PWR) == Bit_SET )
+    {
+		return TRUE;
+	}
+    else
+    {
+		return FALSE;
 	}
 }
 #endif
