@@ -1,0 +1,1 @@
+arm-none-eabi-objdump -h -S --section=.text --section=.data %1 > %2
