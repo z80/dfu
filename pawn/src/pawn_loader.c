@@ -8,11 +8,13 @@
 
 #include <stdio.h>
 
+#define HEADER_SZ 128
 typedef struct SPawnLoader
 {
     AMX amx;
 
     FILE * fp;
+    unsigned char header[ HEADER_SZ ];
     unsigned char stack[ STACK_SZ ];
     unsigned char pool[ POOL_SZ ];
 };
@@ -153,17 +155,17 @@ int pawnLoad( Pawn * p, const char * fileName )
     }
 
     rewind( p->fp );
-    fread( p->stack, 1, hdr.cod, p->fp );
+    fread( p->header, 1, hdr.cod, p->fp );
     fseek( p->fp, hdr.dat, SEEK_SET );
-    fread( p->stack + hdr.cod, 1, hdr.hea - hdr.dat, p->fp );
+    fread( p->stack, 1, hdr.hea - hdr.dat, p->fp );
 
     amx_poolinit( p->pool, POOL_SZ );
 
     for ( i=0; i<sizeof(p->amx); i++ )
         ((unsigned char *)&p->amx)[i] = 0;
-    p->amx.data    = p->stack + hdr.cod;
+    p->amx.data    = p->stack;
     p->amx.overlay = prun_Overlay;
-    i = amx_Init( &p->amx, p->stack );
+    i = amx_Init( &p->amx, p->header );
     return ( i == AMX_ERR_NONE ) ? PAWN_OK : PAWN_ERR_INIT;
 }
 
