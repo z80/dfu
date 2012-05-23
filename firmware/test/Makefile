@@ -71,6 +71,7 @@ COMPILER_FLAGS+=-I3310
 COMPILER_FLAGS+=-Iusb 
 COMPILER_FLAGS+=-Ifreertos
 COMPILER_FLAGS+=-Ifreertos/cm3
+COMPILER_FLAGS+=-Ifatfs
 
 # Define sources and objects
 SRC := $(wildcard */*/*/*/*/*/*/*.c) \

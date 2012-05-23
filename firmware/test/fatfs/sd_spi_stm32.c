@@ -514,7 +514,10 @@ void power_on (void)
 	socket_cp_init();
 	socket_wp_init();
 
-	for (Timer1 = 25; Timer1; );	/* Wait for 250ms */
+	//for (Timer1 = 25; Timer1; );	/* Wait for 250ms */
+    volatile int i;
+    for ( i=0; i<30000; i++ )
+        asm( "nop;" );
 
 	/* Configure I/O for Flash Chip select */
 	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_CS;

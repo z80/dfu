@@ -30,6 +30,9 @@
 #include "task_plot.h"
 #include "task_adc.h"
 
+#include "ff.h"
+
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
  USART_InitTypeDef USART_InitStructure;
@@ -63,6 +66,12 @@ void delay()
       asm( "nop" );
 }
 
+DWORD get_fattime( void )
+{
+    static DWORD i = 0;
+    return i++;
+}
+
 
 /**
   * @brief  Main program.
@@ -74,41 +83,45 @@ int main(void)
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 );
     clockConfig();
     //gpioConfig();
-    adcInit();
-    lcdPower( 1 );
-    dataInit();
+    //adcInit();
+    //lcdPower( 1 );
+    //dataInit();
+
+    // FatFS.
+    FRESULT rc;
+    FATFS   fatfs;
+    FIL     fil;
+    DIR     dir;
+    FILINFO info;
+    UINT    bw, br, i;
+    char stri[] = "file content!";
+    disk_initialize( 0 );
+    f_mount( 0, &fatfs );
+    rc = f_open( &fil, "MESSAGE.TXT", FA_WRITE | FA_CREATE_ALWAYS );
+    if ( !rc )
+    {
+        f_write( &fil, stri, sizeof(stri), &br );
+        f_close( &fil );
+
+        char res[128];
+        rc = f_open( &fil, "MESSAGE.TXT", FA_READ );
+        if ( !rc )
+        {
+            rc = f_read( &fil, res, sizeof( res ), &br );
+            f_close( &fil );
+        }
+    }
+    while ( 1 )
+        ;
+
+
 
     xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
     //xTaskCreate( vTaskAdc,  (signed char *)"a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
     //xTaskCreate( vTaskPlot, (signed char *)"b", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    vTaskStartScheduler();
-    
-    //prepareData();
-    //LcdInit();
-    while (1)
-    {
-        //GPIO_Write( GPIOB, GREEN_GPIO_PIN | RED_GPIO_PIN | GPIO_Pin_10 );
-        //delay();
-        //GPIO_Write( GPIOB, 0 );
-        delay();
-
-        lcdClear();
-        lcdLine( 0, 0, 80, 30, PIXEL_ON );
-        lcdLine( 0, 40, 80, 0, PIXEL_ON );
-        lcdLine( 40, 40, 40, 0, PIXEL_ON );
-        lcdGotoXy( 5, 5 );
-        lcdStrConst( FONT_1X, "Hello!" );
-        lcdUpdate();
-        delay();
-        lcdClear();
-        //lcdLine( 0, 0, 80, 30, PIXEL_ON );
-        //lcdLine( 0, 40, 80, 0, PIXEL_ON );
-        //lcdLine( 40, 40, 40, 0, PIXEL_ON );
-        lcdGotoXy( 5, 5 );
-        lcdStrConst( FONT_1X, "Hi!" );
-        lcdUpdate(); 
-  }
+    vTaskStartScheduler();   
 }
+
 
 #ifdef  USE_FULL_ASSERT
 
@@ -185,6 +198,9 @@ void vTaskDisplay( void * args )
         lcdStrConst( FONT_1X, "Hi!" );
         lcdUpdate(); 
         vTaskDelay( 1000 );
+
+        // Disc utility.
+        disk_timerproc();
     }
 }
 

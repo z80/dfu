@@ -2,9 +2,10 @@
 #ifndef __3310_BACKEND_H_
 #define __3310_BACKEND_H_
 
-typedef char                       BOOL;
-typedef unsigned char              BYTE;
-typedef unsigned int               WORD;
+//typedef char                       BOOL;
+//typedef unsigned char              BYTE;
+//typedef unsigned int               WORD;
+#include "integer.h"
 
 void delay3310( int cnt );
 
