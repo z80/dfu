@@ -7,18 +7,17 @@
 #include <stdio.h>
 
 //#define DATABLOCK
-#define HEADER_SZ 128
 typedef struct SPawnLoader
 {
     AMX amx;
 
     FILE * fp;
+    unsigned char datablock[ STACK_SZ + POOL_SZ ];
 #ifndef DATABLOCK
-    unsigned char header[ HEADER_SZ ];
-    unsigned char stack[ STACK_SZ ];
-    unsigned char pool[ POOL_SZ ];
+    unsigned char * header; //[ HEADER_SZ ];
+    unsigned char * stack; //[ STACK_SZ ];
+    unsigned char * pool; //[ POOL_SZ ];
 #else
-    unsigned char datablock[ HEADER_SZ + STACK_SZ + POOL_SZ ];
 #endif
 };
 
@@ -30,7 +29,7 @@ static int AMXAPI prun_Overlay( AMX * amx, int index )
     AMX_HEADER * hdr;
     AMX_OVERLAYINFO * tbl;
     int pos, res;
-    int i;
+    //int i;
 
     hdr = (AMX_HEADER*)amx->base;
     tbl = (AMX_OVERLAYINFO*)(amx->base + hdr->overlays) + index;
@@ -50,11 +49,11 @@ static int AMXAPI prun_Overlay( AMX * amx, int index )
     if ( res != 0 )
         return AMX_ERR_MEMORY;
     res = fread( amx->code, 1, tbl->size, g_p.fp );
-    for ( i=0; i<tbl->size; i+=4 )
-        printf( "%2x %2x %2x %2x\n", amx->code[i], amx->code[i+1], amx->code[i+2], amx->code[i+3] );
+    //for ( i=0; i<tbl->size; i+=4 )
+    //    printf( "%2x %2x %2x %2x\n", amx->code[i], amx->code[i+1], amx->code[i+2], amx->code[i+3] );
     if ( res != tbl->size )
         return AMX_ERR_MEMORY;
-    printf( "\n" );
+    //printf( "\n" );
     return AMX_ERR_NONE;
 }
 
@@ -70,7 +69,7 @@ AMX  * pawnAmx( void )
 
 int pawnLoad( Pawn * p, const char * fileName )
 {
-  /*FILE *fp;
+  FILE *fp;
   AMX_HEADER hdr;
   int result, i;
   int32_t size;
@@ -95,22 +94,22 @@ int pawnLoad( Pawn * p, const char * fileName )
     return AMX_ERR_FORMAT;
   } // if
 
-  if ((hdr.flags & AMX_FLAG_OVERLAY) != 0) {
+  if ((hdr.flags & AMX_FLAG_OVERLAY) != 0)
     // allocate the block for the data + stack/heap, plus the complete file
     // header, plus the overlay pool
-    
-    #if defined AMXOVL
-      size = (hdr.stp - hdr.dat) + hdr.cod + OVLPOOLSIZE;
-    #else
-      return AMX_ERR_OVERLAY;
-    #endif
-  } else {
+    size = (hdr.stp - hdr.dat) + hdr.cod + POOL_SZ;
+  else
     size = hdr.stp;
-  } // if
-  if ((datablock = malloc(size)) == NULL) {
-    fclose(fp);
-    return AMX_ERR_MEMORY;
-  } // if
+
+  if( size > (STACK_SZ + POOL_SZ) )
+  {
+      fclose(fp);
+      return AMX_ERR_MEMORY;
+  }
+  datablock = p->datablock;
+  p->header = datablock;
+  p->stack  = datablock + hdr.cod;
+  p->pool   = datablock + hdr.cod + (hdr.stp - hdr.dat);
 
   // save the filename, for optionally reading the debug information (we could
   // also have read it here immediately); for reading overlays, we also need
@@ -120,7 +119,6 @@ int pawnLoad( Pawn * p, const char * fileName )
   // read in the file, in two parts; first the header and then the data section
   rewind(fp);
   if ((hdr.flags & AMX_FLAG_OVERLAY) != 0) {
-    #if defined AMXOVL
       // read the entire header
       fread(datablock, 1, hdr.cod, fp);
       // read the data section, put it behind the header in the block
@@ -128,7 +126,6 @@ int pawnLoad( Pawn * p, const char * fileName )
       fread(datablock + hdr.cod, 1, hdr.hea - hdr.dat, fp);
       // initialize the overlay pool
       amx_poolinit(datablock + (hdr.stp - hdr.dat) + hdr.cod, OVLPOOLSIZE);
-    #endif
   } else {
     fread(datablock, 1, (size_t)hdr.size, fp);
   } // if
@@ -137,23 +134,27 @@ int pawnLoad( Pawn * p, const char * fileName )
   // initialize the abstract machine
   for ( i=0; i<sizeof(p->amx); i++ )
       ((unsigned char *)&p->amx)[i] = 0;
-  #if defined AMXOVL
-    if ((hdr.flags & AMX_FLAG_OVERLAY) != 0) {
-      p->amx.data = datablock + hdr.cod;
-      p->amx.overlay = prun_Overlay;
-    } // if
-  #endif
+  if ((hdr.flags & AMX_FLAG_OVERLAY) != 0)
+  {
+    p->amx.data = datablock + hdr.cod;
+    p->amx.overlay = prun_Overlay;
+  }
+  else
+  {
+    fread(datablock, 1, (size_t)hdr.size, fp);
+  }
   result = amx_Init( &p->amx, datablock);
 
   // free the memory block on error, if it was allocated here
-  if (result != AMX_ERR_NONE) {
+  if (result != AMX_ERR_NONE)
+  {
     free(datablock);
     p->amx.base = NULL;                   // avoid a double free
   } // if
 
-  return result;*/
+  return result;
 
-    AMX_HEADER hdr;
+    /*AMX_HEADER hdr;
     int i;
     if ( !(p->fp = fopen( fileName, "rb" ) ) )
         return PAWN_ERR_FILE_OPEN;
@@ -184,7 +185,7 @@ int pawnLoad( Pawn * p, const char * fileName )
     p->amx.data    = p->stack;
     p->amx.overlay = prun_Overlay;
     i = amx_Init( &p->amx, p->header );
-    return ( i == AMX_ERR_NONE ) ? PAWN_OK : PAWN_ERR_INIT;
+    return ( i == AMX_ERR_NONE ) ? PAWN_OK : PAWN_ERR_INIT;*/
 }
 
 /*int AMXAPI aux_LoadProgram(AMX *amx, char *filename)
