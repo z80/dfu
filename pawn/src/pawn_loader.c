@@ -1,6 +1,4 @@
 
-#define AMXOVL
-
 #include "pawn_loader.h"
 #include "pawn_cfg.h"
 #include "amx.h"
@@ -8,15 +6,20 @@
 
 #include <stdio.h>
 
+//#define DATABLOCK
 #define HEADER_SZ 128
 typedef struct SPawnLoader
 {
     AMX amx;
 
     FILE * fp;
+#ifndef DATABLOCK
     unsigned char header[ HEADER_SZ ];
     unsigned char stack[ STACK_SZ ];
     unsigned char pool[ POOL_SZ ];
+#else
+    unsigned char datablock[ HEADER_SZ + STACK_SZ + POOL_SZ ];
+#endif
 };
 
 Pawn g_p;
@@ -26,17 +29,32 @@ static int AMXAPI prun_Overlay( AMX * amx, int index )
 {
     AMX_HEADER * hdr;
     AMX_OVERLAYINFO * tbl;
+    int pos, res;
+    int i;
 
     hdr = (AMX_HEADER*)amx->base;
     tbl = (AMX_OVERLAYINFO*)(amx->base + hdr->overlays) + index;
     amx->codesize = tbl->size;
-    amx->code     = amx_poolfind( index );
+    /*amx->code     = amx_poolfind( index );
     if ( amx->code == 0 )
     {
         amx->code = amx_poolalloc( tbl->size, index );
-        fseek( g_p.fp, (int)hdr->cod + tbl->offset, SEEK_SET );
+        rewind( g_p.fp );
+        fseek( g_p.fp, hdr->cod + tbl->offset, SEEK_SET );
         fread( amx->code, 1, tbl->size, g_p.fp );
-    }
+    }*/
+    amx->code = g_p.pool;
+    pos = hdr->cod + tbl->offset;
+    rewind( g_p.fp );
+    res = fseek( g_p.fp, pos, SEEK_SET );
+    if ( res != 0 )
+        return AMX_ERR_MEMORY;
+    res = fread( amx->code, 1, tbl->size, g_p.fp );
+    for ( i=0; i<tbl->size; i+=4 )
+        printf( "%2x %2x %2x %2x\n", amx->code[i], amx->code[i+1], amx->code[i+2], amx->code[i+3] );
+    if ( res != tbl->size )
+        return AMX_ERR_MEMORY;
+    printf( "\n" );
     return AMX_ERR_NONE;
 }
 

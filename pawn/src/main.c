@@ -5,17 +5,17 @@
 
 static cell printi( AMX * amx,  const cell * params );
 static cell print( AMX * amx,  const cell * params );
+static AMX_NATIVE_INFO decls[] = 
+{
+    { "printi", printi }, 
+    { "print",  print }, 
+    { 0,       0 }, 
+};
 
 int main(int argc,char *argv[])
 {
     Pawn * p;
     int res;
-    static AMX_NATIVE_INFO decls[] = 
-    {
-        { "printi", printi }, 
-        { "print",  print }, 
-        { 0,       0 }, 
-    };
     if ( argc < 2 )
     {
         printf( "Script name was expected, actually...\n" );
@@ -30,22 +30,33 @@ int main(int argc,char *argv[])
 
 static cell printi( AMX * amx,  const cell * params )
 {
-    int val = (int)params[1];
-    printf( "val = %i\n", val );
+    int cnt = params[0] / sizeof(cell);
+    int val;
+    int i;
+    for ( i=1; i<=cnt; i++ )
+    {
+        val = (int)params[i];
+        printf( "%i%s", val, (i<cnt) ? " " : "" );
+    }
+    printf( "\n" );
     return 0;
 }
 
 static cell print( AMX * amx,  const cell * params )
 {
     char stri[128];
-    int l;
-    cell * cstri;
-    amx_GetAddr( amx, params[1], &cstri );
-    amx_StrLen( cstri, &l );
-    if ( l > 0 )
+    int l, i;
+    //cell * cstri;
+    int cnt = params[0] / sizeof(cell);
+    for ( i=1; i<=cnt; i++ )
     {
-        amx_GetString( stri, cstri, 0, l+1 );
-        printf( "%s", stri );
+        //amx_GetAddr( amx, params[i], &cstri );
+        amx_StrLen( (cell *)params[i], &l );
+        if ( l > 0 )
+        {
+            amx_GetString( stri, (cell *)params[i], 0, l+1 );
+            printf( "%s", stri );
+        }
     }
     return 0;
 }
