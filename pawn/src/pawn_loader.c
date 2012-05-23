@@ -148,7 +148,6 @@ int pawnLoad( Pawn * p, const char * fileName )
   // free the memory block on error, if it was allocated here
   if (result != AMX_ERR_NONE)
   {
-    free(datablock);
     p->amx.base = NULL;                   // avoid a double free
   } // if
 
