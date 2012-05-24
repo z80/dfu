@@ -87,6 +87,8 @@ int main(void)
     //lcdPower( 1 );
     //dataInit();
 
+    //while (1)
+    //    ;
     // FatFS.
     FRESULT rc;
     FATFS   fatfs;

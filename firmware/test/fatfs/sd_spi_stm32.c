@@ -58,7 +58,7 @@
  #define GPIO_PWR                 GPIOB
  #define RCC_APB2Periph_GPIO_PWR  RCC_APB2Periph_GPIOB
  #define GPIO_Pin_PWR             GPIO_Pin_11
- #define GPIO_Mode_PWR            GPIO_Mode_Out_OD /* pull-up resistor at power FET */
+ #define GPIO_Mode_PWR            GPIO_Mode_Out_PP
  #define SOCKET_WP_CONNECTED      0
  #define SOCKET_CP_CONNECTED      0
  #define SPI_SD                   SPI2
@@ -289,7 +289,7 @@ static void card_power(BOOL on)		/* switch FET for card-socket VCC */
 	if (on)
     {
 		/* Chip select internal pull-down (to avoid parasite powering) */
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_CS;
+		GPIO_InitStructure.GPIO_Pin |= GPIO_Pin_CS;
 		GPIO_Init(GPIO_CS, &GPIO_InitStructure);
 		GPIO_SetBits(GPIO_PWR, GPIO_Pin_PWR);
 	}
