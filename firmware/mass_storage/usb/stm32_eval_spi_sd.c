@@ -154,7 +154,7 @@ SD_Error SD_Init(void)
 uint8_t SD_Detect(void)
 {
   __IO uint8_t status = SD_PRESENT;
-
+  GPIO_SetBits( SD_DETECT_GPIO_PORT, SD_DETECT_PIN );
   /*!< Check GPIO to detect SD */
   /*if (GPIO_ReadInputData(SD_DETECT_GPIO_PORT) & SD_DETECT_PIN)
   {

@@ -29,8 +29,10 @@ void SD_LowLevel_DeInit(void)
   GPIO_Init(SD_CS_GPIO_PORT, &GPIO_InitStructure);
 
   /*!< Configure SD_SPI_DETECT_PIN pin: SD Card detect pin */
-  //GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
-  //GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
 }
 
 /**
@@ -46,7 +48,7 @@ void SD_LowLevel_Init(void)
   /*!< SD_SPI_CS_GPIO, SD_SPI_MOSI_GPIO, SD_SPI_MISO_GPIO, SD_SPI_DETECT_GPIO 
        and SD_SPI_SCK_GPIO Periph clock enable */
   RCC_APB2PeriphClockCmd(SD_CS_GPIO_CLK | SD_SPI_MOSI_GPIO_CLK | SD_SPI_MISO_GPIO_CLK |
-                         SD_SPI_SCK_GPIO_CLK /*| SD_DETECT_GPIO_CLK*/, ENABLE);
+                         SD_SPI_SCK_GPIO_CLK | SD_DETECT_GPIO_CLK, ENABLE);
 
   /*!< SD_SPI Periph clock enable */
   RCC_APB2PeriphClockCmd(SD_SPI_CLK, ENABLE); 
@@ -73,9 +75,10 @@ void SD_LowLevel_Init(void)
   GPIO_Init(SD_CS_GPIO_PORT, &GPIO_InitStructure);
 
   /*!< Configure SD_SPI_DETECT_PIN pin: SD Card detect pin */
-  //GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
-  //GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-  //GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_ResetBits( SD_DETECT_GPIO_PORT, SD_DETECT_PIN );
 
   /*!< SD_SPI Config */
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;

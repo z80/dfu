@@ -19,9 +19,9 @@
 #define SD_CS_PIN                        GPIO_Pin_12                 /* PC.12 */
 #define SD_CS_GPIO_PORT                  GPIOB                       /* GPIOB */
 #define SD_CS_GPIO_CLK                   RCC_APB2Periph_GPIOB
-//#define SD_DETECT_PIN                    GPIO_Pin_7                  /* PE.07 */
-//#define SD_DETECT_GPIO_PORT              GPIOE                       /* GPIOE */
-//#define SD_DETECT_GPIO_CLK               RCC_APB2Periph_GPIOE
+#define SD_DETECT_PIN                    GPIO_Pin_11                 /* PE.11 */
+#define SD_DETECT_GPIO_PORT              GPIOB                       /* GPIOE */
+#define SD_DETECT_GPIO_CLK               RCC_APB2Periph_GPIOE
 
 void SD_LowLevel_DeInit( void );
 void SD_LowLevel_Init( void ); 
