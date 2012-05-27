@@ -32,7 +32,7 @@ void SD_LowLevel_DeInit(void)
   GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
+  GPIO_ResetBits( SD_DETECT_GPIO_PORT, SD_DETECT_PIN );
 }
 
 /**
@@ -78,7 +78,7 @@ void SD_LowLevel_Init(void)
   GPIO_InitStructure.GPIO_Pin = SD_DETECT_PIN;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(SD_DETECT_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_ResetBits( SD_DETECT_GPIO_PORT, SD_DETECT_PIN );
+  GPIO_SetBits( SD_DETECT_GPIO_PORT, SD_DETECT_PIN );
 
   /*!< SD_SPI Config */
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
