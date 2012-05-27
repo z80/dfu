@@ -113,7 +113,7 @@ void SD_LowLevel_Init(void)
   RCC_APB2PeriphClockCmd(SD_SPI_CLK, ENABLE); 
 
   // Turn SPI off as well as card power.
-  SPI_Cmd( SD_SPI, DISABLE ); //!< SD_SPI enable
+  //SPI_Cmd( SD_SPI, DISABLE ); //!< SD_SPI enable
   card_power( 0 ); 
   volatile uint32_t ttt;
   for ( ttt=0; ttt<300000; ttt++ )
