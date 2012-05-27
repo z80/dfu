@@ -833,9 +833,14 @@ SD_Error SD_GoIdleState(void)
   */
 uint8_t SD_WriteByte(uint8_t Data)
 {
-  /*!< Wait until the transmit buffer is empty */
-  while(SPI_I2S_GetFlagStatus(SD_SPI, SPI_I2S_FLAG_TXE) == RESET)
+  static uint8_t firstTime = 1;
+  if ( firstTime )
   {
+    /*!< Wait until the transmit buffer is empty */
+    while(SPI_I2S_GetFlagStatus(SD_SPI, SPI_I2S_FLAG_TXE) == RESET)
+    {
+    }
+    firstTime = 0;
   }
   
   /*!< Send the byte */
