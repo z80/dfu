@@ -43,7 +43,7 @@ extern uint16_t MAL_Init (uint8_t lun);
 int main(void)
 {
   //NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 );
-  //Set_System();
+  Set_System();
   Set_USBClock();
   Led_Config();
   USB_Interrupts_Config();
