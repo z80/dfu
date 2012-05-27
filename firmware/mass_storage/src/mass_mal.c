@@ -27,7 +27,6 @@
 #endif /* USE_STM3210E_EVAL */
 
 #include "mass_mal.h"
-#include "stm32_eval.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -196,7 +195,7 @@ uint16_t MAL_GetStatus (uint8_t lun)
     Mass_Memory_Size[0] = (Mass_Block_Count[0] * Mass_Block_Size[0]);
 #endif /* USE_STM3210E_EVAL */
       Mass_Memory_Size[0] = Mass_Block_Count[0] * Mass_Block_Size[0];
-      STM_EVAL_LEDOn(LED2);
+      //STM_EVAL_LEDOn(LED2);
       return MAL_OK;
 
 #ifdef USE_STM3210E_EVAL
@@ -217,7 +216,7 @@ uint16_t MAL_GetStatus (uint8_t lun)
     }
   }
 #endif /* USE_STM3210E_EVAL */
-  STM_EVAL_LEDOn(LED2);
+  //STM_EVAL_LEDOn(LED2);
   return MAL_FAIL;
 }
 

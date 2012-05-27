@@ -35,6 +35,8 @@
  uint32_t Max_Lun = 0;
 #elif defined (USE_STM32L152_EVAL)
  uint32_t Max_Lun = 0; 
+#else
+ uint32_t Max_Lun = 0;
 #endif
 
 DEVICE Device_Table =

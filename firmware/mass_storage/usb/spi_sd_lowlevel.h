@@ -3,6 +3,8 @@
 #ifndef __SPI_SD_LOWLEVEL_H_
 #define __SPI_SD_LOWLEVEL_H_
 
+#include "stm32f10x.h"
+
 #define SD_SPI                           SPI1
 #define SD_SPI_CLK                       RCC_APB2Periph_SPI1
 #define SD_SPI_SCK_PIN                   GPIO_Pin_5                  /* PA.05 */

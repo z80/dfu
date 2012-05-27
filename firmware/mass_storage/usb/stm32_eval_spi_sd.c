@@ -45,6 +45,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32_eval_spi_sd.h"
+#include "spi_sd_lowlevel.h"
 
 /** @addtogroup Utilities
   * @{
