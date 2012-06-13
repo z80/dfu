@@ -8,7 +8,7 @@
 #
 ###############################################################################
 
-OPTIMIZATION = s
+OPTIMIZATION = 0
 #CROSS_PATH   = c:/programs/codesourcery/arm-2011.09-70
 #CROSS_PATH   = c:/programs/codesourcery/arm-2011.03-41
 CROSS_PATH   = ~/programs/code-sourcery/2011.03-42
@@ -24,8 +24,8 @@ BIN_DIR = $(OBJECT_DIR)
 #SYSCLOCK_CL = SYSCLK_FREQ_72MHz=72000000
 
 DEFS=
-#DEFS+=-DHSE_VALUE=8000000UL
-#DEFS+=-DSYSCLK_FREQ_48MHz=48000000
+DEFS+=-DHSE_VALUE=8000000UL
+DEFS+=-DSYSCLK_FREQ_48MHz=48000000
 DEFS+=-DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD
 # Parameters for tuning SDC card access.
 #BOARD    = EK_STM32F
