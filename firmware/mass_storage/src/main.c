@@ -135,15 +135,15 @@ static void switchesInit( void )
 static uint8_t diskMode( void )
 {
     if ( GPIO_ReadInputDataBit( PIN_PORT, PIN_FLASH_MODE ) )
-        return 1;
-    return 0;
+        return 0;
+    return 1;
 }
 
 static uint8_t dfuMode( void )
 {
     if ( GPIO_ReadInputDataBit( PIN_PORT, PIN_OP_MODE ) )
-        return 1;
-    return 0;
+        return 0;
+    return 1;
 }
 
 static void    dfu( void )
