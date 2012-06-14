@@ -48,9 +48,9 @@ int main(void)
     //Set_System();
     uint8_t do_disk = diskMode();
     uint8_t do_dfu  = dfuMode();
-    while ( 1 )
-    {
-    }
+    //while ( 1 )
+    //{
+    //}
 
     if ( do_disk )
     {
@@ -59,7 +59,7 @@ jump_to_application_failure:
         disk_initialize( 0 );
         if ( do_report_failure )
         {
-            reportFailure( "Failed to start regular firmware" );
+            reportFailure( _T( "Failed to start regular firmware" ) );
         }
         else
         {
@@ -94,7 +94,7 @@ jump_to_application_failure:
         // On jump failure or on if condition failure will jump 
         // to Usb FLASH disk initialization routine.
         // Clear probable reflash flag.
-        // do_dfu = 0;
+        do_report_failure = 1;
         goto jump_to_application_failure;
     }
 }
@@ -158,10 +158,10 @@ static void    dfu( void )
     if ( rc != FR_OK )
         goto dfu_end;
 
-    rc = f_open( &fil, "DFU_FILE_NAME", FA_READ );
+    rc = f_open( &fil, DFU_FILE_NAME, FA_READ );
     if ( rc != FR_OK )
     {
-        reportFailure( "No DFU_FILE_NAME file to reflash the MCU" );
+        reportFailure( _T( "No firmware.bin file to reflash the MCU" ) );
         goto dfu_end;
     }
 
@@ -194,15 +194,15 @@ static void    dfu( void )
     
     if ( !doReflash )
     {
-        reportFailure( "Firmwre is the same, no need in reflashing the MCU" );
+        reportFailure( _T( "Firmwre is the same, no need in reflashing the MCU" ) );
         goto dfu_end;
     }
 
     // Reflash routine itself.
-    rc = f_open( &fil, "DFU_FILE_NAME", FA_READ );
+    rc = f_open( &fil, DFU_FILE_NAME, FA_READ );
     if ( rc != FR_OK )
     {
-        reportFailure( "Failed to open DFU_FILE_NAME file in second time to reflash the MCU" );
+        reportFailure( _T( "Failed to open DFU_FILE_NAME file in second time to reflash the MCU" ) );
         goto dfu_end;
     }
 
@@ -241,7 +241,7 @@ static void    reportFailure( const char * stri )
     if ( rc != FR_OK )
         goto report_end;
 
-   rc = f_open( &fil, "DFU_REPORT_NAME", FA_OPEN_ALWAYS );
+   rc = f_open( &fil, DFU_REPORT_NAME, FA_WRITE | FA_OPEN_ALWAYS );
     if ( rc != FR_OK )
         goto report_end;
     rc = f_lseek( &fil, fil.fsize );
@@ -257,5 +257,14 @@ report_end:
 }
 
 
+DWORD get_fattime (void)
+{
+    return ((DWORD)(2010 - 1980) << 25)	/* Fixed to Jan. 1, 2010 */
+           | ((DWORD)1 << 21)
+           | ((DWORD)1 << 16)
+           | ((DWORD)0 << 11)
+           | ((DWORD)0 << 5)
+           | ((DWORD)0 >> 1);
+}
 
 

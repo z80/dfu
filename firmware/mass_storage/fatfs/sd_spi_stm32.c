@@ -54,7 +54,7 @@
 //#define USE_MINI_STM32
 
 #if defined(USE_EK_STM32F)
- #define CARD_SUPPLY_SWITCHABLE   1
+ #define CARD_SUPPLY_SWITCHABLE   0
  #define GPIO_PWR                 GPIOB
  #define RCC_APB2Periph_GPIO_PWR  RCC_APB2Periph_GPIOB
  #define GPIO_Pin_PWR             GPIO_Pin_11
