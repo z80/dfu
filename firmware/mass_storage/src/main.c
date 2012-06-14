@@ -33,41 +33,41 @@ static void    switchesInit( void );
 static uint8_t diskMode( void );
 static uint8_t dfuMode( void );
 static void    dfu( void );
+static void    reportFailure( const char * stri );
 
-extern uint16_t MAL_Init (uint8_t lun);
+typedef void (*pFunction)(void);
+pFunction Jump_To_Application;
+uint32_t JumpAddress;
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/* Extern variables ----------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-/*******************************************************************************
-* Function Name  : main.
-* Description    : Main routine.
-* Input          : None.
-* Output         : None.
-* Return         : None.
-*******************************************************************************/
+uint8_t do_report_failure = 0;
+
 int main(void)
 {
     switchesInit();
     //NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 );
     //Set_System();
-    uint8_t disk = diskMode();
-    uint8_t dfu  = dfuMode();
+    uint8_t do_disk = diskMode();
+    uint8_t do_dfu  = dfuMode();
     while ( 1 )
     {
     }
 
-    if ( disk )
+    if ( do_disk )
     {
+jump_to_application_failure:
         // Initialize disk drive.
         disk_initialize( 0 );
-        if ( dfu )
+        if ( do_report_failure )
         {
-            // Overwrite image from disk.
+            reportFailure( "Failed to start regular firmware" );
+        }
+        else
+        {
+            if ( do_dfu )
+            {
+                // Overwrite image from disk.
+                dfu();
+            }
         }
         // After dfu initialize USB disk.
         Set_USBClock();
@@ -81,6 +81,21 @@ int main(void)
         while (1)
         {
         }
+    }
+    else
+    {
+        if ( ( (*(__IO uint32_t *)FIRMWARE_START_ADDRESS) & 0x2FFE0000 ) == 0x20000000 )
+        {
+            JumpAddress = *(__IO uint32_t *)(FIRMWARE_START_ADDRESS + 4);
+            Jump_To_Application = (pFunction)JumpAddress;
+            __set_MSP( *(__IO uint32_t *)FIRMWARE_START_ADDRESS );
+            Jump_To_Application();
+        }
+        // On jump failure or on if condition failure will jump 
+        // to Usb FLASH disk initialization routine.
+        // Clear probable reflash flag.
+        // do_dfu = 0;
+        goto jump_to_application_failure;
     }
 }
 
@@ -136,15 +151,19 @@ static void    dfu( void )
     FRESULT rc;
     FATFS fatfs;
     FIL   fil;
-    FILINFO info;
-    UINT bw, br, i;
+    // FILINFO info;
+    UINT br;
+    // UINT bw, i;
     rc = f_mount( 0, &fatfs );
     if ( rc != FR_OK )
         goto dfu_end;
 
     rc = f_open( &fil, "DFU_FILE_NAME", FA_READ );
     if ( rc != FR_OK )
+    {
+        reportFailure( "No DFU_FILE_NAME file to reflash the MCU" );
         goto dfu_end;
+    }
 
     FLASH_If_Init();
     uint8_t buffer[ FLASH_SECTOR_SIZE ];
@@ -158,7 +177,7 @@ static void    dfu( void )
         rc = f_read( &fil, buffer, sizeof(buffer), &br );
         if ( rc != FR_OK )
             goto dfu_end;
-        flashData = FLASH_IF_Read( flashPtr );
+        flashData = FLASH_If_Read( flashPtr );
         for ( ttt=0; ttt<br; ttt++ )
         {
             if ( buffer[ttt] != flashData[ttt] )
@@ -174,30 +193,68 @@ static void    dfu( void )
     f_close( &fil );
     
     if ( !doReflash )
+    {
+        reportFailure( "Firmwre is the same, no need in reflashing the MCU" );
         goto dfu_end;
+    }
 
     // Reflash routine itself.
     rc = f_open( &fil, "DFU_FILE_NAME", FA_READ );
     if ( rc != FR_OK )
+    {
+        reportFailure( "Failed to open DFU_FILE_NAME file in second time to reflash the MCU" );
         goto dfu_end;
+    }
 
+    flashPtr = FIRMWARE_START_ADDRESS;
     do {
         rc = f_read( &fil, buffer, sizeof(buffer), &br );
         if ( rc != FR_OK )
             goto dfu_end;
+
         // Erase sector.
-        // ...
+        FLASH_If_Erase( flashPtr );
         // Write the data in "buffer" to FLASH memory of the controller.
-        // ...
+        FLASH_If_Write( flashPtr, buffer, br );
+        // Increment flashPtr to pint to another sector.
+        flashPtr += FLASH_SECTOR_SIZE;
     } while ( br > 0 );
     f_close( &fil );
  
     // May be write a brief report about flashing.
 
 dfu_end:
+    FLASH_If_Finit();
     f_mount( 0, NULL );
 }
 
+static void    reportFailure( const char * stri )
+{
+    FRESULT rc;
+    FATFS fatfs;
+    FIL   fil;
+    // FILINFO info;
+    // UINT br;
+    // UINT bw;
+ 
+    rc = f_mount( 0, &fatfs );
+    if ( rc != FR_OK )
+        goto report_end;
+
+   rc = f_open( &fil, "DFU_REPORT_NAME", FA_OPEN_ALWAYS );
+    if ( rc != FR_OK )
+        goto report_end;
+    rc = f_lseek( &fil, fil.fsize );
+    if ( rc != FR_OK )
+        goto report_end;
+    rc = f_puts( stri, &fil );
+    //if ( rc != FR_OK )
+    //    goto report_end;
+
+report_end:
+    f_close( &fil );
+    f_mount( 0, NULL );
+}
 
 
 

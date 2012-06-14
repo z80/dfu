@@ -30,9 +30,10 @@
 /* Exported functions ------------------------------------------------------- */
 
 uint16_t FLASH_If_Init(void);
+uint16_t FLASH_If_Finit(void);
 uint16_t FLASH_If_Erase (uint32_t SectorAddress);
-uint16_t FLASH_If_Write(uint32_t SectorAddress, uint32_t DataLength);
-uint8_t *FLASH_If_Read (uint32_t SectorAddress, uint32_t DataLength);
+uint16_t FLASH_If_Write(uint32_t SectorAddress, uint8_t * data, uint32_t DataLength);
+uint8_t *FLASH_If_Read (uint32_t SectorAddress);
 
 #endif /* __FLASH_IF_MAL_H */
 
