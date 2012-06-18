@@ -43,6 +43,7 @@ uint8_t do_report_failure = 0;
 
 int main(void)
 {
+    /*
     switchesInit();
     //NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 );
     //Set_System();
@@ -56,7 +57,9 @@ int main(void)
     {
 jump_to_application_failure:
         // Initialize disk drive.
+        */
         disk_initialize( 0 );
+        /*
         if ( do_report_failure )
         {
             reportFailure( _T( "Failed to start regular firmware" ) );
@@ -69,6 +72,7 @@ jump_to_application_failure:
                 dfu();
             }
         }
+        */
         // After dfu initialize USB disk.
         Set_USBClock();
         Led_Config();
@@ -81,7 +85,7 @@ jump_to_application_failure:
         while (1)
         {
         }
-    }
+    /*}
     else
     {
         if ( ( (*(__IO uint32_t *)FIRMWARE_START_ADDRESS) & 0x2FFE0000 ) == 0x20000000 )
@@ -96,7 +100,7 @@ jump_to_application_failure:
         // Clear probable reflash flag.
         do_report_failure = 1;
         goto jump_to_application_failure;
-    }
+    }*/
 }
 
 #ifdef USE_FULL_ASSERT
