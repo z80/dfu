@@ -9,7 +9,7 @@
 #define DFU_FILE_NAME  "firmware.bin"
 #define DFU_REPORT_NAME "report.log"
 #define FIRMWARE_START_ADDRESS 0x8003000
-#define FLASH_SECTOR_SIZE 512
+#define FLASH_SECTOR_SIZE 1024
 
 #endif
 
