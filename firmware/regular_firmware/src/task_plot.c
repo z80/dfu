@@ -59,7 +59,7 @@ void vTaskPlot( void * args )
     }
 }
 
-extern int  _sdata;
+/*extern int  _sdata;
 
 caddr_t _sbrk ( int incr )
 {
@@ -70,10 +70,10 @@ caddr_t _sbrk ( int incr )
     heap = (unsigned char *)&_sdata;
   }
   prev_heap = heap;
-  /* check removed to show basic approach */
+  // check removed to show basic approach
 
   heap += incr;
 
   return (caddr_t) prev_heap;
 }
-
+*/

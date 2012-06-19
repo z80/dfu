@@ -32,6 +32,22 @@
 
 #include "ff.h"
 
+// USB related includes.
+#include "usb_lib.h"
+#include "usb_desc.h"
+#include "hw_config.h"
+#include "usb_pwr.h"
+#include "usb_istr.h"
+#include <stdint.h>
+#include <stdio.h>
+
+void USB_LP_CAN1_RX0_IRQHandler(void)
+{
+  USB_Istr();
+}
+
+
+
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -53,7 +69,6 @@
 
 
 
-static void clockConfig( void );
 static void gpioConfig( void );
 void vTaskDisplay( void * args );
 /* Private functions ---------------------------------------------------------*/
@@ -80,22 +95,22 @@ DWORD get_fattime( void )
   */
 int main(void)
 {
-    //volatile unsigned long ttt=0;
-    //while ( 1 )
-    //{
-    //    ttt = ttt + 1;
-    //}
-
-
+    // The very first line should remap NVIC table 
+    // in order to make remapped firmware work with 
+    // interrupts in the right way.
+    // Otherwise actual interrupts table location 
+    // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
-    clockConfig();
+    // USB setup.
+    Set_USBClock();
+	USB_Interrupts_Config();
+	USB_Init();
+
     //gpioConfig();
     //adcInit();
     //lcdPower( 1 );
     //dataInit();
 
-    //while (1)
-    //    ;
     // FatFS.
     FRESULT rc;
     FATFS   fatfs;
@@ -103,7 +118,7 @@ int main(void)
     DIR     dir;
     FILINFO info;
     UINT    bw, br, i;
-    char stri[] = "file content!";
+    char stri[] = "file content!\n";
     disk_initialize( 0 );
     f_mount( 0, &fatfs );
     rc = f_open( &fil, "MESSAGE.TXT", FA_WRITE | FA_OPEN_ALWAYS );
@@ -129,10 +144,8 @@ int main(void)
 
 
 
-    xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    //xTaskCreate( vTaskAdc,  (signed char *)"a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    //xTaskCreate( vTaskPlot, (signed char *)"b", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    vTaskStartScheduler();   
+    //xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
+    //vTaskStartScheduler();   
 }
 
 

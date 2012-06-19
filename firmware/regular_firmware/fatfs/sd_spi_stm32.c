@@ -255,7 +255,7 @@ static void socket_cp_init(void)
 
 static inline DWORD socket_is_empty(void)
 {
-	return ( GPIO_ReadInputData(GPIO_CP) & GPIO_Pin_CP ) ? socket_state_mask_cp : FALSE;
+	return ( GPIO_ReadInputData(GPIO_CP) & GPIO_Pin_CP ) ? socket_state_mask_cp : BFALSE;
 }
 
 #else
@@ -304,11 +304,11 @@ static int chk_power(void)		/* Socket power state: 0=off, 1=on */
 {
 	if ( GPIO_ReadOutputDataBit(GPIO_PWR, GPIO_Pin_PWR) == Bit_SET )
     {
-		return TRUE;
+		return BTRUE;
 	}
     else
     {
-		return FALSE;
+		return BFALSE;
 	}
 }
 #endif
@@ -409,11 +409,11 @@ void release_spi (void)
 /*-----------------------------------------------------------------------*/
 static
 void stm32_dma_transfer(
-	BOOL receive,		/* FALSE for buff->SPI, TRUE for SPI->buff               */
+	BOOL receive,		/* BFALSE for buff->SPI, TRUE for SPI->buff               */
 	const BYTE *buff,	/* receive TRUE  : 512 byte data block to be transmitted
-						   receive FALSE : Data buffer to store received data    */
+						   receive BFALSE : Data buffer to store received data    */
 	UINT btr 			/* receive TRUE  : Byte count (must be multiple of 2)
-						   receive FALSE : Byte count (must be 512)              */
+						   receive BFALSE : Byte count (must be 512)              */
 )
 {
 	DMA_InitTypeDef DMA_InitStructure;
@@ -606,10 +606,10 @@ BOOL rcvr_datablock (
 	do {							/* Wait for data packet in timeout of 100ms */
 		token = rcvr_spi();
 	} while ((token == 0xFF) && Timer1);
-	if(token != 0xFE) return FALSE;	/* If not valid data token, return with error */
+	if(token != 0xFE) return BFALSE;	/* If not valid data token, return with error */
 
 #ifdef STM32_SD_USE_DMA
-	stm32_dma_transfer( TRUE, buff, btr );
+	stm32_dma_transfer( BTRUE, buff, btr );
 #else
 	do {							/* Receive the data block into buffer */
 		rcvr_spi_m(buff++);
@@ -622,7 +622,7 @@ BOOL rcvr_datablock (
 	rcvr_spi();						/* Discard CRC */
 	rcvr_spi();
 
-	return TRUE;					/* Return with success */
+	return BTRUE;					/* Return with success */
 }
 
 
@@ -643,13 +643,13 @@ BOOL xmit_datablock (
 	BYTE wc;
 #endif
 
-	if (wait_ready() != 0xFF) return FALSE;
+	if (wait_ready() != 0xFF) return BFALSE;
 
 	xmit_spi(token);					/* transmit data token */
 	if (token != 0xFD) {	/* Is data token */
 
 #ifdef STM32_SD_USE_DMA
-		stm32_dma_transfer( FALSE, buff, 512 );
+		stm32_dma_transfer( BFALSE, buff, 512 );
 #else
 		wc = 0;
 		do {							/* transmit the 512 byte data block to MMC */
@@ -662,10 +662,10 @@ BOOL xmit_datablock (
 		xmit_spi(0xFF);
 		resp = rcvr_spi();				/* Receive data response */
 		if ((resp & 0x1F) != 0x05)		/* If not accepted, return with error */
-			return FALSE;
+			return BFALSE;
 	}
 
-	return TRUE;
+	return BTRUE;
 }
 #endif /* _READONLY */
 

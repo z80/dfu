@@ -23,8 +23,8 @@ typedef unsigned char	BYTE;
 
 // Boolean data type
 typedef unsigned char   BOOL;
-#define TRUE            1
-#define FALSE           0
+#define BTRUE            1
+#define BFALSE           0
 
 /* These types must be 16-bit integer */
 typedef short			SHORT;

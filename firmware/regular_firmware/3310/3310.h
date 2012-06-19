@@ -5,8 +5,8 @@
 #include "3310-backend.h"
 
 #define NULL                       0
-#define FALSE                      0
-#define TRUE                       1
+#define BFALSE                      0
+#define BTRUE                       1
 
 #define LCD_X_RES                  84
 #define LCD_Y_RES                  48

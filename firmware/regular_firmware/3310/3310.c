@@ -204,7 +204,7 @@ void lcdPower( BYTE stat )
 --------------------------------------------------------------------------------------------------*/
 void lcdInit( void )
 {
-    static BYTE FirstInit = TRUE;
+    static BYTE FirstInit = BTRUE;
 	
     init3310( g_LcdCache, LCD_CACHE_SIZE );
     //  Toggle display reset pin.
@@ -246,10 +246,10 @@ void lcdInit( void )
     lcdFuncSet( 0, THorizontal, TBasic );
     lcdDispCtrl( TNormalMode );
 
-    if (FirstInit == TRUE)
+    if (FirstInit == BTRUE)
     {
         lcdClear();
-        FirstInit = FALSE;
+        FirstInit = BFALSE;
     }
     lcdUpdate();
 }
@@ -299,7 +299,7 @@ void lcdClear( void )
     for ( i=0; i<LCD_CACHE_SIZE; i++ )
         g_LcdCache[i] = 0x00;
     
-    UpdateLcd = TRUE;
+    UpdateLcd = BTRUE;
 }
 
 /*--------------------------------------------------------------------------------------------------
@@ -404,7 +404,7 @@ void lcdChr( LcdFontSize size, BYTE ch )
     
     //  Horizontal gap between characters.
     g_LcdCache[LcdCacheIdx++] = 0x00;
-    UpdateLcd = TRUE;
+    UpdateLcd = BTRUE;
 }
 
 /*--------------------------------------------------------------------------------------------------
@@ -485,7 +485,7 @@ void lcdPixel( BYTE x, BYTE y, LcdPixelMode mode )
     }
     
     g_LcdCache[index] = data;
-    UpdateLcd = TRUE;
+    UpdateLcd = BTRUE;
 }
 
 /*--------------------------------------------------------------------------------------------------
@@ -564,7 +564,7 @@ void lcdLine( BYTE x1, BYTE y1, BYTE x2, BYTE y2, LcdPixelMode mode )
         }
     }
 
-    UpdateLcd = TRUE;
+    UpdateLcd = BTRUE;
 }
 
 /*--------------------------------------------------------------------------------------------------
@@ -598,7 +598,7 @@ void lcdUpdate( void )
     // For debug wait ready right here.
     //waitArrayReady3310();
 
-    UpdateLcd = FALSE;
+    UpdateLcd = BFALSE;
 }
 
 
