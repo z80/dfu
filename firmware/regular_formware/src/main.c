@@ -80,11 +80,11 @@ DWORD get_fattime( void )
   */
 int main(void)
 {
-    volatile unsigned long ttt=0;
-    while ( 1 )
-    {
-        ttt = ttt + 1;
-    }
+    //volatile unsigned long ttt=0;
+    //while ( 1 )
+    //{
+    //    ttt = ttt + 1;
+    //}
 
 
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
