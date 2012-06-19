@@ -87,7 +87,7 @@ int main(void)
     }
 
 
-    NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 );
+    NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
     clockConfig();
     //gpioConfig();
     //adcInit();
@@ -106,18 +106,22 @@ int main(void)
     char stri[] = "file content!";
     disk_initialize( 0 );
     f_mount( 0, &fatfs );
-    rc = f_open( &fil, "MESSAGE.TXT", FA_WRITE | FA_CREATE_ALWAYS );
-    if ( !rc )
+    rc = f_open( &fil, "MESSAGE.TXT", FA_WRITE | FA_OPEN_ALWAYS );
+    if ( rc == FR_OK )
     {
-        f_write( &fil, stri, sizeof(stri), &br );
-        f_close( &fil );
-
-        char res[128];
-        rc = f_open( &fil, "MESSAGE.TXT", FA_READ );
-        if ( !rc )
+        rc = f_lseek( &fil, fil.fsize );
+        if ( rc == FR_OK )
         {
-            rc = f_read( &fil, res, sizeof( res ), &br );
+            f_write( &fil, stri, sizeof(stri), &br );
             f_close( &fil );
+
+            char res[128];
+            rc = f_open( &fil, "MESSAGE.TXT", FA_READ );
+            if ( rc == FR_OK )
+            {
+                rc = f_read( &fil, res, sizeof( res ), &br );
+                f_close( &fil );
+            }
         }
     }
     while ( 1 )
