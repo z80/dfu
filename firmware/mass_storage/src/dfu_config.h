@@ -8,7 +8,7 @@
 #define PIN_CLK        RCC_APB2Periph_GPIOC
 #define DFU_FILE_NAME  "firmware.bin"
 #define DFU_REPORT_NAME "report.log"
-#define FIRMWARE_START_ADDRESS 0x8003000
+#define FIRMWARE_START_ADDRESS 0x8005000
 #define FLASH_SECTOR_SIZE 1024
 
 #endif

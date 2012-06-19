@@ -43,10 +43,7 @@ uint8_t do_report_failure = 0;
 
 int main(void)
 {
-    /*
     switchesInit();
-    //NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x3000 );
-    //Set_System();
     uint8_t do_disk = diskMode();
     uint8_t do_dfu  = dfuMode();
     //while ( 1 )
@@ -57,12 +54,10 @@ int main(void)
     {
 jump_to_application_failure:
         // Initialize disk drive.
-        */
         disk_initialize( 0 );
-        /*
         if ( do_report_failure )
         {
-            reportFailure( _T( "Failed to start regular firmware" ) );
+            reportFailure( _T( "Failed to start regular firmware\n" ) );
         }
         else
         {
@@ -72,7 +67,6 @@ jump_to_application_failure:
                 dfu();
             }
         }
-        */
         // After dfu initialize USB disk.
         Set_USBClock();
         Led_Config();
@@ -85,7 +79,7 @@ jump_to_application_failure:
         while (1)
         {
         }
-    /*}
+    }
     else
     {
         if ( ( (*(__IO uint32_t *)FIRMWARE_START_ADDRESS) & 0x2FFE0000 ) == 0x20000000 )
@@ -100,7 +94,7 @@ jump_to_application_failure:
         // Clear probable reflash flag.
         do_report_failure = 1;
         goto jump_to_application_failure;
-    }*/
+    }
 }
 
 #ifdef USE_FULL_ASSERT
@@ -165,7 +159,7 @@ static void    dfu( void )
     rc = f_open( &fil, DFU_FILE_NAME, FA_READ );
     if ( rc != FR_OK )
     {
-        reportFailure( _T( "No firmware.bin file to reflash the MCU" ) );
+        reportFailure( _T( "No firmware.bin file to reflash the MCU\n" ) );
         goto dfu_end;
     }
 
@@ -198,7 +192,7 @@ static void    dfu( void )
     
     if ( !doReflash )
     {
-        reportFailure( _T( "Firmwre is the same, no need in reflashing the MCU" ) );
+        reportFailure( _T( "Firmwre is the same, no need in reflashing the MCU\n" ) );
         goto dfu_end;
     }
 
@@ -206,7 +200,7 @@ static void    dfu( void )
     rc = f_open( &fil, DFU_FILE_NAME, FA_READ );
     if ( rc != FR_OK )
     {
-        reportFailure( _T( "Failed to open DFU_FILE_NAME file in second time to reflash the MCU" ) );
+        reportFailure( _T( "Failed to open firmware.bin file in second time to reflash the MCU\n" ) );
         goto dfu_end;
     }
 
