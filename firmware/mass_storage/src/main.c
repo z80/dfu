@@ -57,6 +57,8 @@ jump_to_application_failure:
         disk_initialize( 0 );
         if ( do_report_failure )
         {
+            // It is done here but not just before jump because 
+            // it works only after "disk_initialize( 0 );" :)
             reportFailure( _T( "Failed to start regular firmware\n" ) );
         }
         else
@@ -220,6 +222,7 @@ static void    dfu( void )
     f_close( &fil );
  
     // May be write a brief report about flashing.
+    reportFailure( _T( "Firmware upgraded\n" ) );
 
 dfu_end:
     FLASH_If_Finit();
