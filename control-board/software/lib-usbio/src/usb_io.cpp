@@ -2,18 +2,10 @@
 
 #include "usb_io.h"
 #include <string.h>
-extern "C"
-{
-    #ifdef WIN32
-        #include <lusb0_usb.h>
-    #else
-        #include <usb.h>
-    #endif
-    #include "opendevice.h"
-}
+#include <libusb.h>
 
-const int UsbIo::VENDOR_ID  = 0x16C0;
-const int UsbIo::PRODUCT_ID = 0x05DC;
+const int UsbIo::VENDOR_ID  = 0x0483;
+const int UsbIo::PRODUCT_ID = 0x5740;
 const int UsbIo::TIMEOUT    = 1000;
 
 inline static bool LSB()
@@ -35,7 +27,8 @@ class UsbIo::PD
 public:
     PD() {}
     ~PD() {}
-    usb_dev_handle  * handle;
+    libusb_device_handle  * handle;
+    libusb_context        * cxt;
     std::string err;
     std::string res;
     std::string output;
@@ -48,7 +41,8 @@ UsbIo::UsbIo()
     pd = new PD();
     pd->handle = 0;
     pd->timeout = 500;
-    usb_init();
+    int res = libusb_init( &pd->cxt );
+    libusb_set_debug( pd->cxt, 3 );
     pd->res.resize( 8 );
 }
 
@@ -56,23 +50,68 @@ UsbIo::~UsbIo()
 {
     if ( isOpen() )
         close();
+    libusb_exit( pd->cxt );
     delete pd;
 }
 
 bool UsbIo::open()
 {
-    int res = usbOpenDevice( &(pd->handle),
-                             VENDOR_ID, NULL,
-                             PRODUCT_ID, NULL,
-                             NULL, NULL, NULL );
-    return (res == 0);
+    libusb_device * * list;
+    int sz = libusb_get_device_list( pd->cxt, &list );
+    for ( int i=0; i<sz; i++ )
+    {    
+    }
+    pd->handle = libusb_open_device_with_vid_pid( pd->cxt, VENDOR_ID, PRODUCT_ID );
+    libusb_free_device_list( list, 1 );
+    bool result = (pd->handle != 0);
+    if ( !result )
+        return false;
+    libusb_device * dev = libusb_get_device( pd->handle );
+    libusb_device_descriptor devDesc;
+    int res = libusb_get_device_descriptor( dev, &devDesc );
+    libusb_config_descriptor * confDesc;
+    res = libusb_get_active_config_descriptor( dev, &confDesc );
+    libusb_free_config_descriptor( confDesc );
+    unsigned char buf[1024];
+    libusb_endpoint_descriptor epDesc;
+    res = libusb_get_descriptor( pd->handle, LIBUSB_DT_ENDPOINT, 0,
+    		                     buf, sizeof(buf) );
+    res = libusb_claim_interface( pd->handle, 0 );
+
+    for ( int i=0; i<255; i++ )
+    {
+    	unsigned char data[64];
+    	int actual_length;
+    	res = libusb_bulk_transfer( pd->handle,
+                 i,
+                 data, sizeof(data),
+                 &actual_length,
+                 1000 );
+    	if ( res >= 0 )
+    		res ++;
+    }
+    /*res = usb_claim_interface( pd->handle, 0 );
+    struct usb_interface_descriptor desc;
+    res = usb_get_descriptor( pd->handle, USB_DT_INTERFACE, 0, &desc, sizeof(desc) );
+    int i;
+    //for ( int i=0; i<desc.bNumEndpoints; i++ )
+    for ( int i=0; i<5; i++ )
+    {
+        struct usb_endpoint_descriptor ep;
+        res = usb_get_descriptor( pd->handle, USB_DT_ENDPOINT, i, &ep, sizeof( ep ) );
+        int addr = ep.bEndpointAddress;
+        int attr = ep.bmAttributes;
+        int k = attr;
+    }*/
+
+    return true;
 }
 
 void UsbIo::close()
 {
     if ( isOpen() )
     {
-        usb_close( pd->handle );
+        libusb_close( pd->handle );
         pd->handle = 0;
     }
 }
@@ -84,22 +123,34 @@ bool UsbIo::isOpen() const
 
 int UsbIo::write( void * data, int size )
 {
-    int res = usb_bulk_write( pd->handle, 
-                              3, 
-                              reinterpret_cast<char *>( data ), 
-                              size, 
-                              pd->timeout );
-    return res;
+    for ( int i=0; i<15; i++ )
+    {
+         int actual_length;
+         int res = libusb_bulk_transfer( pd->handle,
+                      (i | LIBUSB_ENDPOINT_OUT), 
+                      reinterpret_cast<unsigned char *>( data ), size,
+                      &actual_length, 
+                      pd->timeout );
+        /*int res = usb_bulk_write( pd->handle, 
+                                  i, 
+                                  reinterpret_cast<char *>( data ), 
+                                  size, 
+                                  pd->timeout );*/
+        if ( res >= 0 )
+            return res;
+    }
+    return 0;
 }
 
 int UsbIo::read( void * data, int maxSize )
 {
-    int res = usb_bulk_read( pd->handle, 
-                             1, 
+    /*int res = usb_bulk_read( pd->handle, 
+                             0x81, 
                              reinterpret_cast<char *>( data ), 
                              maxSize, 
                              pd->timeout );
-    return res;
+    return res;*/
+    return 0;
 }
 
 int UsbIo::setTimeout( int ms )

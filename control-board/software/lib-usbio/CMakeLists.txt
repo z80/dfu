@@ -1,30 +1,20 @@
 
-include_directories( "./src"
-                     "./src/libusb"
-                     ${CMAKE_CURRENT_BINARY_DIR} )
-if ( WIN32 )
-    include_directories( ${LIBUSB_INC_PATH} )
-endif ( WIN32 )
-
 aux_source_directory( "./src" src )
-aux_source_directory( "./src/libusb" src_libusb )
-list( APPEND src ${src_libusb} )
+message( STATUS "src: \"${src}\"" )
 
-add_library( usbio STATIC ${BLD_TYPE} ${src} )
+include( "../cmake/findlibusb-1.0.cmake" )
+message( STATUS ${LIBUSB_1_DEFINITIONS} )
 
-if ( WIN32 )
-    list( APPEND searchpaths ${LIBUSB_LIB_PATH} )
-elseif ( UNIX )
-    if ( CROSS )
-        list( APPEND searchpaths ${LIB_PATH_EMB} )
-    else ( CROSS )
-        list( APPEND searchpaths "." "/usr/lib" $ENV{PATH} )
-    endif ( CROSS )
-endif ( WIN32 )
-message( INFO Search paths = "${searchpaths}" )
-find_library( libusb NAMES libusb.a libusb.lib PATHS ${searchpaths} )
-target_link_libraries( usbio ${libusb} )
+include_directories( "./src" 
+                     ${GLOB_BIN_DIR} )
+if ( UNIX )
+    include_directories( "${LIBUSB_1_INCLUDE_DIRS}" )
+elseif ( WIN32 )
 
+endif ( UNIX )
+
+add_library( usbio STATIC ${src} )
+target_link_libraries( usbio ${LIBUSB_1_LIBRARIES} )
 
 
 
