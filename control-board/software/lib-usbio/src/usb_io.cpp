@@ -66,17 +66,21 @@ bool UsbIo::open()
     bool result = (pd->handle != 0);
     if ( !result )
         return false;
+    int res = libusb_kernel_driver_active( pd->handle, 0 );
+    if ( res == 1 )
+        res = libusb_detach_kernel_driver( pd->handle, 0 );
     libusb_device * dev = libusb_get_device( pd->handle );
     libusb_device_descriptor devDesc;
-    int res = libusb_get_device_descriptor( dev, &devDesc );
+    res = libusb_get_device_descriptor( dev, &devDesc );
     libusb_config_descriptor * confDesc;
     res = libusb_get_active_config_descriptor( dev, &confDesc );
     libusb_free_config_descriptor( confDesc );
-    unsigned char buf[1024];
-    libusb_endpoint_descriptor epDesc;
-    res = libusb_get_descriptor( pd->handle, LIBUSB_DT_ENDPOINT, 0,
-    		                     buf, sizeof(buf) );
-    res = libusb_claim_interface( pd->handle, 0 );
+    //res = libusb_set_configuration(pd->handle, 0 );
+    //res = libusb_claim_interface( pd->handle, 0 );
+    //unsigned char buf[1024];
+    //libusb_endpoint_descriptor epDesc;
+    //res = libusb_get_descriptor( pd->handle, LIBUSB_DT_ENDPOINT, 0,
+    //		                     buf, sizeof(buf) );
 
     for ( int i=0; i<255; i++ )
     {
@@ -84,7 +88,7 @@ bool UsbIo::open()
     	int actual_length;
     	res = libusb_bulk_transfer( pd->handle,
                  i,
-                 data, sizeof(data),
+                 data, 8,
                  &actual_length,
                  1000 );
     	if ( res >= 0 )
