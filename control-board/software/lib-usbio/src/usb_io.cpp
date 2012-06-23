@@ -34,7 +34,12 @@ public:
     std::string output;
     int timeout;
     std::basic_string<unsigned char> data;
+    static const int EP_OUT;
+    static const int EP_IN;
 };
+
+const int UsbIo::PD::EP_OUT = 0x03;
+const int UsbIo::PD::EP_IN  = 0x82;
 
 UsbIo::UsbIo()
 {
@@ -69,12 +74,12 @@ bool UsbIo::open()
     int res = libusb_kernel_driver_active( pd->handle, 0 );
     if ( res == 1 )
         res = libusb_detach_kernel_driver( pd->handle, 0 );
-    libusb_device * dev = libusb_get_device( pd->handle );
-    libusb_device_descriptor devDesc;
-    res = libusb_get_device_descriptor( dev, &devDesc );
-    libusb_config_descriptor * confDesc;
-    res = libusb_get_active_config_descriptor( dev, &confDesc );
-    libusb_free_config_descriptor( confDesc );
+    //libusb_device * dev = libusb_get_device( pd->handle );
+    //libusb_device_descriptor devDesc;
+    //res = libusb_get_device_descriptor( dev, &devDesc );
+    //libusb_config_descriptor * confDesc;
+    //res = libusb_get_active_config_descriptor( dev, &confDesc );
+    //libusb_free_config_descriptor( confDesc );
     //res = libusb_set_configuration(pd->handle, 0 );
     //res = libusb_claim_interface( pd->handle, 0 );
     //unsigned char buf[1024];
@@ -82,7 +87,7 @@ bool UsbIo::open()
     //res = libusb_get_descriptor( pd->handle, LIBUSB_DT_ENDPOINT, 0,
     //		                     buf, sizeof(buf) );
 
-    for ( int i=0; i<255; i++ )
+    /*for ( int i=0; i<255; i++ )
     {
     	unsigned char data[64];
     	int actual_length;
@@ -93,7 +98,7 @@ bool UsbIo::open()
                  1000 );
     	if ( res >= 0 )
     		res ++;
-    }
+    }*/
     /*res = usb_claim_interface( pd->handle, 0 );
     struct usb_interface_descriptor desc;
     res = usb_get_descriptor( pd->handle, USB_DT_INTERFACE, 0, &desc, sizeof(desc) );
@@ -125,36 +130,33 @@ bool UsbIo::isOpen() const
     return (pd->handle != 0);
 }
 
-int UsbIo::write( void * data, int size )
+int UsbIo::write( unsigned char * data, int size )
 {
-    for ( int i=0; i<15; i++ )
-    {
-         int actual_length;
-         int res = libusb_bulk_transfer( pd->handle,
-                      (i | LIBUSB_ENDPOINT_OUT), 
-                      reinterpret_cast<unsigned char *>( data ), size,
+    int actual_length;
+    int res = libusb_bulk_transfer( pd->handle,
+                      PD::EP_OUT,
+                      data, size,
                       &actual_length, 
                       pd->timeout );
-        /*int res = usb_bulk_write( pd->handle, 
-                                  i, 
-                                  reinterpret_cast<char *>( data ), 
-                                  size, 
-                                  pd->timeout );*/
-        if ( res >= 0 )
-            return res;
-    }
-    return 0;
+    if ( res != 0 )
+        return -1;
+    return actual_length;
 }
 
-int UsbIo::read( void * data, int maxSize )
+int UsbIo::read( unsigned char * data, int maxSize )
 {
-    /*int res = usb_bulk_read( pd->handle, 
-                             0x81, 
-                             reinterpret_cast<char *>( data ), 
-                             maxSize, 
-                             pd->timeout );
-    return res;*/
-    return 0;
+	for ( int i=0x80; i<0xff; i++ )
+	{
+    int actual_length;
+    int res = libusb_bulk_transfer( pd->handle,
+                      i,
+                      data, maxSize,
+                      &actual_length,
+                      pd->timeout );
+    if ( res == 0 )
+        return actual_length;
+	}
+    return -1;
 }
 
 int UsbIo::setTimeout( int ms )
@@ -163,7 +165,7 @@ int UsbIo::setTimeout( int ms )
     return 0;
 }
 
-int UsbIo::putArgs( int start, int size, void * data )
+int UsbIo::putArgs( int start, int size, unsigned char * data )
 {
     pd->data.clear();
     int sz = size + 3;
@@ -171,18 +173,18 @@ int UsbIo::putArgs( int start, int size, void * data )
     pd->data[0] = CMD_PUT_ARGS;
     pd->data[1] = static_cast<unsigned char>( start );
     pd->data[2] = static_cast<unsigned char>( size );
-    unsigned char * d = reinterpret_cast< unsigned char * >( data );
+    unsigned char * d = data;
     int k = 3;
     for ( int i=0; i<size; i++ )
         pd->data[k++] = d[i];
-    int res = write( reinterpret_cast<void *>( const_cast<unsigned char *>( pd->data.data() ) ), sz );
+    int res = write( const_cast<unsigned char *>( pd->data.data() ), sz );
     return res;
 }
 
 int UsbIo::putString( int start, char * stri )
 {
     int sz = strlen( stri );
-    int res = putArgs( start, sz, reinterpret_cast<void *>( stri ) );
+    int res = putArgs( start, sz, reinterpret_cast<unsigned char *>( stri ) );
     return res;
 }
 
@@ -216,17 +218,17 @@ int UsbIo::putUInt32( int start, unsigned long val )
     unsigned char * p = reinterpret_cast<unsigned char *>( &val );
     if ( LSB() )
     {
-        unsigned char b[ sizeof(unsigned short) ];
+        unsigned char b[ sizeof(unsigned long) ];
         b[0] = p[3];
         b[1] = p[2];
         b[2] = p[1];
         b[3] = p[0];
-        int res = putArgs( start, sizeof(unsigned short), b );
+        int res = putArgs( start, sizeof(unsigned long), b );
         return res;
     }
     else
     {
-        int res = putArgs( start, sizeof(unsigned long), &val );
+        int res = putArgs( start, sizeof(unsigned long), p );
         return res;
     }
 }
@@ -247,12 +249,12 @@ int UsbIo::execFunc( int index )
     }
     else
     {   
-        pd->data[1] = p[1];
-        pd->data[2] = p[2];
-        pd->data[3] = p[3];
-        pd->data[4] = p[4];
+        pd->data[1] = p[0];
+        pd->data[2] = p[1];
+        pd->data[3] = p[2];
+        pd->data[4] = p[3];
     }
-    int res = write( reinterpret_cast<void *>( const_cast<unsigned char *>( pd->data.data() ) ), pd->data.size() );
+    int res = write( const_cast<unsigned char *>( pd->data.data() ), pd->data.size() );
     return res;
 }
 
@@ -262,17 +264,17 @@ int UsbIo::queueSize()
     int sz = 1;
     pd->data.resize( sz );
     pd->data[0] = CMD_IN_QUEUE_SIZE;
-    int res = write( reinterpret_cast<void *>( const_cast<unsigned char *>( pd->data.data() ) ), pd->data.size() );
+    int res = write( const_cast<unsigned char *>( pd->data.data() ), pd->data.size() );
     return res;
 }
 
-int UsbIo::readQueue( void * data, int maxSize )
+int UsbIo::readQueue( unsigned char * data, int maxSize )
 {
     pd->data.clear();
     int sz = 1;
     pd->data.resize( sz );
     pd->data[0] = CMD_GET_IN_QUEUE;
-    int res = write( reinterpret_cast<void *>( const_cast<unsigned char *>( pd->data.data() ) ), pd->data.size() );
+    int res = write( const_cast<unsigned char *>( pd->data.data() ), pd->data.size() );
     if ( res != sz )
         return -1;
     res = read( data, maxSize );

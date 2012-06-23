@@ -14,10 +14,10 @@ public:
     bool isOpen() const;
 
     // Low level read/write functionality.
-    int write( void * data, int size );
-    int read( void * data, int maxSize );
+    int write( unsigned char * data, int size );
+    int read( unsigned char * data, int maxSize );
 
-    int putArgs( int start, int size, void * data );
+    int putArgs( int start, int size, unsigned char * data );
     int putString( int start, char * stri );
     int putUInt8( int start, unsigned char val );
     int putUInt16( int start, unsigned short val );
@@ -25,7 +25,7 @@ public:
 
     int execFunc( int index );
     int queueSize();
-    int readQueue( void * data, int maxSize );
+    int readQueue( unsigned char * data, int maxSize );
 
     int setTimeout( int ms );
 protected:

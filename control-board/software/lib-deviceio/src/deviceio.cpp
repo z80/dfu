@@ -42,7 +42,7 @@ int DeviceIo::adc( int index )
     execFunc( CMD_ADC );
     int sz = queueSize();
     unsigned char d[2];
-    int cnt = readQueue( reinterpret_cast<void *>( d ), 2 );
+    int cnt = readQueue( d, 2 );
     if ( cnt < 2 )
         return -1;
     int res = toUInt16( d );
@@ -79,7 +79,7 @@ bool DeviceIo::gpio( int index, bool & val )
     execFunc( CMD_GPIO );
     int cnt = queueSize();
     unsigned char d;
-    int sz = readQueue( reinterpret_cast<void *>( &d ), 1 );
+    int sz = readQueue( &d, 1 );
     if ( cnt < 1 )
         return false;
     val = (d != 0);

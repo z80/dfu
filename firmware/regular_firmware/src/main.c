@@ -140,7 +140,11 @@ int main(void)
         }
     }
     while ( 1 )
-        ;
+    {
+        printf( "Hello world!\r\n" );
+        volatile int i;
+        for ( i=0; i<0x000FFFFF; i++ );
+    }
 
 
 
