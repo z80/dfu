@@ -64,10 +64,10 @@ public:
 protected:
     class PD;
     PD * pd;
-    friend static void lineHook( lua_State * L, lua_Debug * ar );
+    friend void lineHook( lua_State * L, lua_Debug * ar );
     // Overwriteble functions in Lua.
-    friend static int  print( lua_State * L );
-    friend static int  loadfile( lua_State * L );
+    friend int  print( lua_State * L );
+    friend int  loadfile( lua_State * L );
 };
 
 #endif

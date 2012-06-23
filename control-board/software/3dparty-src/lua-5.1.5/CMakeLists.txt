@@ -10,6 +10,10 @@ add_library( liblua-5.1.5  STATIC
                        src/ldblib.c src/liolib.c src/lmathlib.c 
                        src/loslib.c src/ltablib.c src/lstrlib.c 
                        src/loadlib.c src/linit.c )
+if ( UNIX )
+    target_link_libraries( liblua-5.1.5 m )
+endif ( UNIX )
+
 add_executable( lua-5.1.5 src/lua.c )
 target_link_libraries( lua-5.1.5 liblua-5.1.5 )
 

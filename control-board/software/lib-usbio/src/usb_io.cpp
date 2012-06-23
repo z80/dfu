@@ -1,6 +1,7 @@
 
 
 #include "usb_io.h"
+#include <string.h>
 extern "C"
 {
     #ifdef WIN32
