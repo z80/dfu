@@ -98,10 +98,7 @@ void main(void)
     res = xTaskCreate( vTaskDbg, "d", 128, 0, tskIDLE_PRIORITY+1, 0 );
     //res = xCoRoutineCreate( crUsbIo, 1, 0 );
     //res = xCoRoutineCreate( crFuncs, 1, 0 );
-    for ( ;; )
-    {
-        vTaskStartScheduler();   
-    }
+    vTaskStartScheduler();   
     for ( ;; )
     {
     }

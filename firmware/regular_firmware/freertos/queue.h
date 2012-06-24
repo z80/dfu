@@ -1,5 +1,5 @@
 /*
-    FreeRTOS V7.1.1 - Copyright (C) 2012 Real Time Engineers Ltd.
+    FreeRTOS V7.1.0 - Copyright (C) 2011 Real Time Engineers Ltd.
 
 
     ***************************************************************************
@@ -40,28 +40,15 @@
     FreeRTOS WEB site.
 
     1 tab == 4 spaces!
-    
-    ***************************************************************************
-     *                                                                       *
-     *    Having a problem?  Start by reading the FAQ "My application does   *
-     *    not run, what could be wrong?                                      *
-     *                                                                       *
-     *    http://www.FreeRTOS.org/FAQHelp.html                               *
-     *                                                                       *
-    ***************************************************************************
 
-    
-    http://www.FreeRTOS.org - Documentation, training, latest information, 
-    license and contact details.
-    
-    http://www.FreeRTOS.org/plus - A selection of FreeRTOS ecosystem products,
-    including FreeRTOS+Trace - an indispensable productivity tool.
+    http://www.FreeRTOS.org - Documentation, latest information, license and
+    contact details.
 
-    Real Time Engineers ltd license FreeRTOS to High Integrity Systems, who sell 
-    the code with commercial support, indemnification, and middleware, under 
-    the OpenRTOS brand: http://www.OpenRTOS.com.  High Integrity Systems also
-    provide a safety engineered and independently SIL3 certified version under 
-    the SafeRTOS brand: http://www.SafeRTOS.com.
+    http://www.SafeRTOS.com - A version that is certified for use in safety
+    critical systems.
+
+    http://www.OpenRTOS.com - Commercial support, development, porting,
+    licensing and training services.
 */
 
 
@@ -69,7 +56,7 @@
 #define QUEUE_H
 
 #ifndef INC_FREERTOS_H
-	#error "include FreeRTOS.h" must appear in source files before "include queue.h"
+	#error "#include FreeRTOS.h" must appear in source files before "#include queue.h"
 #endif
 
 #ifdef __cplusplus
@@ -1234,13 +1221,11 @@ signed portBASE_TYPE xQueueCRSend( xQueueHandle pxQueue, const void *pvItemToQue
 signed portBASE_TYPE xQueueCRReceive( xQueueHandle pxQueue, void *pvBuffer, portTickType xTicksToWait );
 
 /*
- * For internal use only.  Use xSemaphoreCreateMutex(), 
- * xSemaphoreCreateCounting() or xSemaphoreGetMutexHolder() instead of calling 
- * these functions directly.
+ * For internal use only.  Use xSemaphoreCreateMutex() or
+ * xSemaphoreCreateCounting() instead of calling these functions directly.
  */
 xQueueHandle xQueueCreateMutex( unsigned char ucQueueType );
 xQueueHandle xQueueCreateCountingSemaphore( unsigned portBASE_TYPE uxCountValue, unsigned portBASE_TYPE uxInitialCount );
-void* xQueueGetMutexHolder( xQueueHandle xSemaphore );
 
 /*
  * For internal use only.  Use xSemaphoreTakeMutexRecursive() or
@@ -1248,14 +1233,6 @@ void* xQueueGetMutexHolder( xQueueHandle xSemaphore );
  */
 portBASE_TYPE xQueueTakeMutexRecursive( xQueueHandle pxMutex, portTickType xBlockTime );
 portBASE_TYPE xQueueGiveMutexRecursive( xQueueHandle pxMutex );
-
-/*
- * Reset a queue back to its original empty state.  pdPASS is returned if the
- * queue is successfully reset.  pdFAIL is returned if the queue could not be
- * reset because there are tasks blocked on the queue waiting to either
- * receive from the queue or send to the queue.
- */
-#define xQueueReset( pxQueue ) xQueueGenericReset( pxQueue, pdFALSE )
 
 /*
  * The registry is provided as a means for kernel aware debuggers to
@@ -1287,9 +1264,10 @@ portBASE_TYPE xQueueGiveMutexRecursive( xQueueHandle pxMutex );
  */
 xQueueHandle xQueueGenericCreate( unsigned portBASE_TYPE uxQueueLength, unsigned portBASE_TYPE uxItemSize, unsigned char ucQueueType );
 
-/* Not public API functions. */
+/* 
+ * Not a public API function, hence the 'Restricted' in the name. 
+ */
 void vQueueWaitForMessageRestricted( xQueueHandle pxQueue, portTickType xTicksToWait );
-portBASE_TYPE xQueueGenericReset( xQueueHandle pxQueue, portBASE_TYPE xNewQueue );
 
 
 #ifdef __cplusplus
