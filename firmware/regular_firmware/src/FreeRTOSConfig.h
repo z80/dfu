@@ -86,11 +86,11 @@
 #define configUSE_IDLE_HOOK			1
 #define configUSE_TICK_HOOK			0
 #define configCPU_CLOCK_HZ			( ( unsigned long ) 48000000 )	
-#define configTICK_RATE_HZ			( ( portTickType ) 10000 )
-#define configMAX_PRIORITIES		( ( unsigned portBASE_TYPE ) 1 )
+#define configTICK_RATE_HZ			( ( portTickType ) 1000 )
+#define configMAX_PRIORITIES		( ( unsigned portBASE_TYPE ) 2 )
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 128 )
-#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 3 * 1024 ) )
-#define configMAX_TASK_NAME_LEN		( 2 )
+#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 4 * 1024 ) )
+#define configMAX_TASK_NAME_LEN		( 6 )
 #define configUSE_TRACE_FACILITY	0
 #define configUSE_16_BIT_TICKS		0
 #define configIDLE_SHOULD_YIELD		0
@@ -98,7 +98,7 @@
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		1
-#define configMAX_CO_ROUTINE_PRIORITIES ( 1 )
+#define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
@@ -123,9 +123,9 @@ configKERNEL_INTERRUPT_PRIORITY setting.  Here 15 corresponds to the lowest
 NVIC value of 255. */
 #define configLIBRARY_KERNEL_INTERRUPT_PRIORITY	15
 
-#define SVC_Handler       xPortSVCHandler
-#define PendSV_Handler    xPortPendSVHandler
-#define SysTick_Handler   xPortSysTickHandler
+#define vPortSVCHandler     SVC_Handler
+#define xPortPendSVHandler  PendSV_Handler
+#define xPortSysTickHanlder SysTick_Handler
 
 #endif /* FREERTOS_CONFIG_H */
 
