@@ -48,6 +48,7 @@ DWORD get_fattime( void )
     return i++;
 }
 
+void vTaskDbg( void * args );
 
 /**
   * @brief  Main program.
@@ -63,7 +64,7 @@ void main(void)
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
     // USB setup.
-    Set_USBClock();
+    /*Set_USBClock();
 	USB_Interrupts_Config();
 	USB_Init();
 
@@ -92,19 +93,29 @@ void main(void)
                 f_close( &fil );
             }
         }
-    }
-    /*portBASE_TYPE res;
-    res = xCoRoutineCreate( crUsbIo, 0, 0 );
-    res = xCoRoutineCreate( crFuncs, 0, 0 );
+    }*/
+    portBASE_TYPE res;
+    res = xTaskCreate( vTaskDbg, "d", 128, 0, 0, 0 );
+    //res = xCoRoutineCreate( crUsbIo, 1, 0 );
+    //res = xCoRoutineCreate( crFuncs, 1, 0 );
     for ( ;; )
     {
         vTaskStartScheduler();   
-    }*/
+    }
     for ( ;; )
     {
     }
 }
 
+void vTaskDbg( void * args )
+{
+    volatile int i = 0;
+    for ( ;; )
+    {
+        i = i + 1;
+        i = i + 2;
+    }
+}
 
 void vApplicationIdleHook( void )
 {
