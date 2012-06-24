@@ -74,6 +74,7 @@ COMPILER_FLAGS+=-Ifreertos/cm3
 COMPILER_FLAGS+=-Ifatfs
 COMPILER_FLAGS+=-Isrc/usb_related
 COMPILER_FLAGS+=-Isrc/pawn
+COMPILER_FLAGS+=-Isrc/routines
 
 # Define sources and objects
 SRC := $(wildcard */*/*/*/*/*/*/*.c) \
