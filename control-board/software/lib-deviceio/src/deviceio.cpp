@@ -28,6 +28,17 @@ DeviceIo::~DeviceIo()
 {
 }
 
+int DeviceIo::echo( int arg )
+{
+    putUInt8( static_cast<unsigned char>( arg ) );
+    execFunc( FUNC_ECHO );
+    unsigned char r;
+    int cnt = readQueue( &r, 1 );
+    if ( cnt < 1 )
+    	return -1;
+    return r;
+}
+
 int  DeviceIo::version()
 {
     execFunc( FUNC_VERSION );

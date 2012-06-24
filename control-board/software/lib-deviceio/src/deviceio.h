@@ -14,6 +14,7 @@ public:
     DeviceIo();
     ~DeviceIo();
 
+    int echo( int arg );
     int version();
 
     bool gpioConfig( int index, int pins, int mode );

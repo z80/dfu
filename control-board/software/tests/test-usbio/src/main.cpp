@@ -9,10 +9,12 @@ int main( int argc, char * argv[] )
     const int CNT = 64;
     unsigned char b[ CNT ];
     int cnt;
-    do {
-        cnt = io.write( b, 2 );
-        cnt = io.read( b, 2 );
-    } while ( cnt > 0 );
+    for ( int i=1; i<5; i++ )
+    {
+    	b[0] = i;
+        cnt = io.write( b, 1 );
+        cnt = io.read( &b[1], 3 );
+    }
     //int v = io.version();
     io.close();
     return 0;

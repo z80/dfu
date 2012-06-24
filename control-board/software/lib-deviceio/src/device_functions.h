@@ -8,6 +8,8 @@
 #define FUNC_GPIO_SET       3
 #define FUNC_GPIO           4
 
+#define FUNC_ECHO            250
+
 // TGpioMode 
 #define TOUT           0
 #define TOUTOPENDRAIN  1

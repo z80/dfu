@@ -7,7 +7,7 @@
 #include "croutine.h"
 #include "queue.h"
 
-xQueueHandle invokeFunc( uint8_t funcId );
+void invokeFunc( uint8_t funcId );
 
 void crFuncs( xCoRoutineHandle xHandle, 
               unsigned portBASE_TYPE uxIndex );
