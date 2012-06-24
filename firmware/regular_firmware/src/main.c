@@ -64,12 +64,12 @@ void main(void)
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
     // USB setup.
-    /*Set_USBClock();
+    Set_USBClock();
 	USB_Interrupts_Config();
 	USB_Init();
 
     // FatFS.
-    FRESULT rc;
+    /*FRESULT rc;
     FATFS   fatfs;
     FIL     fil;
     UINT    br;
