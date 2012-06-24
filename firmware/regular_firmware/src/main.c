@@ -93,12 +93,15 @@ void main(void)
             }
         }
     }
-    portBASE_TYPE res;
+    /*portBASE_TYPE res;
     res = xCoRoutineCreate( crUsbIo, 0, 0 );
     res = xCoRoutineCreate( crFuncs, 0, 0 );
     for ( ;; )
     {
         vTaskStartScheduler();   
+    }*/
+    for ( ;; )
+    {
     }
 }
 
