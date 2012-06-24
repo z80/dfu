@@ -8,9 +8,12 @@ int main( int argc, char * argv[] )
     bool res = io.open();
     const int CNT = 64;
     unsigned char b[ CNT ];
-    //int cnt = io.write( b, CNT );
-    //cnt = io.read( b, CNT );
-    int v = io.version();
+    int cnt;
+    do {
+        cnt = io.read( b, 2 );
+        //cnt = io.write( b, 2 );
+    } while ( cnt > 0 );
+    //int v = io.version();
     io.close();
     return 0;
 }

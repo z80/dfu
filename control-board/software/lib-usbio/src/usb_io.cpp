@@ -41,7 +41,7 @@ const int UsbIo::PD::PRODUCT_ID = 0x5740;
 const int UsbIo::PD::TIMEOUT    = 1000;
 
 const int UsbIo::PD::EP_OUT = 0x03;
-const int UsbIo::PD::EP_IN  = 0x82;
+const int UsbIo::PD::EP_IN  = 0x81;
 
 UsbIo::UsbIo()
 {
@@ -142,7 +142,7 @@ int UsbIo::write( unsigned char * data, int size )
                       pd->timeout );
     if ( res == 0 )
         return actual_length;
-    return -1;
+    return 0;
 }
 
 int UsbIo::read( unsigned char * data, int maxSize )
@@ -155,7 +155,7 @@ int UsbIo::read( unsigned char * data, int maxSize )
                       pd->timeout );
     if ( res == 0 )
         return actual_length;
-    return -1;
+    return 0;
 }
 
 int UsbIo::setTimeout( int ms )

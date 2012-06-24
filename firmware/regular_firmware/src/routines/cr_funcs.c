@@ -37,7 +37,7 @@ void crFuncs( xCoRoutineHandle xHandle,
         {
             case FUNC_VERSION:
                 res16 = VERSION;
-                out = (uint16_t *)&res16;
+                out = (uint8_t *)&res16;
                 crQUEUE_SEND( xHandle, q, out,     0, &cr );
                 crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
                 break; 

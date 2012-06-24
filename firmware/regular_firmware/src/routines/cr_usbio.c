@@ -131,6 +131,12 @@ void crUsbIo( xCoRoutineHandle xHandle,
                 bufferIndex = 0;
             }
         }
+
+        // Debugging.
+        USB_Send_Data( 1 );
+        USB_Send_Data( 2 );
+        crDELAY( xHandle, 100 );
+
     }
 
     crEND();
