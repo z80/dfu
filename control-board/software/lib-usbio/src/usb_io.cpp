@@ -3,7 +3,7 @@
 #include "usb_io.h"
 #include <string.h>
 #include <libusb.h>
-
+#include <stdio.h>
 
 inline static bool LSB()
 {
@@ -22,34 +22,35 @@ class UsbIo::PD
 public:
     PD() {}
     ~PD() {}
-    libusb_device_handle  * handle;
-    libusb_context        * cxt;
+    //libusb_device_handle  * handle;
+    //libusb_context        * cxt;
     std::string err;
     std::string res;
     std::string output;
     int timeout;
     std::basic_string<unsigned char> data;
-    static const int VENDOR_ID;
+    /*static const int VENDOR_ID;
     static const int PRODUCT_ID;
     static const int TIMEOUT;
     static const int EP_OUT;
-    static const int EP_IN;
+    static const int EP_IN;*/
+    FILE * handle;
 };
 
-const int UsbIo::PD::VENDOR_ID  = 0x0483;
+/*const int UsbIo::PD::VENDOR_ID  = 0x0483;
 const int UsbIo::PD::PRODUCT_ID = 0x5740;
 const int UsbIo::PD::TIMEOUT    = 1000;
 
 const int UsbIo::PD::EP_OUT = 0x03;
-const int UsbIo::PD::EP_IN  = 0x81;
+const int UsbIo::PD::EP_IN  = 0x81;*/
 
 UsbIo::UsbIo()
 {
     pd = new PD();
     pd->handle = 0;
-    pd->timeout = PD::TIMEOUT;
+    /*pd->timeout = PD::TIMEOUT;
     int res = libusb_init( &pd->cxt );
-    libusb_set_debug( pd->cxt, 3 );
+    libusb_set_debug( pd->cxt, 3 );*/
     pd->res.resize( 8 );
 }
 
@@ -57,13 +58,13 @@ UsbIo::~UsbIo()
 {
     if ( isOpen() )
         close();
-    libusb_exit( pd->cxt );
+    //libusb_exit( pd->cxt );
     delete pd;
 }
 
 bool UsbIo::open()
 {
-    libusb_device * * list;
+    /*libusb_device * * list;
     int sz = libusb_get_device_list( pd->cxt, &list );
     for ( int i=0; i<sz; i++ )
     {    
@@ -75,54 +76,20 @@ bool UsbIo::open()
         return false;
     int res = libusb_kernel_driver_active( pd->handle, 0 );
     if ( res == 1 )
-        res = libusb_detach_kernel_driver( pd->handle, 0 );
-    //libusb_device * dev = libusb_get_device( pd->handle );
-    //libusb_device_descriptor devDesc;
-    //res = libusb_get_device_descriptor( dev, &devDesc );
-    //libusb_config_descriptor * confDesc;
-    //res = libusb_get_active_config_descriptor( dev, &confDesc );
-    //libusb_free_config_descriptor( confDesc );
-    //res = libusb_set_configuration(pd->handle, 0 );
-    //res = libusb_claim_interface( pd->handle, 0 );
-    //unsigned char buf[1024];
-    //libusb_endpoint_descriptor epDesc;
-    //res = libusb_get_descriptor( pd->handle, LIBUSB_DT_ENDPOINT, 0,
-    //		                     buf, sizeof(buf) );
+        res = libusb_detach_kernel_driver( pd->handle, 0 );*/
 
-    /*for ( int i=0; i<255; i++ )
-    {
-    	unsigned char data[64];
-    	int actual_length;
-    	res = libusb_bulk_transfer( pd->handle,
-                 i,
-                 data, 8,
-                 &actual_length,
-                 1000 );
-    	if ( res >= 0 )
-    		res ++;
-    }*/
-    /*res = usb_claim_interface( pd->handle, 0 );
-    struct usb_interface_descriptor desc;
-    res = usb_get_descriptor( pd->handle, USB_DT_INTERFACE, 0, &desc, sizeof(desc) );
-    int i;
-    //for ( int i=0; i<desc.bNumEndpoints; i++ )
-    for ( int i=0; i<5; i++ )
-    {
-        struct usb_endpoint_descriptor ep;
-        res = usb_get_descriptor( pd->handle, USB_DT_ENDPOINT, i, &ep, sizeof( ep ) );
-        int addr = ep.bEndpointAddress;
-        int attr = ep.bmAttributes;
-        int k = attr;
-    }*/
+	pd->handle = fopen( "/dev/ttyACM0", "rw" );
+	bool res = ( pd->handle != 0 );
 
-    return true;
+    return res;
 }
 
 void UsbIo::close()
 {
     if ( isOpen() )
     {
-        libusb_close( pd->handle );
+        //libusb_close( pd->handle );
+    	fclose( pd->handle );
         pd->handle = 0;
     }
 }
@@ -134,7 +101,7 @@ bool UsbIo::isOpen() const
 
 int UsbIo::write( unsigned char * data, int size )
 {
-    int actual_length;
+    /*int actual_length;
     int res = libusb_bulk_transfer( pd->handle,
                       PD::EP_OUT,
                       data, size,
@@ -142,12 +109,15 @@ int UsbIo::write( unsigned char * data, int size )
                       pd->timeout );
     if ( res == 0 )
         return actual_length;
-    return 0;
+    return 0;*/
+
+	int cnt = fwrite( data, 1, size, pd->handle );
+	return cnt;
 }
 
 int UsbIo::read( unsigned char * data, int maxSize )
 {
-    int actual_length;
+    /*int actual_length;
     int res = libusb_bulk_transfer( pd->handle,
                       PD::EP_IN,
                       data, maxSize,
@@ -155,7 +125,10 @@ int UsbIo::read( unsigned char * data, int maxSize )
                       pd->timeout );
     if ( res == 0 )
         return actual_length;
-    return 0;
+    return 0;*/
+
+	int cnt = fread( data, 1, maxSize, pd->handle );
+	return cnt;
 }
 
 int UsbIo::setTimeout( int ms )

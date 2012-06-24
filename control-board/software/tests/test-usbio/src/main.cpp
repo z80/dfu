@@ -10,8 +10,8 @@ int main( int argc, char * argv[] )
     unsigned char b[ CNT ];
     int cnt;
     do {
-        cnt = io.read( b, 2 );
-        //cnt = io.write( b, 2 );
+        cnt = io.write( b, 2 );
+        //cnt = io.read( b, 2 );
     } while ( cnt > 0 );
     //int v = io.version();
     io.close();
