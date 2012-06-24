@@ -20,6 +20,8 @@
 #include "hw_config.h"
 #include "usb_pwr.h"
 
+#include "cr_usbio.h"
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 //#define RCC_APB2Periph_GPIO_DISCONNECT RCC_APB2Periph_GPIOF
@@ -138,11 +140,11 @@ void USB_Interrupts_Config(void)
 {
   NVIC_InitTypeDef NVIC_InitStructure;
 
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+  NVIC_PriorityGroupConfig( NVIC_PriorityGroup_1 );
 
   NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 8;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 8;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 
@@ -174,6 +176,7 @@ void USB_Cable_Config (FunctionalState NewState)
 *******************************************************************************/
 void Handle_USBAsynchXfer (void)
 {
+    /*
   
   uint16_t USB_Tx_ptr;
   uint16_t USB_Tx_length;
@@ -190,7 +193,7 @@ void Handle_USBAsynchXfer (void)
       return;
     }
 
-    if(USART_Rx_ptr_out > USART_Rx_ptr_in) /* rollback */
+    if(USART_Rx_ptr_out > USART_Rx_ptr_in) // rollback
     {
       USART_Rx_length = USART_RX_DATA_SIZE - USART_Rx_ptr_out;
     }
@@ -221,6 +224,16 @@ void Handle_USBAsynchXfer (void)
         UserToPMABufferCopy(&USART_Rx_Buffer[USB_Tx_ptr], ENDP1_TXADDR, USB_Tx_length);
         SetEPTxCount(ENDP1, USB_Tx_length);
         SetEPTxValid(ENDP1);
+        */
+    xQueueHandle q = fromMcu();
+    portBASE_TYPE cr = pdFALSE;
+    uint8_t i = 0;
+    while ( crQUEUE_RECEIVE_FROM_ISR( q, &USART_Rx_Buffer[i++], &cr ) == pdTRUE )
+        ;
+ 
+    UserToPMABufferCopy( USART_Rx_Buffer, ENDP1_TXADDR, i );
+    SetEPTxCount( ENDP1, i );
+    SetEPTxValid( ENDP1 );
 
 }
 /*******************************************************************************

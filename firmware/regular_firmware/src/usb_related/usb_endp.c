@@ -68,7 +68,7 @@ void EP3_OUT_Callback(void)
         for (i=0; i<USB_Rx_Cnt; i++)
         {
             //USB_SetLeds(USB_Rx_Buffer[i]);
-            rc = crQUEUE_SEND_FROM_ISR( q, &USB_Rx_Buffer[i], rc );
+            //rc = crQUEUE_SEND_FROM_ISR( q, &USB_Rx_Buffer[i], rc );
         }
     }
   
@@ -98,7 +98,6 @@ void SOF_Callback(void)
       /* Check the data to be sent through IN pipe */
 
       Handle_USBAsynchXfer();
-
     }
   }  
 }

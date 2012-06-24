@@ -64,6 +64,7 @@ void crUsbIo( xCoRoutineHandle xHandle,
     static uint8_t bufferIndex = 0;
     static uint32_t stateResetTimeout = 0;
     
+    initUsbIo();
     if ( !g_usbInitialized )
     {
         g_usbInitialized = 1;
@@ -72,7 +73,6 @@ void crUsbIo( xCoRoutineHandle xHandle,
 	    USB_Interrupts_Config();
 	    USB_Init();       
     }
-    initUsbIo();
 
     crSTART( xHandle );
 
@@ -114,7 +114,7 @@ void crUsbIo( xCoRoutineHandle xHandle,
             }
         }
         // Receive data to USB and send it.
-        crQUEUE_RECEIVE( xHandle, g_fromMcu, &data, 0, &rcFrom );
+        /*crQUEUE_RECEIVE( xHandle, g_fromMcu, &data, 0, &rcFrom );
         if ( rcFrom == pdPASS )
         {
             USB_Send_Data( data );
@@ -130,12 +130,17 @@ void crUsbIo( xCoRoutineHandle xHandle,
                 state = STATE_CMD;
                 bufferIndex = 0;
             }
-        }
+        }*/
 
         // Debugging.
-        USB_Send_Data( 1 );
-        USB_Send_Data( 2 );
-        crDELAY( xHandle, 100 );
+        static uint8_t a = 'a';
+        crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
+        /*taskENTER_CRITICAL();
+        USB_Send_Data( 'a' );
+        USB_Send_Data( '\r' );
+        USB_Send_Data( '\n' );
+        taskEXIT_CRITICAL();*/
+        crDELAY( xHandle, 1 );
 
     }
 

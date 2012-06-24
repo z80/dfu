@@ -30,6 +30,14 @@
 // FreeRTOS stuff.
 #include "FreeRTOS.h"
 #include "task.h"
+#include "croutine.h"
+
+// USB related includes.
+#include "usb_lib.h"
+#include "usb_desc.h"
+#include "hw_config.h"
+#include "usb_pwr.h"
+#include "usb_istr.h"
 
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
@@ -58,6 +66,10 @@ void main(void)
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
 
+    // USB setup.
+    //Set_USBClock();
+    //USB_Interrupts_Config();
+    //USB_Init();       
     // FatFS.
     /*FRESULT rc;
     FATFS   fatfs;
@@ -87,10 +99,20 @@ void main(void)
     portBASE_TYPE res;
     //res = xTaskCreate( vTaskDbg, "d", 128, 0, tskIDLE_PRIORITY+1, 0 );
     res = xCoRoutineCreate( crUsbIo, 1, 0 );
-    res = xCoRoutineCreate( crFuncs, 1, 0 );
+    //res = xCoRoutineCreate( crFuncs, 1, 0 );
     vTaskStartScheduler();   
     for ( ;; )
     {
+        //printf( "ab!" );
+        USB_Send_Data( 'a' );
+        USB_Send_Data( 'b' );
+        USB_Send_Data( 'a' );
+        USB_Send_Data( 'b' );
+        USB_Send_Data( '\r' );
+        USB_Send_Data( '\n' );
+        volatile int i;
+        for ( i=0; i<100000; i++ )
+            ;
     }
 }
 
