@@ -3,6 +3,11 @@
 #include "cr_funcs.h"
 #include "config.h"
 #include "hw_config.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "croutine.h"
+#include "queue.h"
+
 
 #define STATE_CMD  0  // State wait for cmd.
 #define STATE_SIZE 1  // State wait for data cnt.

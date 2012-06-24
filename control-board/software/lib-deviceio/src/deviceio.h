@@ -4,6 +4,7 @@
 
 #include "usb_io.h"
 #include "device_functions.h"
+#include <string>
 
 class DeviceIo: public UsbIo
 {
@@ -13,13 +14,14 @@ public:
     DeviceIo();
     ~DeviceIo();
 
-    bool adcEnable( int index, bool val );
-    int adc( int index );
+    int version();
 
-    bool gpioEnable( int index, bool val );
-    bool gpioSetMode( int index, int mode );
-    bool gpioSet( int index, bool val );
-    bool gpio( int index, bool & val );
+    bool gpioConfig( int index, int pins, int mode );
+    bool gpioSet( int index, int pins, int vals );
+    bool gpio( int index, int pins, int & val );
+
+    bool adcEnable( int pins );
+    bool adc( std::basic_string<int> & vals );
 
     bool twiEnable( bool val );
     bool twiSetAddress( int addr );

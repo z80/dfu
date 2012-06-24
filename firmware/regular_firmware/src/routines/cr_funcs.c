@@ -2,6 +2,11 @@
 #include "cr_funcs.h"
 #include "cr_usbio.h"
 #include "config.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "croutine.h"
+#include "queue.h"
+
 
 #include "gpio.h"
 
@@ -30,6 +35,12 @@ void crFuncs( xCoRoutineHandle xHandle,
         crDELAY( xHandle, 1 );
         switch ( g_funcId )
         {
+            case FUNC_VERSION:
+                res16 = VERSION;
+                out = (uint16_t *)&res16;
+                crQUEUE_SEND( xHandle, q, out,     0, &cr );
+                crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
+                break; 
             case FUNC_GPIO_CONFIG:
                 gpioConfig( buf[0], 
                             *(uint16_t *)(&(buf[1])), 

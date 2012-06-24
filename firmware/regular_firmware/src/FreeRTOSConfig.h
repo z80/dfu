@@ -15,10 +15,10 @@
  *----------------------------------------------------------*/
 
 #define configUSE_PREEMPTION			1
-#define configUSE_IDLE_HOOK				0
-#define configUSE_TICK_HOOK				0
-#define configCPU_CLOCK_HZ				( 48000000UL )
-#define configTICK_RATE_HZ				( ( portTickType )1000 )
+#define configUSE_IDLE_HOOK			1
+#define configUSE_TICK_HOOK			0
+#define configCPU_CLOCK_HZ			( 48000000UL )
+#define configTICK_RATE_HZ			( ( portTickType )1000 )
 #define configMAX_PRIORITIES			( ( unsigned portBASE_TYPE )1 )
 #define configMINIMAL_STACK_SIZE		( ( unsigned short ) 70 )
 #define configTOTAL_HEAP_SIZE			( ( size_t ) ( 2 * 1024 ) )
@@ -70,7 +70,7 @@ to exclude the API function. */
 /* Priority 5, or 95 as only the top four bits are implemented. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 	
-#define configASSERT( x ) if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); for( ;; ); }	
+#define configASSERT( x ) if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); for( ;; ); }
 	
 #define vPortSVCHandler     SVC_Handler
 #define xPortPendSVHandler  PendSV_Handler

@@ -21,64 +21,25 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
-#include <stdio.h>
-#include "3310.h"
-//#include "lcd.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "data_struct.h"
-#include "task_plot.h"
-#include "task_adc.h"
-
+// FatFS related.
 #include "ff.h"
-
+#include "diskio.h"
 // USB related includes.
 #include "usb_lib.h"
 #include "usb_desc.h"
 #include "hw_config.h"
 #include "usb_pwr.h"
 #include "usb_istr.h"
-#include <stdint.h>
-#include <stdio.h>
+// Coroutines for hardware control and USB interaction.
+#include "cr_usbio.h"
+#include "cr_funcs.h"
+// FreeRTOS stuff.
+#include "FreeRTOS.h"
+#include "task.h"
 
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
   USB_Istr();
-}
-
-
-
-
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
- USART_InitTypeDef USART_InitStructure;
-
-/* Private function prototypes -----------------------------------------------*/
-#ifdef __GNUC__
-/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
-   set to 'Yes') calls __io_putchar() */
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __GNUC__ */
-
-#define GPIO_PORT           GPIOB
-#define GREEN_GPIO_PIN      GPIO_Pin_7
-#define RED_GPIO_PIN        GPIO_Pin_6
-#define GPIO_PORT_CLK       RCC_AHBPeriph_GPIOB
-
-
-
-static void gpioConfig( void );
-void vTaskDisplay( void * args );
-/* Private functions ---------------------------------------------------------*/
-
-void delay()
-{
-  const int cnt = 8000000;
-  volatile int i;
-  for ( i=0; i<cnt; i++ )
-      asm( "nop" );
 }
 
 DWORD get_fattime( void )
@@ -93,7 +54,7 @@ DWORD get_fattime( void )
   * @param  None
   * @retval None
   */
-int main(void)
+void main(void)
 {
     // The very first line should remap NVIC table 
     // in order to make remapped firmware work with 
@@ -106,18 +67,11 @@ int main(void)
 	USB_Interrupts_Config();
 	USB_Init();
 
-    //gpioConfig();
-    //adcInit();
-    //lcdPower( 1 );
-    //dataInit();
-
     // FatFS.
     FRESULT rc;
     FATFS   fatfs;
     FIL     fil;
-    DIR     dir;
-    FILINFO info;
-    UINT    bw, br, i;
+    UINT    br;
     char stri[] = "file content!\n";
     disk_initialize( 0 );
     f_mount( 0, &fatfs );
@@ -139,19 +93,23 @@ int main(void)
             }
         }
     }
-    while ( 1 )
+    portBASE_TYPE res;
+    res = xCoRoutineCreate( crUsbIo, 0, 0 );
+    res = xCoRoutineCreate( crFuncs, 0, 0 );
+    for ( ;; )
     {
-        printf( "Hello world!\r\n" );
-        volatile int i;
-        for ( i=0; i<0x000FFFFF; i++ );
+        vTaskStartScheduler();   
     }
-
-
-
-    //xTaskCreate( vTaskDisplay, ( signed char * ) "a", configMINIMAL_STACK_SIZE*8, NULL, tskIDLE_PRIORITY+1, NULL );
-    //vTaskStartScheduler();   
 }
 
+
+void vApplicationIdleHook( void )
+{
+    for ( ;; )
+    {
+        vCoRoutineSchedule();
+    }
+}
 
 #ifdef  USE_FULL_ASSERT
 
@@ -175,9 +133,7 @@ void assert_failed(uint8_t* file, uint32_t line)
 #endif
 
 
-
-
-static void clockConfig( void ) 
+/*static void clockConfig( void ) 
 {
     RCC_DeInit();
     
@@ -232,7 +188,7 @@ void vTaskDisplay( void * args )
         // Disc utility.
         disk_timerproc();
     }
-}
+}*/
 
 void vApplicationMallocFailedHook( void )
 {

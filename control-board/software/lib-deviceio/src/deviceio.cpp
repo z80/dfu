@@ -28,17 +28,58 @@ DeviceIo::~DeviceIo()
 {
 }
 
-bool DeviceIo::adcEnable( int index, bool val )
+int  DeviceIo::version()
 {
-    putUInt8( 0, static_cast<unsigned char>( index ) );
-    putUInt8( 1, val ? 1 : 0 );
-    execFunc( CMD_ADC_ENABLE );
+    execFunc( FUNC_VERSION );
+    unsigned char d[2];
+    int sz = readQueue( d, 2 );
+    if ( sz < 2 )
+        return -1;
+    int res = 256 * d[0] + d[1];
+    return res;
+}
+
+bool DeviceIo::gpioConfig( int index, int pins, int mode )
+{
+    putUInt8( static_cast<unsigned char>( index ) );
+    putUInt16( static_cast<unsigned short>( pins ) );
+    putUInt16( static_cast<unsigned short>( mode ) );
+    execFunc( FUNC_GPIO_CONFIG );
     return true;
 }
 
-int DeviceIo::adc( int index )
+bool DeviceIo::gpioSet( int index, int pins, int vals )
 {
-    putUInt8( 0, static_cast<unsigned char>( index ) );
+    putUInt8( static_cast<unsigned char>( index ) );
+    putUInt16( static_cast<unsigned short>( pins ) );
+    putUInt16( static_cast<unsigned short>( vals ) );
+    execFunc( FUNC_GPIO_SET );
+    return true;
+}
+
+bool DeviceIo::gpio( int index, int pins, int & vals )
+{
+    putUInt8( static_cast<unsigned char>( index ) );
+    execFunc( FUNC_GPIO );
+    unsigned char d[2];
+    int sz = readQueue( d, 2 );
+    if ( sz < 2 )
+        return false;
+    vals = 256 * d[0] + d[1];
+    return true;
+}
+
+bool DeviceIo::adcEnable( int pins )
+{
+    /*putUInt8( 0, static_cast<unsigned char>( index ) );
+    putUInt8( 1, val ? 1 : 0 );
+    execFunc( CMD_ADC_ENABLE );*/
+    return true;
+}
+
+bool DeviceIo::adc( std::basic_string<int> & vals )
+{
+    /*putUInt8( 0, static_cast<unsigned char>( index ) );
     execFunc( CMD_ADC );
     int sz = queueSize();
     unsigned char d[2];
@@ -46,45 +87,10 @@ int DeviceIo::adc( int index )
     if ( cnt < 2 )
         return -1;
     int res = toUInt16( d );
-    return res;
+    return res;*/
+    return 1;
 }
 
-bool DeviceIo::gpioEnable( int index, bool val )
-{
-    putUInt8( 0, static_cast<unsigned char>( index ) );
-    putUInt8( 1, val ? 1 : 0 );
-    execFunc( CMD_GPIO_ENABLE );
-    return true;
-}
-
-bool DeviceIo::gpioSetMode( int index, int mode )
-{
-    putUInt8( 0, static_cast<unsigned char>( index ) );
-    putUInt8( 1, static_cast<unsigned char>( mode ) );
-    execFunc( CMD_GPIO_ENABLE );
-    return true;
-}
-
-bool DeviceIo::gpioSet( int index, bool val )
-{
-    putUInt8( 0, static_cast<unsigned char>( index ) );
-    putUInt8( 1, static_cast<unsigned char>( val ? 1 : 0 ) );
-    execFunc( CMD_GPIO_SET );
-    return true;
-}
-
-bool DeviceIo::gpio( int index, bool & val )
-{
-    putUInt8( 0, static_cast<unsigned char>( index ) );
-    execFunc( CMD_GPIO );
-    int cnt = queueSize();
-    unsigned char d;
-    int sz = readQueue( &d, 1 );
-    if ( cnt < 1 )
-        return false;
-    val = (d != 0);
-    return true;
-}
 
 bool DeviceIo::twiEnable( bool val )
 {
@@ -105,6 +111,9 @@ bool DeviceIo::twiWriteRead( int addr, TIo wr, TIo & rd )
 {
     return true;
 }
+
+
+
 
 
 

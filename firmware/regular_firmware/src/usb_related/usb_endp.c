@@ -20,6 +20,8 @@
 #include "hw_config.h"
 #include "usb_istr.h"
 #include "usb_pwr.h"
+// FreeRTOS interaction.
+#include "cr_usbio.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -54,18 +56,24 @@ void EP1_IN_Callback (void)
 *******************************************************************************/
 void EP3_OUT_Callback(void)
 {
-  uint16_t USB_Rx_Cnt;
-  uint16_t i;
+    uint16_t USB_Rx_Cnt;
+    uint16_t i;
+ 
+    /* Get the received data buffer and update the counter */
+    USB_Rx_Cnt = USB_SIL_Read(EP3_OUT, USB_Rx_Buffer);
+    if ( USB_Rx_Cnt > 0 )
+    {
+        xQueueHandle q = toMcu();
+        portBASE_TYPE rc = pdFALSE;
+        for (i=0; i<USB_Rx_Cnt; i++)
+        {
+            //USB_SetLeds(USB_Rx_Buffer[i]);
+            rc = crQUEUE_SEND_FROM_ISR( q, &USB_Rx_Buffer[i], rc );
+        }
+    }
   
-  /* Get the received data buffer and update the counter */
-  USB_Rx_Cnt = USB_SIL_Read(EP3_OUT, USB_Rx_Buffer);
-
-  for (i=0; i<USB_Rx_Cnt; i++) {
-	  USB_SetLeds(USB_Rx_Buffer[i]);
-  }
-  
-  /* Enable the receive of data on EP3 */
-  SetEPRxValid(ENDP3);
+    /* Enable the receive of data on EP3 */
+    SetEPRxValid(ENDP3);
 }
 
 
