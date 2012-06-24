@@ -24,12 +24,6 @@
 // FatFS related.
 #include "ff.h"
 #include "diskio.h"
-// USB related includes.
-#include "usb_lib.h"
-#include "usb_desc.h"
-#include "hw_config.h"
-#include "usb_pwr.h"
-#include "usb_istr.h"
 // Coroutines for hardware control and USB interaction.
 #include "cr_usbio.h"
 #include "cr_funcs.h"
@@ -63,10 +57,6 @@ void main(void)
     // Otherwise actual interrupts table location 
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
-    // USB setup.
-    Set_USBClock();
-	USB_Interrupts_Config();
-	USB_Init();
 
     // FatFS.
     /*FRESULT rc;

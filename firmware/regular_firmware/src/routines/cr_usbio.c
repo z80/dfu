@@ -1,4 +1,11 @@
 
+// USB related includes.
+#include "usb_lib.h"
+#include "usb_desc.h"
+#include "hw_config.h"
+#include "usb_pwr.h"
+#include "usb_istr.h"
+
 #include "cr_usbio.h"
 #include "cr_funcs.h"
 #include "config.h"
@@ -17,6 +24,7 @@
 xQueueHandle g_toMcu;
 xQueueHandle g_fromMcu;
 uint8_t      g_buffer[ CMD_BUFFER_SIZE ];
+uint8_t      g_usbInitialized = 0;
 
 static void initUsbIo( void )
 
@@ -55,7 +63,15 @@ void crUsbIo( xCoRoutineHandle xHandle,
     static uint8_t size = 0;
     static uint8_t bufferIndex = 0;
     static uint32_t stateResetTimeout = 0;
-
+    
+    if ( !g_usbInitialized )
+    {
+        g_usbInitialized = 1;
+        // USB setup.
+        Set_USBClock();
+	    USB_Interrupts_Config();
+	    USB_Init();       
+    }
     initUsbIo();
 
     crSTART( xHandle );
