@@ -141,11 +141,11 @@ void USB_Interrupts_Config(void)
 {
   NVIC_InitTypeDef NVIC_InitStructure;
 
-  NVIC_PriorityGroupConfig( NVIC_PriorityGroup_1 );
+  NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
 
   NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 8;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 8;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 16;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 16;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 
@@ -231,6 +231,7 @@ void Handle_USBAsynchXfer (void)
     uint8_t i = 0;
     while ( crQUEUE_RECEIVE_FROM_ISR( q, &USART_Rx_Buffer[i], &cr ) == pdTRUE )
     {
+        USART_Rx_Buffer[i] = 'a';
         i++;
         setGreen( ( green() ) ? 0 : 1 );
     }
