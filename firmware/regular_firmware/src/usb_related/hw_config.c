@@ -229,7 +229,7 @@ void Handle_USBAsynchXfer (void)
     portBASE_TYPE cr = pdFALSE;
     uint8_t i = 0;
     while ( crQUEUE_RECEIVE_FROM_ISR( q, &USART_Rx_Buffer[i++], &cr ) == pdTRUE )
-        ;
+        i;
  
     UserToPMABufferCopy( USART_Rx_Buffer, ENDP1_TXADDR, i );
     SetEPTxCount( ENDP1, i );

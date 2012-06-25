@@ -2994,174 +2994,174 @@ LOAD /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.
  .jcr           0x200000f0        0x0 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtbegin.o
                 0x200000f0                . = ALIGN (0x4)
 
-.bss            0x200000f0      0xf2c load address 0x0800b6f8
+.bss            0x200000f0     0x1b2c load address 0x0800b6f8
                 0x200000f0                _sbss = .
                 0x200000f0                __bss_start__ = _sbss
  *(.bss)
  .bss           0x200000f0        0x1 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtbegin.o
  *(.bss*)
  *fill*         0x200000f1        0x7 00
- .bss.xHeap     0x200000f8      0xc00 target/freertos/memmang/heap_1.o
+ .bss.xHeap     0x200000f8     0x1800 target/freertos/memmang/heap_1.o
  .bss.xNextFreeByte
-                0x20000cf8        0x4 target/freertos/memmang/heap_1.o
- .bss.g_funcId  0x20000cfc        0x1 target/src/routines/cr_funcs.o
-                0x20000cfc                g_funcId
+                0x200018f8        0x4 target/freertos/memmang/heap_1.o
+ .bss.g_funcId  0x200018fc        0x1 target/src/routines/cr_funcs.o
+                0x200018fc                g_funcId
  .bss.g_usbInitialized
-                0x20000cfd        0x1 target/src/routines/cr_usbio.o
-                0x20000cfd                g_usbInitialized
+                0x200018fd        0x1 target/src/routines/cr_usbio.o
+                0x200018fd                g_usbInitialized
  .bss.data.7015
-                0x20000cfe        0x1 target/src/routines/cr_usbio.o
- *fill*         0x20000cff        0x1 00
+                0x200018fe        0x1 target/src/routines/cr_usbio.o
+ *fill*         0x200018ff        0x1 00
  .bss.rcTo.7016
-                0x20000d00        0x4 target/src/routines/cr_usbio.o
+                0x20001900        0x4 target/src/routines/cr_usbio.o
  .bss.state.7018
-                0x20000d04        0x1 target/src/routines/cr_usbio.o
- *fill*         0x20000d05        0x3 00
+                0x20001904        0x1 target/src/routines/cr_usbio.o
+ *fill*         0x20001905        0x3 00
  .bss.stateResetTimeout.7021
-                0x20000d08        0x4 target/src/routines/cr_usbio.o
+                0x20001908        0x4 target/src/routines/cr_usbio.o
  .bss.size.7019
-                0x20000d0c        0x1 target/src/routines/cr_usbio.o
+                0x2000190c        0x1 target/src/routines/cr_usbio.o
  .bss.bufferIndex.7020
-                0x20000d0d        0x1 target/src/routines/cr_usbio.o
- *fill*         0x20000d0e        0x2 00
+                0x2000190d        0x1 target/src/routines/cr_usbio.o
+ *fill*         0x2000190e        0x2 00
  .bss.rcFrom.7017
-                0x20000d10        0x4 target/src/routines/cr_usbio.o
+                0x20001910        0x4 target/src/routines/cr_usbio.o
  .bss.USART_Rx_ptr_in
-                0x20000d14        0x4 target/src/usb_related/hw_config.o
-                0x20000d14                USART_Rx_ptr_in
+                0x20001914        0x4 target/src/usb_related/hw_config.o
+                0x20001914                USART_Rx_ptr_in
  .bss.FrameCount.6892
-                0x20000d18        0x4 target/src/usb_related/usb_endp.o
+                0x20001918        0x4 target/src/usb_related/usb_endp.o
  .bss.bIntPackSOF
-                0x20000d1c        0x1 target/src/usb_related/usb_istr.o
-                0x20000d1c                bIntPackSOF
- .bss.Request   0x20000d1d        0x1 target/src/usb_related/usb_prop.o
-                0x20000d1d                Request
- *fill*         0x20000d1e        0x2 00
+                0x2000191c        0x1 target/src/usb_related/usb_istr.o
+                0x2000191c                bIntPackSOF
+ .bss.Request   0x2000191d        0x1 target/src/usb_related/usb_prop.o
+                0x2000191d                Request
+ *fill*         0x2000191e        0x2 00
  .bss.bDeviceState
-                0x20000d20        0x4 target/src/usb_related/usb_pwr.o
-                0x20000d20                bDeviceState
+                0x20001920        0x4 target/src/usb_related/usb_pwr.o
+                0x20001920                bDeviceState
  .bss.pxReadyCoRoutineLists
-                0x20000d24       0x28 target/freertos/croutine.o
+                0x20001924       0x28 target/freertos/croutine.o
  .bss.xDelayedCoRoutineList1
-                0x20000d4c       0x14 target/freertos/croutine.o
+                0x2000194c       0x14 target/freertos/croutine.o
  .bss.xDelayedCoRoutineList2
-                0x20000d60       0x14 target/freertos/croutine.o
+                0x20001960       0x14 target/freertos/croutine.o
  .bss.pxDelayedCoRoutineList
-                0x20000d74        0x4 target/freertos/croutine.o
+                0x20001974        0x4 target/freertos/croutine.o
  .bss.pxOverflowDelayedCoRoutineList
-                0x20000d78        0x4 target/freertos/croutine.o
+                0x20001978        0x4 target/freertos/croutine.o
  .bss.xPendingReadyCoRoutineList
-                0x20000d7c       0x14 target/freertos/croutine.o
+                0x2000197c       0x14 target/freertos/croutine.o
  .bss.pxCurrentCoRoutine
-                0x20000d90        0x4 target/freertos/croutine.o
-                0x20000d90                pxCurrentCoRoutine
+                0x20001990        0x4 target/freertos/croutine.o
+                0x20001990                pxCurrentCoRoutine
  .bss.uxTopCoRoutineReadyPriority
-                0x20000d94        0x4 target/freertos/croutine.o
+                0x20001994        0x4 target/freertos/croutine.o
  .bss.xCoRoutineTickCount
-                0x20000d98        0x4 target/freertos/croutine.o
+                0x20001998        0x4 target/freertos/croutine.o
  .bss.xLastTickCount
-                0x20000d9c        0x4 target/freertos/croutine.o
+                0x2000199c        0x4 target/freertos/croutine.o
  .bss.xPassedTicks
-                0x20000da0        0x4 target/freertos/croutine.o
+                0x200019a0        0x4 target/freertos/croutine.o
  .bss.pxCurrentTCB
-                0x20000da4        0x4 target/freertos/tasks.o
-                0x20000da4                pxCurrentTCB
+                0x200019a4        0x4 target/freertos/tasks.o
+                0x200019a4                pxCurrentTCB
  .bss.pxReadyTasksLists
-                0x20000da8       0x64 target/freertos/tasks.o
+                0x200019a8       0x64 target/freertos/tasks.o
  .bss.xDelayedTaskList1
-                0x20000e0c       0x14 target/freertos/tasks.o
+                0x20001a0c       0x14 target/freertos/tasks.o
  .bss.xDelayedTaskList2
-                0x20000e20       0x14 target/freertos/tasks.o
+                0x20001a20       0x14 target/freertos/tasks.o
  .bss.pxDelayedTaskList
-                0x20000e34        0x4 target/freertos/tasks.o
+                0x20001a34        0x4 target/freertos/tasks.o
  .bss.pxOverflowDelayedTaskList
-                0x20000e38        0x4 target/freertos/tasks.o
+                0x20001a38        0x4 target/freertos/tasks.o
  .bss.xPendingReadyList
-                0x20000e3c       0x14 target/freertos/tasks.o
+                0x20001a3c       0x14 target/freertos/tasks.o
  .bss.xTasksWaitingTermination
-                0x20000e50       0x14 target/freertos/tasks.o
+                0x20001a50       0x14 target/freertos/tasks.o
  .bss.uxTasksDeleted
-                0x20000e64        0x4 target/freertos/tasks.o
+                0x20001a64        0x4 target/freertos/tasks.o
  .bss.xSuspendedTaskList
-                0x20000e68       0x14 target/freertos/tasks.o
+                0x20001a68       0x14 target/freertos/tasks.o
  .bss.uxCurrentNumberOfTasks
-                0x20000e7c        0x4 target/freertos/tasks.o
+                0x20001a7c        0x4 target/freertos/tasks.o
  .bss.xTickCount
-                0x20000e80        0x4 target/freertos/tasks.o
+                0x20001a80        0x4 target/freertos/tasks.o
  .bss.uxTopUsedPriority
-                0x20000e84        0x4 target/freertos/tasks.o
+                0x20001a84        0x4 target/freertos/tasks.o
  .bss.uxTopReadyPriority
-                0x20000e88        0x4 target/freertos/tasks.o
+                0x20001a88        0x4 target/freertos/tasks.o
  .bss.xSchedulerRunning
-                0x20000e8c        0x4 target/freertos/tasks.o
+                0x20001a8c        0x4 target/freertos/tasks.o
  .bss.uxSchedulerSuspended
-                0x20000e90        0x4 target/freertos/tasks.o
+                0x20001a90        0x4 target/freertos/tasks.o
  .bss.uxMissedTicks
-                0x20000e94        0x4 target/freertos/tasks.o
+                0x20001a94        0x4 target/freertos/tasks.o
  .bss.xMissedYield
-                0x20000e98        0x4 target/freertos/tasks.o
+                0x20001a98        0x4 target/freertos/tasks.o
  .bss.xNumOfOverflows
-                0x20000e9c        0x4 target/freertos/tasks.o
+                0x20001a9c        0x4 target/freertos/tasks.o
  .bss.uxTCBNumber
-                0x20000ea0        0x4 target/freertos/tasks.o
+                0x20001aa0        0x4 target/freertos/tasks.o
  .bss.xActiveTimerList1
-                0x20000ea4       0x14 target/freertos/timers.o
+                0x20001aa4       0x14 target/freertos/timers.o
  .bss.xActiveTimerList2
-                0x20000eb8       0x14 target/freertos/timers.o
+                0x20001ab8       0x14 target/freertos/timers.o
  .bss.pxCurrentTimerList
-                0x20000ecc        0x4 target/freertos/timers.o
+                0x20001acc        0x4 target/freertos/timers.o
  .bss.pxOverflowTimerList
-                0x20000ed0        0x4 target/freertos/timers.o
+                0x20001ad0        0x4 target/freertos/timers.o
  .bss.xTimerQueue
-                0x20000ed4        0x4 target/freertos/timers.o
+                0x20001ad4        0x4 target/freertos/timers.o
  .bss.xLastTime.4284
-                0x20000ed8        0x4 target/freertos/timers.o
+                0x20001ad8        0x4 target/freertos/timers.o
  .bss.Data_Mul_MaxPacketSize
-                0x20000edc        0x1 target/usb/usb_core.o
-                0x20000edc                Data_Mul_MaxPacketSize
+                0x20001adc        0x1 target/usb/usb_core.o
+                0x20001adc                Data_Mul_MaxPacketSize
  *(COMMON)
- *fill*         0x20000edd        0x3 00
- COMMON         0x20000ee0       0x28 target/src/routines/cr_usbio.o
-                0x20000ee0                g_buffer
-                0x20000f00                g_fromMcu
-                0x20000f04                g_toMcu
- COMMON         0x20000f08       0x94 target/src/usb_related/hw_config.o
-                0x20000f08                HSEStartUpStatus
-                0x20000f0c                USART_Rx_Buffer
-                0x20000f8c                USART_InitStructure
- COMMON         0x20000f9c       0x40 target/src/usb_related/usb_endp.o
-                0x20000f9c                USB_Rx_Buffer
- COMMON         0x20000fdc        0x2 target/src/usb_related/usb_istr.o
-                0x20000fdc                wIstr
- *fill*         0x20000fde        0x2 00
- COMMON         0x20000fe0        0x2 target/usb/usb_core.o
-                0x20000fe0                StatusInfo
- *fill*         0x20000fe2        0x2 00
- COMMON         0x20000fe4       0x32 target/usb/usb_init.o
-                0x20000fe4                SaveState
-                0x20000fe8                pProperty
-                0x20000fec                EPindex
-                0x20000ff0                Device_Info
-                0x2000100c                pUser_Standard_Requests
-                0x20001010                pInformation
-                0x20001014                wInterrupt_Mask
- COMMON         0x20001016        0x4 target/usb/usb_int.o
-                0x20001016                SaveRState
-                0x20001018                SaveTState
-                0x2000101c                . = ALIGN (0x4)
- *fill*         0x2000101a        0x2 00
-                0x2000101c                _ebss = .
-                0x2000101c                __bss_end__ = _ebss
-                0x2000101c                PROVIDE (end, _ebss)
-                0x2000101c                PROVIDE (_end, _ebss)
+ *fill*         0x20001add        0x3 00
+ COMMON         0x20001ae0       0x28 target/src/routines/cr_usbio.o
+                0x20001ae0                g_buffer
+                0x20001b00                g_fromMcu
+                0x20001b04                g_toMcu
+ COMMON         0x20001b08       0x94 target/src/usb_related/hw_config.o
+                0x20001b08                HSEStartUpStatus
+                0x20001b0c                USART_Rx_Buffer
+                0x20001b8c                USART_InitStructure
+ COMMON         0x20001b9c       0x40 target/src/usb_related/usb_endp.o
+                0x20001b9c                USB_Rx_Buffer
+ COMMON         0x20001bdc        0x2 target/src/usb_related/usb_istr.o
+                0x20001bdc                wIstr
+ *fill*         0x20001bde        0x2 00
+ COMMON         0x20001be0        0x2 target/usb/usb_core.o
+                0x20001be0                StatusInfo
+ *fill*         0x20001be2        0x2 00
+ COMMON         0x20001be4       0x32 target/usb/usb_init.o
+                0x20001be4                SaveState
+                0x20001be8                pProperty
+                0x20001bec                EPindex
+                0x20001bf0                Device_Info
+                0x20001c0c                pUser_Standard_Requests
+                0x20001c10                pInformation
+                0x20001c14                wInterrupt_Mask
+ COMMON         0x20001c16        0x4 target/usb/usb_int.o
+                0x20001c16                SaveRState
+                0x20001c18                SaveTState
+                0x20001c1c                . = ALIGN (0x4)
+ *fill*         0x20001c1a        0x2 00
+                0x20001c1c                _ebss = .
+                0x20001c1c                __bss_end__ = _ebss
+                0x20001c1c                PROVIDE (end, _ebss)
+                0x20001c1c                PROVIDE (_end, _ebss)
 
 ._user_heap_stack
-                0x2000101c       0x80 load address 0x0800c624
-                0x2000101c                . = ALIGN (0x4)
-                0x2000101c                . = (. + _Min_Heap_Size)
-                0x2000109c                . = (. + _Min_Stack_Size)
- *fill*         0x2000101c       0x80 00
-                0x2000109c                . = ALIGN (0x4)
+                0x20001c1c       0x80 load address 0x0800d224
+                0x20001c1c                . = ALIGN (0x4)
+                0x20001c1c                . = (. + _Min_Heap_Size)
+                0x20001c9c                . = (. + _Min_Stack_Size)
+ *fill*         0x20001c1c       0x80 00
+                0x20001c9c                . = ALIGN (0x4)
 
 .memory_b1_text
  *(.mb1text)
