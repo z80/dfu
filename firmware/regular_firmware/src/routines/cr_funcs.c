@@ -12,7 +12,7 @@
 
 uint8_t g_funcId = FUNC_IDLE;
 
-xQueueHandle invokeFunc( uint8_t funcId )
+void invokeFunc( uint8_t funcId )
 {
     g_funcId = funcId;
 }
