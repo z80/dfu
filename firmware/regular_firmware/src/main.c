@@ -99,7 +99,7 @@ void main(void)
     }*/
     portBASE_TYPE res;
     //res = xTaskCreate( vTaskDbg, "d", 128, 0, tskIDLE_PRIORITY+1, 0 );
-    res = xCoRoutineCreate( crDbg, 1, 0 );
+    res = xCoRoutineCreate( crDbg,   1, 0 );
     res = xCoRoutineCreate( crUsbIo, 1, 0 );
     //res = xCoRoutineCreate( crFuncs, 1, 0 );
     vTaskStartScheduler();   

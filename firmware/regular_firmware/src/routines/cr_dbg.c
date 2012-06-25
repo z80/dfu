@@ -54,12 +54,12 @@ void crDbg( xCoRoutineHandle xHandle,
     for ( ;; )
     {
         //setRed( 0 );
-        //setGreen( 1 );
-        crDELAY( xHandle, 50 );
+        setGreen( 1 );
+        crDELAY( xHandle, 25 );
 
-        //setGreen( 0 );
+        setGreen( 0 );
         //setRed( 1 );
-        crDELAY( xHandle, 50 );
+        crDELAY( xHandle, 25 );
     }
     crEND();
 }
