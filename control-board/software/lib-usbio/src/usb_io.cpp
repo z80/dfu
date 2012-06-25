@@ -3,7 +3,11 @@
 #include "usb_io.h"
 #include <string.h>
 #include <libusb.h>
-#include <stdio.h>
+
+#include <unistd.h>  /* UNIX standard function definitions */
+#include <fcntl.h>   /* File control definitions */
+#include <errno.h>   /* Error number definitions */
+#include <termios.h> /* POSIX terminal control definitions */
 
 inline static bool LSB()
 {
@@ -22,8 +26,8 @@ class UsbIo::PD
 public:
     PD() {}
     ~PD() {}
-    libusb_device_handle  * handle;
-    libusb_context        * cxt;
+    //libusb_device_handle  * handle;
+    //libusb_context        * cxt;
     std::string err;
     std::string res;
     std::string output;
@@ -34,7 +38,7 @@ public:
     static const int TIMEOUT;
     static const int EP_OUT;
     static const int EP_IN;
-    //FILE * handle;
+    int handle;
 };
 
 const int UsbIo::PD::VENDOR_ID  = 0x0483;
@@ -49,8 +53,8 @@ UsbIo::UsbIo()
     pd = new PD();
     pd->handle = 0;
     pd->timeout = PD::TIMEOUT;
-    int res = libusb_init( &pd->cxt );
-    libusb_set_debug( pd->cxt, 3 );
+    //int res = libusb_init( &pd->cxt );
+    //libusb_set_debug( pd->cxt, 3 );
     pd->res.resize( 8 );
 }
 
@@ -58,13 +62,13 @@ UsbIo::~UsbIo()
 {
     if ( isOpen() )
         close();
-    libusb_exit( pd->cxt );
+    //libusb_exit( pd->cxt );
     delete pd;
 }
 
 bool UsbIo::open()
 {
-    libusb_device * * list;
+    /*libusb_device * * list;
     int sz = libusb_get_device_list( pd->cxt, &list );
     for ( int i=0; i<sz; i++ )
     {    
@@ -78,20 +82,26 @@ bool UsbIo::open()
     if ( res == 1 )
         res = libusb_detach_kernel_driver( pd->handle, 0 );
 
-	return result;
+	return result;*/
 
-	//pd->handle = fopen( "/dev/ttyACM0", "rw" );
-	//bool res = ( pd->handle != 0 );
-
-    //return res;
+	pd->handle = ::open( "/dev/ttyACM0", O_RDWR | O_NOCTTY | O_NDELAY );
+	bool res = ( pd->handle > 0 );
+	if ( res )
+	{
+		// Blocking if no characters.
+	    fcntl( pd->handle, F_SETFL, 0 );
+	    // Nonblocking in the case of no characters.
+	    //fcntl( pd->handle, F_SETFL, FNDELAY );
+	}
+    return res;
 }
 
 void UsbIo::close()
 {
     if ( isOpen() )
     {
-        libusb_close( pd->handle );
-    	//fclose( pd->handle );
+        //libusb_close( pd->handle );
+    	::close( pd->handle );
         pd->handle = 0;
     }
 }
@@ -103,7 +113,7 @@ bool UsbIo::isOpen() const
 
 int UsbIo::write( unsigned char * data, int size )
 {
-    int actual_length;
+    /*int actual_length;
     int res = libusb_bulk_transfer( pd->handle,
                       PD::EP_OUT,
                       data, size,
@@ -111,15 +121,15 @@ int UsbIo::write( unsigned char * data, int size )
                       pd->timeout );
     if ( res == 0 )
         return actual_length;
-    return 0;
+    return 0;*/
 
-	//int cnt = fwrite( data, 1, size, pd->handle );
-	//return cnt;
+	int cnt = ::write( pd->handle, data, size );
+	return cnt;
 }
 
 int UsbIo::read( unsigned char * data, int maxSize )
 {
-    int actual_length;
+    /*int actual_length;
     int res = libusb_bulk_transfer( pd->handle,
                       PD::EP_IN,
                       data, maxSize,
@@ -127,10 +137,10 @@ int UsbIo::read( unsigned char * data, int maxSize )
                       pd->timeout );
     if ( res == 0 )
         return actual_length;
-    return 0;
+    return 0;*/
 
-	//int cnt = fread( data, 1, maxSize, pd->handle );
-	//return cnt;
+	int cnt = ::read( pd->handle, data, maxSize );
+	return cnt;
 }
 
 int UsbIo::setTimeout( int ms )
