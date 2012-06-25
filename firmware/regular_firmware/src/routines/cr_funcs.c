@@ -12,7 +12,7 @@
 
 uint8_t g_funcId = FUNC_IDLE;
 
-void invokeFunc( uint8_t funcId )
+xQueueHandle invokeFunc( uint8_t funcId )
 {
     g_funcId = funcId;
 }
@@ -35,9 +35,6 @@ void crFuncs( xCoRoutineHandle xHandle,
         crDELAY( xHandle, 1 );
         switch ( g_funcId )
         {
-            case FUNC_ECHO:
-                crQUEUE_SEND( xHandle, q, buf, 0, &cr );
-                break;
             case FUNC_VERSION:
                 res16 = VERSION;
                 out = (uint8_t *)&res16;
