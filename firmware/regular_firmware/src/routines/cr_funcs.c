@@ -9,6 +9,7 @@
 
 
 #include "gpio.h"
+#include "cr_dbg.h"
 
 uint8_t g_funcId = FUNC_IDLE;
 
@@ -23,17 +24,34 @@ void crFuncs( xCoRoutineHandle xHandle,
     static uint8_t     * buf;
     static uint8_t     * out;
     static uint16_t    res16;
+
     static portBASE_TYPE cr;
     static xQueueHandle  q;
-    buf = buffer();
-    q   = fromMcu();
+
+    static uint8_t initialized = 0;
+    if ( !initialized )
+    {
+        initialized = 255;
+        buf = buffer();
+        q   = fromMcu();
+    }
     crSTART( xHandle );
 
     for ( ;; )
     {
         g_funcId = FUNC_IDLE;
         crDELAY( xHandle, 1 );
-        switch ( g_funcId )
+        //Debug;
+        crDELAY( xHandle, 50 );
+        static uint8_t a[2];
+        a[0] = 'a';
+        a[1] = 'b';
+        out = a;
+        crQUEUE_SEND( xHandle, q, out,     5, &cr );
+        crQUEUE_SEND( xHandle, q, &out[1], 5, &cr );
+        //if ( g_funcId != FUNC_IDLE )
+        //    setRed( ( red() ) ? 0 : 1 );
+        /*switch ( g_funcId )
         {
             case FUNC_VERSION:
                 res16 = VERSION;
@@ -58,7 +76,7 @@ void crFuncs( xCoRoutineHandle xHandle,
                 crQUEUE_SEND( xHandle, q, out,     0, &cr );
                 crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
                 break;
-        }
+        }*/
     }
 
     crEND();

@@ -63,12 +63,12 @@ void EP3_OUT_Callback(void)
     USB_Rx_Cnt = USB_SIL_Read(EP3_OUT, USB_Rx_Buffer);
     if ( USB_Rx_Cnt > 0 )
     {
-        //xQueueHandle q = toMcu();
-        //portBASE_TYPE rc = pdFALSE;
+        xQueueHandle q = toMcu();
+        portBASE_TYPE rc = pdFALSE;
         for (i=0; i<USB_Rx_Cnt; i++)
         {
             //USB_SetLeds(USB_Rx_Buffer[i]);
-            //rc = crQUEUE_SEND_FROM_ISR( q, &USB_Rx_Buffer[i], rc );
+            rc = crQUEUE_SEND_FROM_ISR( q, &USB_Rx_Buffer[i], rc );
         }
     }
   

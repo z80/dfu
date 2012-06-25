@@ -6,7 +6,7 @@
 
 #define IN_QUEUE_SIZE  8
 #define OUT_QUEUE_SIZE 8
-#define STATE_RESET_TIMEOUT 10000
+#define STATE_RESET_TIMEOUT 50
 
 #define CMD_DATA 0
 #define CMD_FUNC 1

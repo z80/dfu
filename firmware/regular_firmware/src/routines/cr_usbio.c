@@ -59,7 +59,7 @@ void crUsbIo( xCoRoutineHandle xHandle,
               unsigned portBASE_TYPE uxIndex )
 {
     static uint8_t data;
-    static portBASE_TYPE rcTo, rcFrom;
+    static portBASE_TYPE rcTo;
     static uint8_t state = STATE_CMD;
     static uint8_t size = 0;
     static uint8_t bufferIndex = 0;
@@ -80,19 +80,25 @@ void crUsbIo( xCoRoutineHandle xHandle,
     for ( ;; )
     {
         // Receive data from USB and place to an execution buffer.
-        /*crQUEUE_RECEIVE( xHandle, g_toMcu, &data, 0, &rcTo );
+        crQUEUE_RECEIVE( xHandle, g_toMcu, &data, 0, &rcTo );
         if ( rcTo == pdPASS )
         {
             // Analyze data and put it into execution buffer.
             switch ( state )
             {
                 case STATE_CMD:
+                    //setRed( 1 );
+                    //setGreen( 0 );
                     // Reset timer.
                     stateResetTimeout = STATE_RESET_TIMEOUT;
                     if ( data == CMD_DATA )
+                    {
                         state = STATE_SIZE;
+                    }
                     else if ( data == CMD_FUNC )
+                    {
                         state = STATE_FUNC;
+                    }
                     break;
                 case STATE_SIZE:
                     size = data;
@@ -105,23 +111,18 @@ void crUsbIo( xCoRoutineHandle xHandle,
                         state = STATE_CMD;
                     break;
                 case STATE_FUNC:
+                    //setRed( 0 );
+                    //setGreen( 1 );
                     // Function invocation.
                     invokeFunc( data );
-                    crDELAY( xHandle, 1 );
+                    //crDELAY( xHandle, 50 );
                     // And state back to STATE_CMD
                     state = STATE_CMD;
                     bufferIndex = 0;
                     break;
             }
-        }*/
-        // Receive data to USB and send it.
-        /*crQUEUE_RECEIVE( xHandle, g_fromMcu, &data, 0, &rcFrom );
-        if ( rcFrom == pdPASS )
-        {
-            USB_Send_Data( data );
         }
-        
-        if ( (rcTo != pdPASS) && (rcFrom != pdPASS) )
+        else
         {
             crDELAY( xHandle, 1 );
             if ( stateResetTimeout > 0 )
@@ -131,13 +132,13 @@ void crUsbIo( xCoRoutineHandle xHandle,
                 state = STATE_CMD;
                 bufferIndex = 0;
             }
-        }*/
+        }
 
         // Debugging.
-        static uint8_t a = 'a';
-        crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
-        if ( rcFrom == pdPASS )
-            setRed( ( red() ) ? 0 : 1 );
+        //static uint8_t a = 'a';
+        //crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
+        //if ( rcFrom == pdPASS )
+        //    setRed( ( red() ) ? 0 : 1 );
         /*a = 'b';
         crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
         if ( rcFrom == pdPASS )
@@ -156,7 +157,7 @@ void crUsbIo( xCoRoutineHandle xHandle,
         USB_Send_Data( '\r' );
         USB_Send_Data( '\n' );
         taskEXIT_CRITICAL();*/
-        crDELAY( xHandle, 20 );
+        //crDELAY( xHandle, 20 );
 
     }
 

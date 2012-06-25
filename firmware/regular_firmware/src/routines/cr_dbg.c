@@ -53,13 +53,23 @@ void crDbg( xCoRoutineHandle xHandle,
     crSTART( xHandle );
     for ( ;; )
     {
-        //setRed( 0 );
-        setGreen( 1 );
-        crDELAY( xHandle, 25 );
-
-        setGreen( 0 );
-        //setRed( 1 );
-        crDELAY( xHandle, 25 );
+        static uint8_t r, g, rn, gn;
+        crDELAY( xHandle, 1 );
+        /*r = red();
+        g = green();
+        crDELAY( xHandle, 10 );
+        if ( r )
+            setRed( 0 );
+        if ( g )
+            setGreen( 0 );
+        crDELAY( xHandle, 10 );
+        rn = red();
+        gn = green();
+        if ( ( !rn ) && ( !gn ) )
+        {
+            setRed( r );
+            setGreen( g );
+        }*/
     }
     crEND();
 }
