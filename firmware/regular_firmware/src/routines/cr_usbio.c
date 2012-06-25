@@ -70,9 +70,9 @@ void crUsbIo( xCoRoutineHandle xHandle,
         g_usbInitialized = 1;
         initUsbIo();
         // USB setup.
-        //Set_USBClock();
-	    //USB_Interrupts_Config();
-	    //USB_Init();       
+        Set_USBClock();
+        USB_Interrupts_Config();
+        USB_Init();       
     }
 
     crSTART( xHandle );
@@ -134,9 +134,9 @@ void crUsbIo( xCoRoutineHandle xHandle,
         }*/
 
         // Debugging.
-        //static uint8_t a = 'a';
-        //crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
-        //if ( rcFrom == pdPASS )
+        static uint8_t a = 'a';
+        crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
+        if ( rcFrom == pdPASS )
             setRed( ( red() ) ? 0 : 1 );
         /*a = 'b';
         crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );

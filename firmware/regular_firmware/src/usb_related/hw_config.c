@@ -229,9 +229,9 @@ void Handle_USBAsynchXfer (void)
     xQueueHandle q = fromMcu();
     portBASE_TYPE cr = pdFALSE;
     uint8_t i = 0;
-    //while ( crQUEUE_RECEIVE_FROM_ISR( q, &USART_Rx_Buffer[i], &cr ) == pdTRUE )
+    while ( crQUEUE_RECEIVE_FROM_ISR( q, &USART_Rx_Buffer[i], &cr ) == pdTRUE )
     {
-        USART_Rx_Buffer[i] = 'a';
+        //USART_Rx_Buffer[i] = 'a';
         i++;
         //setGreen( ( green() ) ? 0 : 1 );
     }
