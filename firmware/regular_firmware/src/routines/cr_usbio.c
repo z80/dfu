@@ -15,6 +15,7 @@
 #include "croutine.h"
 #include "queue.h"
 
+#include "cr_dbg.h"
 
 #define STATE_CMD  0  // State wait for cmd.
 #define STATE_SIZE 1  // State wait for data cnt.
@@ -79,7 +80,7 @@ void crUsbIo( xCoRoutineHandle xHandle,
     for ( ;; )
     {
         // Receive data from USB and place to an execution buffer.
-        crQUEUE_RECEIVE( xHandle, g_toMcu, &data, 0, &rcTo );
+        /*crQUEUE_RECEIVE( xHandle, g_toMcu, &data, 0, &rcTo );
         if ( rcTo == pdPASS )
         {
             // Analyze data and put it into execution buffer.
@@ -112,7 +113,7 @@ void crUsbIo( xCoRoutineHandle xHandle,
                     bufferIndex = 0;
                     break;
             }
-        }
+        }*/
         // Receive data to USB and send it.
         /*crQUEUE_RECEIVE( xHandle, g_fromMcu, &data, 0, &rcFrom );
         if ( rcFrom == pdPASS )
@@ -135,12 +136,27 @@ void crUsbIo( xCoRoutineHandle xHandle,
         // Debugging.
         static uint8_t a = 'a';
         crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
+        if ( rcFrom == pdPASS )
+            setRed( ( red() ) ? 0 : 1 );
+        /*a = 'b';
+        crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
+        if ( rcFrom == pdPASS )
+            setRed( ( red() ) ? 0 : 1 );*/
+        a = '\r';
+        crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
+        if ( rcFrom == pdPASS )
+            setRed( ( red() ) ? 0 : 1 );
+        a = '\n';
+        crQUEUE_SEND( xHandle, g_fromMcu, &a, 0, &rcFrom );
+        if ( rcFrom == pdPASS )
+            setRed( ( red() ) ? 0 : 1 );
+    
         /*taskENTER_CRITICAL();
         USB_Send_Data( 'a' );
         USB_Send_Data( '\r' );
         USB_Send_Data( '\n' );
         taskEXIT_CRITICAL();*/
-        crDELAY( xHandle, 1 );
+        crDELAY( xHandle, 20 );
 
     }
 
