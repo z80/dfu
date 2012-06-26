@@ -35,7 +35,7 @@ int  DeviceIo::version()
     int sz = readQueue( d, 2 );
     if ( sz < 2 )
         return -1;
-    int res = 256 * d[0] + d[1];
+    int res = d[0] + d[1] * 256;
     return res;
 }
 
@@ -60,12 +60,13 @@ bool DeviceIo::gpioSet( int index, int pins, int vals )
 bool DeviceIo::gpio( int index, int pins, int & vals )
 {
     putUInt8( static_cast<unsigned char>( index ) );
+    putUInt8( static_cast<unsigned char>( pins ) );
     execFunc( FUNC_GPIO );
     unsigned char d[2];
     int sz = readQueue( d, 2 );
     if ( sz < 2 )
         return false;
-    vals = 256 * d[0] + d[1];
+    vals = d[0] + d[1] * 256;
     return true;
 }
 

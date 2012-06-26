@@ -42,16 +42,16 @@ void crFuncs( xCoRoutineHandle xHandle,
         g_funcId = FUNC_IDLE;
         crDELAY( xHandle, 1 );
         //Debug;
-        crDELAY( xHandle, 50 );
+        /*crDELAY( xHandle, 50 );
         static uint8_t a[2];
         a[0] = 'a';
         a[1] = 'b';
         out = a;
         crQUEUE_SEND( xHandle, q, out,     5, &cr );
-        crQUEUE_SEND( xHandle, q, &out[1], 5, &cr );
+        crQUEUE_SEND( xHandle, q, &out[1], 5, &cr );*/
         //if ( g_funcId != FUNC_IDLE )
         //    setRed( ( red() ) ? 0 : 1 );
-        /*switch ( g_funcId )
+        switch ( g_funcId )
         {
             case FUNC_VERSION:
                 res16 = VERSION;
@@ -76,7 +76,7 @@ void crFuncs( xCoRoutineHandle xHandle,
                 crQUEUE_SEND( xHandle, q, out,     0, &cr );
                 crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
                 break;
-        }*/
+        }
     }
 
     crEND();

@@ -115,7 +115,6 @@ void crUsbIo( xCoRoutineHandle xHandle,
                     //setGreen( 1 );
                     // Function invocation.
                     invokeFunc( data );
-                    //crDELAY( xHandle, 50 );
                     // And state back to STATE_CMD
                     state = STATE_CMD;
                     bufferIndex = 0;
@@ -124,7 +123,6 @@ void crUsbIo( xCoRoutineHandle xHandle,
         }
         else
         {
-            crDELAY( xHandle, 1 );
             if ( stateResetTimeout > 0 )
                 stateResetTimeout--;
             else
@@ -133,6 +131,7 @@ void crUsbIo( xCoRoutineHandle xHandle,
                 bufferIndex = 0;
             }
         }
+        crDELAY( xHandle, 1 );
 
         // Debugging.
         //static uint8_t a = 'a';

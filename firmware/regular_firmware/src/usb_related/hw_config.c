@@ -234,8 +234,8 @@ void Handle_USBAsynchXfer (void)
         //USART_Rx_Buffer[i] = 'a';
         i++;
     }
-    setRed( i & 1 );
-    setGreen( i & 2 );
+    //setRed( i & 1 );
+    //setGreen( i & 2 );
  
     UserToPMABufferCopy( USART_Rx_Buffer, ENDP1_TXADDR, i );
     SetEPTxCount( ENDP1, i );
