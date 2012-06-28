@@ -16,9 +16,10 @@
 #define FUNC_IDLE           0
 #define FUNC_VERSION        1
 // GPIO
-#define FUNC_GPIO_CONFIG    2
-#define FUNC_GPIO_SET       3
-#define FUNC_GPIO           4
+#define FUNC_GPIO_EN        2
+#define FUNC_GPIO_CONFIG    3
+#define FUNC_GPIO_SET       4
+#define FUNC_GPIO           5
 
 
 #endif

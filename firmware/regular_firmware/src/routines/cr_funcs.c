@@ -59,6 +59,9 @@ void crFuncs( xCoRoutineHandle xHandle,
                 crQUEUE_SEND( xHandle, q, out,     0, &cr );
                 crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
                 break; 
+            case FUNC_GPIO_EN:
+                gpioEn( buf[0], buf[1] );
+                break;
             case FUNC_GPIO_CONFIG:
                 gpioConfig( buf[0], 
                             *(uint16_t *)(&(buf[1])), 
@@ -70,8 +73,7 @@ void crFuncs( xCoRoutineHandle xHandle,
                          *(uint16_t *)(&(buf[3])) );
                 break;
             case FUNC_GPIO:
-                res16 = gpio( buf[0], 
-                              *(uint16_t *)(&(buf[1])) ); 
+                res16 = gpio( buf[0] ); 
                 out = (uint8_t *)&res16;
                 crQUEUE_SEND( xHandle, q, out,     0, &cr );
                 crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
