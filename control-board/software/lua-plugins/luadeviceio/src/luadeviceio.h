@@ -1,6 +1,6 @@
 
-#ifndef __LUA_BAYSPEC_H_
-#define __LUA_BAYSPEC_H_
+#ifndef __LUA_DEVICEIO_H_
+#define __LUA_DEVICEIO_H_
 
 extern "C"
 {
@@ -9,7 +9,7 @@ extern "C"
     #include "lauxlib.h"
 }
 
-extern "C" int __declspec(dllexport) luaopen_luabayspec( lua_State * L );
+extern "C" int __declspec(dllexport) luaopen_luadeviceio( lua_State * L );
 
 
 #endif
