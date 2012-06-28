@@ -39,6 +39,14 @@ int  DeviceIo::version()
     return res;
 }
 
+bool DeviceIo::gpioEn( int index, bool en )
+{
+	putUInt8( static_cast<unsigned char>( index ) );
+	putUInt8( ( en ) ? 1 : 0 );
+	execFunc( FUNC_GPIO_EN );
+	return true;
+}
+
 bool DeviceIo::gpioConfig( int index, int pins, int mode )
 {
     putUInt8( static_cast<unsigned char>( index ) );

@@ -16,6 +16,7 @@ public:
 
     int version();
 
+    bool gpioEn( int index, bool en );
     bool gpioConfig( int index, int pins, int mode );
     bool gpioSet( int index, int pins, int vals );
     bool gpio( int index, int pins, int & val );
