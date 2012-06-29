@@ -1,0 +1,25 @@
+
+ROOT_DIR=$(pwd)
+echo $ROOT_DIR
+
+ICEE_EMB=$ROOT_DIR/build/emb
+
+# Build IceE embedded.
+REL_PATH=~/projects/openwrt/OpenWrt-Toolchain-brcm47xx-for-mipsel-gcc-4.3.3+cs_uClibc-0.9.30.1/toolchain-mipsel_gcc-4.3.3+cs_uClibc-0.9.30.1/usr
+export CC=$REL_PATH/bin/mipsel-openwrt-linux-gcc
+export CXX=$REL_PATH/bin/mipsel-openwrt-linux-g++
+export AR=$REL_PATH/bin/mipsel-openwrt-linux-ar
+INC_CXX=$REL_PATH/mipsel-openwrt-linux/include/c++/4.3.3
+export PATH=$REL_PATH/lib:$REL_PATH/include:$INC_CXX:$PATH
+
+cd $ICEE_EMB
+make configure
+make
+
+#echo $PATH
+#echo $CXX
+#echo $AR
+
+
+
+

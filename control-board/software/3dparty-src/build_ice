@@ -1,0 +1,53 @@
+
+ROOT_DIR=$(pwd)
+echo $ROOT_DIR
+
+MCPP_DIR=$ROOT_DIR/../build/mcpp
+mkdir -p $MCPP_DIR
+cd $MCPP_DIR
+$ROOT_DIR/mcpp-2.7.2/configure --prefix=$MCPP_DIR CFLAGS=-fPIC --enable-mcpplib --disable-shared
+chmod -R 744 ./
+make
+mkdir -p $MCPP_DIR/lib
+cp -r $MCPP_DIR/src/.libs/* $MCPP_DIR/lib
+
+#exit 0
+
+ICEE_DIR=$ROOT_DIR/../build/icee
+mkdir -p $ICEE_DIR
+cd $ICEE_DIR
+cp -r $ROOT_DIR/IceE-1.3.0/* $ICEE_DIR
+chmod -R 744 $ICEE_DIR
+cd $ICEE_DIR/cpp/
+make
+# Before building IceE copy to another dir for building ported version.
+ICEE_EMB=$ROOT_DIR/../build/emb
+mkdir -p $ICEE_EMB
+cp -r $ICEE_DIR/* $ICEE_EMB/
+chmod -R 744 $ICEE_EMB
+# Build IceE
+cd $ICEE_DIR
+make configure
+make
+
+# Build IceE embedded.
+REL_PATH=~/projects/openwrt/OpenWrt-Toolchain-brcm47xx-for-mipsel-gcc-4.3.3+cs_uClibc-0.9.30.1/toolchain-mipsel_gcc-4.3.3+cs_uClibc-0.9.30.1/usr
+export CC=$REL_PATH/bin/mipsel-openwrt-linux-gcc
+export CXX=$REL_PATH/bin/mipsel-openwrt-linux-g++
+export AR=$REL_PATH/bin/mipsel-openwrt-linux-ar
+INC_CXX=$REL_PATH/mipsel-openwrt-linux/include/c++/4.3.3
+export PATH=$REL_PATH/lib:$REL_PATH/include:$INC_CXX:$PATH
+
+cd $ICEE_EMB
+make configure
+make
+
+
+#../mcpp-2.7.2/configure --enable-replace-cpp
+#make
+######make DESTDIR=. install
+
+#make ../IceE-1.3.0/configure
+
+
+
