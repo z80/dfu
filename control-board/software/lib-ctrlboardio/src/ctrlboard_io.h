@@ -1,18 +1,18 @@
 
-#ifndef __DEVICEIO_H_
-#define __DEVICEIO_H_
+#ifndef __CTRLBOARD_IO_H_
+#define __CTRLBOARD_IO_H_
 
-#include "usb_io.h"
-#include "device_functions.h"
+#include "lowlevel_io.h"
+#include "ctrlboard_functions.h"
 #include <string>
 
-class DeviceIo: public UsbIo
+class CtrlboardIo: public LowlevelIo
 {
 public:
     typedef std::basic_string< unsigned char > TIo;
 
-    DeviceIo();
-    ~DeviceIo();
+    CtrlboardIo();
+    ~CtrlboardIo();
 
     int version();
 

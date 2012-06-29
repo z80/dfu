@@ -1,1 +1,1 @@
-add_subdirectory( "./luadeviceio" )
+add_subdirectory( "./luactrlboardio" )

@@ -28,8 +28,8 @@ add_subdirectory( "./3dparty-src/pawn/source/amx" )
 add_subdirectory( "./lib-qtluaex" )
 add_subdirectory( "./lib-widgets" )
 add_subdirectory( "./plugins" )
-add_subdirectory( "./lib-usbio" )
-add_subdirectory( "./lib-deviceio" )
+add_subdirectory( "./lua-plugins" )
+add_subdirectory( "./lib-ctrlboardio" )
 add_subdirectory( "./lua-application" ) # For testing lib-qtluaex project
 add_subdirectory( "./tests" )
 

@@ -9,7 +9,7 @@ class UsbIo
 public:
     UsbIo();
     virtual ~UsbIo();
-    bool open();
+    bool open( const std::string & arg = std::string() );
     void close();
     bool isOpen() const;
 
@@ -17,18 +17,8 @@ public:
     int write( unsigned char * data, int size );
     int read( unsigned char * data, int maxSize );
     int setTimeout( int ms );
-
-    int putArgs( int size, unsigned char * data );
-    int putString( char * stri );
-    int putUInt8( unsigned char val );
-    int putUInt16( unsigned short val );
-    int putUInt32( unsigned long val );
-
-    int execFunc( int index );
-    //int queueSize();
-    int readQueue( unsigned char * data, int maxSize );
-
 protected:
+    std::basic_string<unsigned char> & data();
     class PD;
     PD * pd;
 };

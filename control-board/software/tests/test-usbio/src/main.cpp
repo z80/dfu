@@ -1,10 +1,10 @@
 
 #include "usb_io.h"
-#include "deviceio.h"
+#include "ctrlboard_io.h"
 
 int main( int argc, char * argv[] )
 {
-    DeviceIo io;
+    CtrlboardIo io;
     bool res = io.open();
     const int CNT = 64;
     unsigned char b[ CNT ];

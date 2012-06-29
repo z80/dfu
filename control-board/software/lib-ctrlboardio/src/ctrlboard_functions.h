@@ -2,6 +2,10 @@
 #ifndef __DEVICE_FUNCTIONS_H_
 #define __DEVICE_FUNCTIONS_H_
 
+// Low level functions.
+#define CMD_DATA    0
+#define CMD_FUNC    1
+
 #define FUNC_VERSION        1
 // GPIO
 #define FUNC_GPIO_EN        2

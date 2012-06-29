@@ -1,5 +1,5 @@
 
-#include "deviceio.h"
+#include "ctrlboard_io.h"
 
 inline static bool LSB()
 {
@@ -19,16 +19,16 @@ inline static int toUInt16( unsigned char d[] )
     return res;
 }
 
-DeviceIo::DeviceIo()
-: UsbIo()
+CtrlboardIo::CtrlboardIo()
+: LowlevelIo()
 {
 }
 
-DeviceIo::~DeviceIo()
+CtrlboardIo::~CtrlboardIo()
 {
 }
 
-int  DeviceIo::version()
+int  CtrlboardIo::version()
 {
     execFunc( FUNC_VERSION );
     unsigned char d[2];
@@ -39,7 +39,7 @@ int  DeviceIo::version()
     return res;
 }
 
-bool DeviceIo::gpioEn( int index, bool en )
+bool CtrlboardIo::gpioEn( int index, bool en )
 {
 	putUInt8( static_cast<unsigned char>( index ) );
 	putUInt8( ( en ) ? 1 : 0 );
@@ -47,7 +47,7 @@ bool DeviceIo::gpioEn( int index, bool en )
 	return true;
 }
 
-bool DeviceIo::gpioConfig( int index, int pins, int mode )
+bool CtrlboardIo::gpioConfig( int index, int pins, int mode )
 {
     putUInt8( static_cast<unsigned char>( index ) );
     putUInt16( static_cast<unsigned short>( pins ) );
@@ -56,7 +56,7 @@ bool DeviceIo::gpioConfig( int index, int pins, int mode )
     return true;
 }
 
-bool DeviceIo::gpioSet( int index, int pins, int vals )
+bool CtrlboardIo::gpioSet( int index, int pins, int vals )
 {
     putUInt8( static_cast<unsigned char>( index ) );
     putUInt16( static_cast<unsigned short>( pins ) );
@@ -65,7 +65,7 @@ bool DeviceIo::gpioSet( int index, int pins, int vals )
     return true;
 }
 
-bool DeviceIo::gpio( int index, int pins, int & vals )
+bool CtrlboardIo::gpio( int index, int pins, int & vals )
 {
     putUInt8( static_cast<unsigned char>( index ) );
     putUInt8( static_cast<unsigned char>( pins ) );
@@ -78,7 +78,7 @@ bool DeviceIo::gpio( int index, int pins, int & vals )
     return true;
 }
 
-bool DeviceIo::adcEnable( int pins )
+bool CtrlboardIo::adcEnable( int pins )
 {
     /*putUInt8( 0, static_cast<unsigned char>( index ) );
     putUInt8( 1, val ? 1 : 0 );
@@ -86,7 +86,7 @@ bool DeviceIo::adcEnable( int pins )
     return true;
 }
 
-bool DeviceIo::adc( std::basic_string<int> & vals )
+bool CtrlboardIo::adc( std::basic_string<int> & vals )
 {
     /*putUInt8( 0, static_cast<unsigned char>( index ) );
     execFunc( CMD_ADC );
@@ -101,22 +101,22 @@ bool DeviceIo::adc( std::basic_string<int> & vals )
 }
 
 
-bool DeviceIo::twiEnable( bool val )
+bool CtrlboardIo::twiEnable( bool val )
 {
     return true;
 }
 
-bool DeviceIo::twiSetAddress( int addr )
+bool CtrlboardIo::twiSetAddress( int addr )
 {
     return true;
 }
 
-bool DeviceIo::twiSetSpeed( int val )
+bool CtrlboardIo::twiSetSpeed( int val )
 {
     return true;
 }
 
-bool DeviceIo::twiWriteRead( int addr, TIo wr, TIo & rd )
+bool CtrlboardIo::twiWriteRead( int addr, TIo wr, TIo & rd )
 {
     return true;
 }
