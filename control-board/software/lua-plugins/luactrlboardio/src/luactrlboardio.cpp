@@ -147,7 +147,7 @@ static void registerFunctions( lua_State * L )
     luaL_register( L, LIB_NAME, FUNCTIONS );
 }
 
-extern "C" int __declspec(dllexport) luaopen_luadeviceio( lua_State * L )
+extern "C" int __declspec(dllexport) luaopen_luactrlboardio( lua_State * L )
 {
     createMeta( L );
     registerFunctions( L );
