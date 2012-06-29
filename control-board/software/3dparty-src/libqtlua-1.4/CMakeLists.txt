@@ -24,7 +24,9 @@
         set( LUA_INCLUDE_DIR ../lua-5.1.5/src )
         set( CMAKE_INSTALL_PREFIX ./app )
         include_directories( ${LUA_INCLUDE_DIR} )
-
+        add_definitions( -DHAVE_LUA_PACKAGELIB 
+                         -DHAVE_LUA_OSLIB 
+                         -DHAVE_LUA_OPENLIBS )
 # qtlua library
 	
 	###########################################################################
