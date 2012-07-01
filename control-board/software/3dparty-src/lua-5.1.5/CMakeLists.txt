@@ -1,5 +1,7 @@
 
-set( BUILD_SHARED_LIBS ON )
+# To be able to load binary modules as shared libraries.
+add_definitions( -DLUA_DL_DLOPEN )
+
 add_library( liblua-5.1.5  STATIC 
                        src/lapi.c src/lcode.c src/ldebug.c src/ldo.c 
                        src/ldump.c src/lfunc.c src/lgc.c src/llex.c
@@ -11,7 +13,7 @@ add_library( liblua-5.1.5  STATIC
                        src/loslib.c src/ltablib.c src/lstrlib.c 
                        src/loadlib.c src/linit.c )
 if ( UNIX )
-    target_link_libraries( liblua-5.1.5 m )
+    target_link_libraries( liblua-5.1.5 m dl )
 endif ( UNIX )
 
 add_executable( lua-5.1.5 src/lua.c )

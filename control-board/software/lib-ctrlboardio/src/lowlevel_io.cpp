@@ -1,6 +1,7 @@
 
 #include "lowlevel_io.h"
 #include "ctrlboard_functions.h"
+#include "string.h"
 
 inline static bool LSB()
 {

@@ -9,7 +9,12 @@ include_directories( "./src"
 
 aux_source_directory( "./src" src )
 add_library( luactrlboardio SHARED ${src} )
-set_property( TARGET luactrlboardio PROPERTY COMPILE_DEFINITIONS CTRLBOARDIO_DLL )
+if ( WIN32 )
+   list( APPEND defs DECLSPEC=__declspec(dllexport) )
+endif ( WIN32 )
+set_property( TARGET luactrlboardio PROPERTY COMPILE_DEFINITIONS ${defs} )
+set_property( TARGET luactrlboardio PROPERTY OUTPUT_NAME "luactrlboardio" )
+set_target_properties( luactrlboardio PROPERTIES PREFIX "" )
 target_link_libraries( luactrlboardio liblua-5.1.5 ctrlboardio )
 
 install( TARGETS luactrlboardio DESTINATION "./" )

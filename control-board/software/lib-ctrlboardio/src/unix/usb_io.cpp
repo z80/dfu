@@ -59,7 +59,7 @@ bool UsbIo::open( const std::string & arg )
         openPort = "/dev/ttyACM0";
     else
         openPort = arg;
-    pd->handle = ::open( openPort, O_RDWR | O_NOCTTY | O_NDELAY );
+    pd->handle = ::open( openPort.data(), O_RDWR | O_NOCTTY | O_NDELAY );
     bool res = ( pd->handle > 0 );
     if ( res )
     {

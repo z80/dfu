@@ -9,7 +9,11 @@ extern "C"
     #include "lauxlib.h"
 }
 
-extern "C" int __declspec(dllexport) luaopen_luactrlboardio( lua_State * L );
+#ifndef DECLSPEC
+    #define DECLSPEC
+#endif
+
+extern "C" int DECLSPEC luaopen_luactrlboardio( lua_State * L );
 
 
 #endif
