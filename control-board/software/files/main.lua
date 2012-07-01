@@ -1,4 +1,5 @@
 
+require( "debugger" )
 require( "ctrl_board" )
 
 ui = qt.load_ui( "form.ui" )
@@ -24,6 +25,7 @@ function t:timeout()
 end
 
 function t:onButton02()
+pause()
     local dev = self.dev or CtrlBoard()
     if ( not dev:isOpen() ) then
         local res = dev:open()
@@ -49,6 +51,6 @@ end
 qt.connect( ui.button01, "clicked", t, t.func )
 qt.connect( ui.button02, "clicked", t, t.onButton02 )
 qt.connect( ui.button03, "clicked", t, t.onButton03 )
-qt.connect( ui.plot,         "timeout", t, t.timeout )
+qt.connect( ui.plot,     "timeout", t, t.timeout )
 ui.plot:setInterval( 2 )
 ui.plot:start()
