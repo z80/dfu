@@ -1,3 +1,3 @@
 #/bin/sh
 cd ./app
-ddd --eval-command "file ./test-usbio"
+ddd --eval-command "file ./qtluaex-test"

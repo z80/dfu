@@ -82,7 +82,7 @@ void UsbIo::close()
 
 bool UsbIo::isOpen() const
 {
-    return (pd->handle != 0);
+    return (pd->handle > 0);
 }
 
 int UsbIo::write( unsigned char * data, int size )

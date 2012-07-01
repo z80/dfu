@@ -35,7 +35,7 @@ static int open( lua_State * L )
 {
     CtrlboardIo * io = *reinterpret_cast<CtrlboardIo * *>( lua_touserdata( L, 1 ) );
     bool res;
-    if ( lua_gettop( L ) > 1 )
+    if ( ( lua_gettop( L ) > 1 ) && ( lua_type( L, 2 ) == LUA_TSTRING ) )
     {
         std::string arg = lua_tostring( L, 2 );
         res = io->open( arg );
@@ -96,7 +96,7 @@ static int readQueue( lua_State * L )
         maxSize = static_cast<int>( lua_tonumber( L, 2 ) );
     else
         maxSize = 128;
-    std::basic_string<unsigned char> data;
+    std::basic_string<unsigned char> & data = io->data();
     data.resize( maxSize );
     int cnt = io->readQueue( const_cast<unsigned char *>( data.data() ), maxSize );
     lua_newtable( L );
@@ -133,7 +133,7 @@ static void createMeta( lua_State * L )
     lua_pushvalue( L, -2 );  // push metatable
     lua_rawset( L, -3 );       // metatable.__index = metatable
     luaL_register( L, NULL, META_FUNCTIONS );
-    // Очищаем стек.
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
     lua_pop( L, lua_gettop( L ) );
 }
 

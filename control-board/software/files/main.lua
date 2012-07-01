@@ -25,7 +25,8 @@ function t:timeout()
 end
 
 function t:onButton02()
-pause()
+--pause()
+    print( "button02" )
     local dev = self.dev or CtrlBoard()
     if ( not dev:isOpen() ) then
         local res = dev:open()
@@ -35,7 +36,8 @@ pause()
 end
 
 function t:onButton03()
-    local dev = self.dev
+    print( "button03" )
+    [[local dev = self.dev
     if ( not dev ) then
         print( "error: no device" )
         return
@@ -45,12 +47,12 @@ function t:onButton03()
         return
     end
     local res = dev:version()
-    print( "version is: " .. tostring( res ) )
+    print( "version is: " .. tostring( res ) )]]
 end
 
 qt.connect( ui.button01, "clicked", t, t.func )
 qt.connect( ui.button02, "clicked", t, t.onButton02 )
 qt.connect( ui.button03, "clicked", t, t.onButton03 )
 qt.connect( ui.plot,     "timeout", t, t.timeout )
-ui.plot:setInterval( 2 )
-ui.plot:start()
+--ui.plot:setInterval( 2 )
+--ui.plot:start()

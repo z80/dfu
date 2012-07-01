@@ -17,8 +17,9 @@ public:
     int write( unsigned char * data, int size );
     int read( unsigned char * data, int maxSize );
     int setTimeout( int ms );
-protected:
+
     std::basic_string<unsigned char> & data();
+protected:
     class PD;
     PD * pd;
 };
