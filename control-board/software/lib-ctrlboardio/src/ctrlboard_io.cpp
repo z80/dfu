@@ -51,7 +51,7 @@ bool CtrlboardIo::gpioConfig( int index, int pins, int mode )
 {
     putUInt8( static_cast<unsigned char>( index ) );
     putUInt16( static_cast<unsigned short>( pins ) );
-    putUInt16( static_cast<unsigned short>( mode ) );
+    putUInt8( static_cast<unsigned char>( mode ) );
     execFunc( FUNC_GPIO_CONFIG );
     return true;
 }
