@@ -1,6 +1,6 @@
 
 require( "unclasslib" )
-require( "luactrboardio" )
+require( "luactrlboardio" )
 
 local CMD_DATA = 0
 local CMD_FUNC = 1
