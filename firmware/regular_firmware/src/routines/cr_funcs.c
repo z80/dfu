@@ -23,6 +23,7 @@ void crFuncs( xCoRoutineHandle xHandle,
 {
     static uint8_t     * buf;
     static uint8_t     * out;
+    static uint8_t     sendCnt = 0;
     static uint16_t    res16;
 
     static portBASE_TYPE cr;
@@ -51,11 +52,13 @@ void crFuncs( xCoRoutineHandle xHandle,
         crQUEUE_SEND( xHandle, q, &out[1], 5, &cr );*/
         //if ( g_funcId != FUNC_IDLE )
         //    setRed( ( red() ) ? 0 : 1 );
+        sendCnt = 0;
         switch ( g_funcId )
         {
             case FUNC_VERSION:
                 res16 = VERSION;
                 out = (uint8_t *)&res16;
+                sendCnt = 2;
                 crQUEUE_SEND( xHandle, q, out,     0, &cr );
                 crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
                 break; 
@@ -75,10 +78,12 @@ void crFuncs( xCoRoutineHandle xHandle,
             case FUNC_GPIO:
                 res16 = gpio( buf[0] ); 
                 out = (uint8_t *)&res16;
-                crQUEUE_SEND( xHandle, q, out,     0, &cr );
-                crQUEUE_SEND( xHandle, q, &out[1], 0, &cr );
+                sendCnt = 2;
                 break;
         }
+        static uint8_t i;
+        for ( i=0; i<sendCnt; i++ )
+            crQUEUE_SEND( xHandle, q, &out[i], 0, &cr );
     }
 
     crEND();

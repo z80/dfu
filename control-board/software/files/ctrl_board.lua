@@ -52,44 +52,47 @@ function CtrlBoard:readQueue( maxSize )
 end
 
 function CtrlBoard:version()
-    self:execFunc( FUNC_VERSION )
-    local t = self:readQueue( 2 )
+    self.dev:execFunc( FUNC_VERSION )
+    local t = self.dev:readQueue( 2 )
     if ( #t < 2 ) then
         return nil, "Failed to read version"
     end
     local res = t[1] + t[2] * 256
+    return res
 end
 
 function CtrlBoard:gpioEn( index, en )
-    self:putUInt8( index )
-    self:putUInt8( en and 1 or 0 )
-    self:execFunc( FUNC_GPIO_EN )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( en and 1 or 0 )
+    self.dev:execFunc( FUNC_GPIO_EN )
     return true
 end
 
 function CtrlBoard:gpioConfig( index, pins, mode )
-    self:putUInt8( index )
-    self:putUInt16( pins )
-    self:putUInt8( mode )
-    self:execFunc( FUNC_GPIO_CONFIG )
+    self.dev:putUInt8( index )
+    self.dev:putUInt16( pins )
+    self.dev:putUInt8( mode )
+    self.dev:execFunc( FUNC_GPIO_CONFIG )
     return true
 end
 
 function CtrlBoard:gpioSet( index, pins, vals )
-    self:putUInt8( index )
-    self:putUInt16( pins )
-    self:putUInt16( vals )
-    self:execFunc( FUNC_GPIO_SET )
+    self.dev:putUInt8( index )
+    self.dev:putUInt16( pins )
+    self.dev:putUInt16( vals )
+    self.dev:execFunc( FUNC_GPIO_SET )
     return true
 end
 
 function CtrlBoard:gpio( index )
-    self:putUInt8( index )
-    local t = self:readQueue( 2 )
+    self.dev:putUInt8( index )
+    self.dev:execFunc( FUNC_GPIO )
+    local t = self.dev:readQueue( 2 )
     if ( #t < 2 ) then
         return nil, "ERROR: Failed to get GPIO state"
     end
     local res = t[1] + t[2] * 256
+    return res
 end
 
 

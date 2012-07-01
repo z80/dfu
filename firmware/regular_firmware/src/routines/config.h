@@ -4,8 +4,8 @@
 
 #define VERSION        1234
 
-#define IN_QUEUE_SIZE  8
-#define OUT_QUEUE_SIZE 8
+#define IN_QUEUE_SIZE  64
+#define OUT_QUEUE_SIZE 64
 #define STATE_RESET_TIMEOUT 50
 
 #define CMD_DATA 0

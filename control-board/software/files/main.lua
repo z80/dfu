@@ -8,15 +8,14 @@ ui:show()
 t = { stri = "Hi!", ui = ui, t = 0 }
 
 function t:func()
-    print( tostring( self.stri ) )
-    local o = ui.plot
-    o:clear()
-    o:setCurvesCnt( 1 )
-    o:setPointsCnt( 100 )
-    for i=1, 99 do
-        o:addData( 0, math.sin( i / 30 + self.t ) )
+    print( "button02" )
+    local dev = self.dev or CtrlBoard()
+    if ( not dev:isOpen() ) then
+        local res = dev:open()
+        print( "open() invoked, result: " .. tostring( res ) )
     end
-    o:replot()
+
+    self.dev = dev
 end
 
 function t:timeout()
@@ -25,19 +24,8 @@ function t:timeout()
 end
 
 function t:onButton02()
---pause()
-    print( "button02" )
-    local dev = self.dev or CtrlBoard()
-    if ( not dev:isOpen() ) then
-        local res = dev:open()
-        print( "open() invoked, result: " .. tostring( res ) )
-    end
-    self.dev = dev
-end
-
-function t:onButton03()
     print( "button03" )
-    [[local dev = self.dev
+    local dev = self.dev
     if ( not dev ) then
         print( "error: no device" )
         return
@@ -46,8 +34,26 @@ function t:onButton03()
         print( "error: device is not open" )
         return
     end
-    local res = dev:version()
-    print( "version is: " .. tostring( res ) )]]
+    dev:putUInt8( 1 )
+    --local res = dev:version()
+    --print( "version is: " .. tostring( res ) )
+
+    dev:gpioEn( 1, true )
+    dev:gpioConfig( 1, 0xFFFF, 0x28 )
+    local gpio = dev:gpio( 1 )
+    print( "gpio = " .. tostring( gpio ) )
+    --dev:gpioConfig( 1, 0xFFFF, 0x48 )
+end
+
+function t:onButton03()
+    local dev = self.dev
+    if ( not dev ) or ( not dev:isOpen() ) then
+        print( "Access to a device failed" )
+        return
+    end
+
+    local res = dev:gpio( 1 )
+    print( "gpio = " .. tostring( res ) )
 end
 
 qt.connect( ui.button01, "clicked", t, t.func )

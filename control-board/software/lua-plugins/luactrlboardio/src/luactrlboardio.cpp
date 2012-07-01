@@ -117,7 +117,7 @@ static const struct luaL_reg META_FUNCTIONS[] = {
     { "close",                   close }, 
     { "isOpen",                  isOpen }, 
     // The lowest possible level
-    { "pusUInt8",                putUInt8 }, 
+    { "putUInt8",                putUInt8 },
     { "putUInt16",               putUInt16 }, 
     { "execFunc",                execFunc }, 
     { "readQueue",               readQueue }, 
