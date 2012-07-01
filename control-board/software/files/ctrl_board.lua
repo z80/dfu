@@ -26,8 +26,7 @@ function CtrlBoard:close()
     self.dev:close()
 end
 
-
-function CtrlBoard:isopen()
+function CtrlBoard:isOpen()
     local res = self.dev:isOpen()
     return res
 end
