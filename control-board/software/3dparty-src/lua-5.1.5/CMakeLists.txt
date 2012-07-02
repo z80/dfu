@@ -1,6 +1,8 @@
 
-# To be able to load binary modules as shared libraries.
-add_definitions( -DLUA_DL_DLOPEN )
+if ( UNIX )
+    # To be able to load binary modules as shared libraries.
+    add_definitions( -DLUA_DL_DLOPEN )
+endif ( UNIX )
 
 add_library( liblua-5.1.5  STATIC 
                        src/lapi.c src/lcode.c src/ldebug.c src/ldo.c 
