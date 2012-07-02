@@ -1,6 +1,7 @@
 
 require( "debugger" )
 require( "ctrl_board" )
+require( "bit" )
 
 ui = qt.load_ui( "form.ui" )
 ui:show()
