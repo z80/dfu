@@ -10,6 +10,17 @@ uint8_t g_initialized = 0;
 
 static void init( void )
 {
+    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE );
+
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Pin   = 2048;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init( LED_PORT, &GPIO_InitStructure );
+
+    GPIO_SetBits( GPIOB, 2048 & 2048 );
+    GPIO_ResetBits( GPIOB, (~2048) & 2048 );
+
     /*RCC_APB2PeriphClockCmd( RCC_LED_PORT, ENABLE );
     GPIO_InitTypeDef GPIO_InitStructure;
   
