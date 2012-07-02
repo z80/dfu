@@ -1,5 +1,6 @@
 
 #include "cr_dbg.h"
+#include "gpio.h"
 
 #define RED_PIN      GPIO_Pin_10
 #define GREEN_PIN    GPIO_Pin_11
@@ -10,7 +11,11 @@ uint8_t g_initialized = 0;
 
 static void init( void )
 {
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE );
+    gpioEn( 1, 1 );
+    gpioConfig( 1, 2048, 0x10 );
+    gpioSet( 1, 2048, 2048 );
+
+    /*RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE );
 
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin   = 2048;
@@ -19,7 +24,7 @@ static void init( void )
     GPIO_Init( LED_PORT, &GPIO_InitStructure );
 
     GPIO_SetBits( GPIOB, 2048 & 2048 );
-    GPIO_ResetBits( GPIOB, (~2048) & 2048 );
+    GPIO_ResetBits( GPIOB, (~2048) & 2048 );*/
 
     /*RCC_APB2PeriphClockCmd( RCC_LED_PORT, ENABLE );
     GPIO_InitTypeDef GPIO_InitStructure;
