@@ -13,7 +13,8 @@ function Joystick:__init()
     self.dev:open()
     print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
     self.dev:gpioEn( 1 )
-    self.dev:gpioConfig( 1, 65535, self.dev.GPIO_IPU )
+    self.dev:gpioConfig( 1, 65535, self.dev.GPIO_OPP )
+    self.dev:gpioSet( 1, 65535, 65535 )
 
     qt.connect( self.wnd.refresh, "clicked", self, self.refresh )
 end
