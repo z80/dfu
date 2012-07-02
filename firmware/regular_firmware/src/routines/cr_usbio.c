@@ -67,18 +67,88 @@ void crUsbIo( xCoRoutineHandle xHandle,
     
     if ( !g_usbInitialized )
     {
-        g_usbInitialized = 1;
         initUsbIo();
         // USB setup.
         Set_USBClock();
         USB_Interrupts_Config();
-        USB_Init();       
+        USB_Init();
+
+        g_usbInitialized = 1;
     }
 
     crSTART( xHandle );
 
     for ( ;; )
     {
+        /*if ( !g_usbInitialized )
+        {
+            // Data for gpioEn.
+            data = 0;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+
+            data = 0;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+   
+            // Call gpioConfig.
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 2;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+
+            // Data for gpioConfig
+            data = 0;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+
+            data = 0;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 2;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 255;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 255;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+
+            data = 0;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 0x48;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+   
+            // Call gpioConfig.
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 3;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+
+            // Data for gpio.
+            data = 0;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+
+            // Call gpioConfig.
+            data = 1;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+            data = 5;
+            crQUEUE_SEND( xHandle, g_toMcu, &data, 0, &rcTo );
+ 
+            g_usbInitialized = 1;
+        }*/
         // Receive data from USB and place to an execution buffer.
         crQUEUE_RECEIVE( xHandle, g_toMcu, &data, 0, &rcTo );
         if ( rcTo == pdPASS )

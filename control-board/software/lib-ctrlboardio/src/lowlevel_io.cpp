@@ -54,15 +54,15 @@ int LowlevelIo::putUInt16( unsigned short val )
     unsigned char * p = reinterpret_cast<unsigned char *>( &val );
     if ( LSB() )
     {
-        unsigned char b[ sizeof(unsigned short) ];
-        b[0] = p[1];
-        b[1] = p[0];
-        int res = putArgs( sizeof(unsigned short), b );
+        int res = putArgs( sizeof(unsigned short), p );
         return res;
     }
     else
     {
-        int res = putArgs( sizeof(unsigned short), p );
+        unsigned char b[ sizeof(unsigned short) ];
+        b[0] = p[1];
+        b[1] = p[0];
+        int res = putArgs( sizeof(unsigned short), b );
         return res;
     }
 }
@@ -72,17 +72,17 @@ int LowlevelIo::putUInt32( unsigned long val )
     unsigned char * p = reinterpret_cast<unsigned char *>( &val );
     if ( LSB() )
     {
+        int res = putArgs( sizeof(unsigned long), p );
+        return res;
+    }
+    else
+    {
         unsigned char b[ sizeof(unsigned long) ];
         b[0] = p[3];
         b[1] = p[2];
         b[2] = p[1];
         b[3] = p[0];
         int res = putArgs( sizeof(unsigned long), b );
-        return res;
-    }
-    else
-    {
-        int res = putArgs( sizeof(unsigned long), p );
         return res;
     }
 }

@@ -55,7 +55,7 @@ void crFuncs( xCoRoutineHandle xHandle,
         sendCnt = 0;
         switch ( g_funcId )
         {
-            case FUNC_GPIO:
+            case FUNC_VERSION:
                 res16 = VERSION;
                 out = (uint8_t *)&res16;
                 sendCnt = 2;
@@ -73,7 +73,7 @@ void crFuncs( xCoRoutineHandle xHandle,
                          *(uint16_t *)(&(buf[1])), 
                          *(uint16_t *)(&(buf[3])) );
                 break;
-            case FUNC_VERSION:
+            case FUNC_GPIO:
                 res16 = gpio( buf[0] ); 
                 out = (uint8_t *)&res16;
                 sendCnt = 2;
