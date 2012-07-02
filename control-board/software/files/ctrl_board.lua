@@ -15,6 +15,15 @@ CtrlBoard = class()
 
 function CtrlBoard:__init()
     self.dev = luactrlboardio.create()
+    
+    self.GPIO_AF   = 0x00
+    self.GPIO_INF  = 0x04
+    self.GPIO_IPD  = 0x28
+    self.GPIO_IPU  = 0x48
+    self.GPIO_OOD  = 0x14
+    self.GPIO_OPP  = 0x10
+    self.GPIO_AFOD = 0x1C
+    self.GPIO_AFPP = 0x18
 end
 
 function CtrlBoard:open( stri )
