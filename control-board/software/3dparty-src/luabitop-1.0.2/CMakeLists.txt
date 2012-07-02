@@ -7,9 +7,9 @@ message( STATUS "Project \"bit\"" )
 message( STATUS "SRC = ${src}" )
 
 if ( WIN32 )
-    list( APPEND defs DECLSPEC=__declspec(dllexport) )
+    list( APPEND defs "DECLSPEC=__declspec(dllexport)" )
 elseif ( UNIX )
-    list( APPEND defs DECLSPEC="" )
+    list( APPEND defs "DECLSPEC=" )
 endif ( WIN32 )
 
 add_library( bit SHARED ${src} )

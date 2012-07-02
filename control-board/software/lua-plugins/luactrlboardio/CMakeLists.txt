@@ -10,7 +10,7 @@ include_directories( "./src"
 aux_source_directory( "./src" src )
 add_library( luactrlboardio SHARED ${src} )
 if ( WIN32 )
-   list( APPEND defs DECLSPEC=__declspec(dllexport) )
+   list( APPEND defs "DECLSPEC=__declspec(dllexport)" )
 endif ( WIN32 )
 set_property( TARGET luactrlboardio PROPERTY COMPILE_DEFINITIONS ${defs} )
 set_property( TARGET luactrlboardio PROPERTY OUTPUT_NAME "luactrlboardio" )
