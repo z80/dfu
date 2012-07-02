@@ -3,63 +3,50 @@ require( "debugger" )
 require( "ctrl_board" )
 require( "bit" )
 
-ui = qt.load_ui( "form.ui" )
-ui:show()
+Joystick = class()
 
-t = { stri = "Hi!", ui = ui, t = 0 }
+function Joystick:__init()
+    self.wnd = qt.load_ui( "joystick.ui" )
+    self.wnd:show()
 
-function t:func()
-    print( "button02" )
-    local dev = self.dev or CtrlBoard()
-    if ( not dev:isOpen() ) then
-        local res = dev:open()
-        print( "open() invoked, result: " .. tostring( res ) )
-    end
+    self.dev = CtrlBoard()
+    self.dev:open()
+    print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
+    self.dev:gpioEn( 1 )
+    self.dev:gpioConfig( 1, 65535, self.dev.GPIO_IPU )
 
-    self.dev = dev
+    qt.connect( self.wnd.refresh, "clicked", self, self.refresh )
 end
 
-function t:timeout()
-    self.t = self.t + 0.1
-    self:func()
+function Joystick:refresh()
+    print( "Refresh" )
+    if ( self.dev:isOpen() ) then
+        local val = self.dev:gpio( 1 )
+        --val = bit.band( val, 1 + 2 + 1024 + 2048 )
+        local stri = bit.tohex( val )
+        self.wnd.hex:setText( stri )
+        stri = ""
+        if ( bit.band( val, 1 ) > 0 ) then
+            stri = stri .. "Up"
+        end
+        if ( bit.band( val, 2 ) > 0 ) then
+            stri = stri .. "Down"
+        end
+        if ( bit.band( val, 1024 ) > 0 ) then
+            stri = stri .. "Left"
+        end
+        if ( bit.band( val, 2048 ) > 0 ) then
+            stri = stri .. "Right"
+        end
+        self.wnd.text:setText( stri )
+    end
 end
 
-function t:onButton02()
-    print( "button03" )
-    local dev = self.dev
-    if ( not dev ) then
-        print( "error: no device" )
-        return
-    end
-    if ( not dev:isOpen() ) then
-        print( "error: device is not open" )
-        return
-    end
-    dev:putUInt8( 1 )
-    --local res = dev:version()
-    --print( "version is: " .. tostring( res ) )
-
-    dev:gpioEn( 1, true )
-    dev:gpioConfig( 1, 0xFFFF, 0x28 )
-    local gpio = dev:gpio( 1 )
-    print( "gpio = " .. tostring( gpio ) )
-    --dev:gpioConfig( 1, 0xFFFF, 0x48 )
+if ( j ) then
+    j = nil
+    collectgarbage()
 end
+j = Joystick()
 
-function t:onButton03()
-    local dev = self.dev
-    if ( not dev ) or ( not dev:isOpen() ) then
-        print( "Access to a device failed" )
-        return
-    end
 
-    local res = dev:gpio( 1 )
-    print( "gpio = " .. tostring( res ) )
-end
 
-qt.connect( ui.button01, "clicked", t, t.func )
-qt.connect( ui.button02, "clicked", t, t.onButton02 )
-qt.connect( ui.button03, "clicked", t, t.onButton03 )
-qt.connect( ui.plot,     "timeout", t, t.timeout )
---ui.plot:setInterval( 2 )
---ui.plot:start()
