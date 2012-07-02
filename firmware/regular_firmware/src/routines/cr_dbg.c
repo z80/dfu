@@ -11,9 +11,9 @@ uint8_t g_initialized = 0;
 
 static void init( void )
 {
-    gpioEn( 1, 1 );
+    /*gpioEn( 1, 1 );
     gpioConfig( 1, 2048, 0x10 );
-    gpioSet( 1, 2048, 2048 );
+    gpioSet( 1, 2048, 2048 );*/
 
     /*RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE );
 

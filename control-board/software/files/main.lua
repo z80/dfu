@@ -12,18 +12,19 @@ function Joystick:__init()
     self.dev = CtrlBoard()
     self.dev:open()
     print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
-    self.dev:gpioEn( 1 )
-    self.dev:gpioConfig( 1, 65535, self.dev.GPIO_OPP )
-    self.dev:gpioSet( 1, 65535, 65535 )
+    self.dev:gpioEn( 1, true )
+    self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_INF )
+    --self.dev:gpioSet( 1, 65535, 65535 )
 
     qt.connect( self.wnd.refresh, "clicked", self, self.refresh )
+    qt.connect( self.wnd,         "closed",  self, self.closed )
 end
 
 function Joystick:refresh()
     print( "Refresh" )
     if ( self.dev:isOpen() ) then
         local val = self.dev:gpio( 1 )
-        --val = bit.band( val, 1 + 2 + 1024 + 2048 )
+        val = bit.band( val, 1 + 2 + 1024 + 2048 )
         local stri = bit.tohex( val )
         self.wnd.hex:setText( stri )
         stri = ""
@@ -43,11 +44,18 @@ function Joystick:refresh()
     end
 end
 
+function Joystick:closed()
+    j = nil
+end
+
 if ( j ) then
     j = nil
     collectgarbage()
 end
 j = Joystick()
+while ( j ) do
+    j:refresh()
+end
 
 
 
