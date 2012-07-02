@@ -13,11 +13,8 @@ function Joystick:__init()
     self.dev:open()
     print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
     self.dev:gpioEn( 1, true )
-    self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_INF )
+    self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_IPD )
     --self.dev:gpioSet( 1, 65535, 65535 )
-
-    qt.connect( self.wnd.refresh, "clicked", self, self.refresh )
-    qt.connect( self.wnd,         "closed",  self, self.closed )
 end
 
 function Joystick:refresh()
@@ -53,7 +50,7 @@ if ( j ) then
     collectgarbage()
 end
 j = Joystick()
-while ( j ) do
+while ( true ) do
     j:refresh()
 end
 
