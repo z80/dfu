@@ -9,8 +9,8 @@ include_directories( "./src"
 
 file( GLOB src     "./src/*.cpp" )
 file( GLOB headers "./src/*.h" )
-message( INFO "SRC = ${src}" )
-message( INFO "HEADERS = ${headers}" )
+message( STATUS "SRC = ${src}" )
+message( STATUS "HEADERS = ${headers}" )
 
 qt4_wrap_cpp( moc_src ${headers} )
 set( src ${src} ${moc_src} )

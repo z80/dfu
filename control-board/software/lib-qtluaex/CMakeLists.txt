@@ -10,8 +10,8 @@ include_directories( "./src"
 
 file( GLOB src     "./src/*.cpp" )
 file( GLOB headers "./src/*.h" )
-message( INFO "SRC = ${src}" )
-message( INFO "HEADERS = ${headers}" )
+message( STATUS "SRC = ${src}" )
+message( STATUS "HEADERS = ${headers}" )
 
 add_library( qtluaex STATIC ${src} )
 target_link_libraries( qtluaex liblua-5.1.5 qtlua ${QT_LIBRARIES} )
