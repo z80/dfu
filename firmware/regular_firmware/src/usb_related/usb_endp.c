@@ -29,11 +29,9 @@
 /* Interval between sending IN packets in frame number (1 frame = 1ms) */
 #define VCOMPORT_IN_FRAME_INTERVAL             5
 
-uint8_t  USART_Rx_Buffer[BULK_MAX_PACKET_SIZE ];
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint8_t USB_Rx_Buffer[VIRTUAL_COM_PORT_DATA_SIZE];
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -68,6 +66,7 @@ void EP1_IN_Callback (void)
 *******************************************************************************/
 void EP3_OUT_Callback(void)
 {
+    static uint8_t USB_Rx_Buffer[VIRTUAL_COM_PORT_DATA_SIZE];
     uint16_t USB_Rx_Cnt;
     uint16_t i;
  
@@ -98,14 +97,16 @@ void EP3_OUT_Callback(void)
 *******************************************************************************/
 void SOF_Callback(void)
 {
-  static uint32_t FrameCount = 0;
+ static uint8_t USART_Rx_Buffer[ BULK_MAX_PACKET_SIZE ];
+
+ //static uint32_t FrameCount = 0;
   
   if(bDeviceState == CONFIGURED)
   {
-    if (FrameCount++ == VCOMPORT_IN_FRAME_INTERVAL)
-    {
+    //if (FrameCount++ == VCOMPORT_IN_FRAME_INTERVAL)
+    //{
       /* Reset the frame counter */
-      FrameCount = 0;
+      //FrameCount = 0;
       
       /* Check the data to be sent through IN pipe */
 
@@ -117,10 +118,13 @@ void SOF_Callback(void)
           i++;
       }
  
-      UserToPMABufferCopy( USART_Rx_Buffer, ENDP1_TXADDR, i );
-      SetEPTxCount( ENDP1, i );
-      SetEPTxValid( ENDP1 );
-    }
+      if ( i > 0 )
+      {
+          UserToPMABufferCopy( USART_Rx_Buffer, ENDP1_TXADDR, i );
+          SetEPTxCount( ENDP1, i );
+          SetEPTxValid( ENDP1 );
+      }
+    //}
   }  
 }
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
