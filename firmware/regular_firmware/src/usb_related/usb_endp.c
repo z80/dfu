@@ -29,6 +29,8 @@
 /* Interval between sending IN packets in frame number (1 frame = 1ms) */
 #define VCOMPORT_IN_FRAME_INTERVAL             5
 
+uint8_t  USART_Rx_Buffer[BULK_MAX_PACKET_SIZE ];
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t USB_Rx_Buffer[VIRTUAL_COM_PORT_DATA_SIZE];
@@ -44,7 +46,7 @@ uint8_t USB_Rx_Buffer[VIRTUAL_COM_PORT_DATA_SIZE];
 *******************************************************************************/
 void EP1_IN_Callback (void)
 {
-    xQueueHandle q = fromMcu();
+    /*xQueueHandle q = fromMcu();
     portBASE_TYPE cr = pdFALSE;
     uint8_t i = 0;
     while ( crQUEUE_RECEIVE_FROM_ISR( q, &(USART_Rx_Buffer[i]), &cr ) == pdTRUE )
@@ -54,7 +56,7 @@ void EP1_IN_Callback (void)
  
     UserToPMABufferCopy( USART_Rx_Buffer, ENDP1_TXADDR, i );
     SetEPTxCount( ENDP1, i );
-    SetEPTxValid( ENDP1 );
+    SetEPTxValid( ENDP1 );*/
 }
 
 /*******************************************************************************
@@ -107,7 +109,7 @@ void SOF_Callback(void)
       
       /* Check the data to be sent through IN pipe */
 
-      /*xQueueHandle q = fromMcu();
+      xQueueHandle q = fromMcu();
       portBASE_TYPE cr = pdFALSE;
       uint8_t i = 0;
       while ( crQUEUE_RECEIVE_FROM_ISR( q, &(USART_Rx_Buffer[i]), &cr ) == pdTRUE )
@@ -117,7 +119,7 @@ void SOF_Callback(void)
  
       UserToPMABufferCopy( USART_Rx_Buffer, ENDP1_TXADDR, i );
       SetEPTxCount( ENDP1, i );
-      SetEPTxValid( ENDP1 );*/
+      SetEPTxValid( ENDP1 );
     }
   }  
 }

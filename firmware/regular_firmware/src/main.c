@@ -106,12 +106,12 @@ void main(void)
     for ( ;; )
     {
         //printf( "ab!" );
-        USB_Send_Data( 'a' );
+        /*USB_Send_Data( 'a' );
         USB_Send_Data( 'b' );
         USB_Send_Data( 'a' );
         USB_Send_Data( 'b' );
         USB_Send_Data( '\r' );
-        USB_Send_Data( '\n' );
+        USB_Send_Data( '\n' );*/
         volatile int i;
         for ( i=0; i<100000; i++ )
             ;
