@@ -108,6 +108,26 @@ std::basic_string<unsigned char> & UsbIo::data()
     return pd->data;
 }
 
+int UsbIo::readQueue( unsigned char * data, int maxSize )
+{
+    int res;
+    int sz = maxSize;
+    int cnt = 0;
+    unsigned char * d = data;
+    int t = pd->timeout;
+    do {
+        res = read( d, sz );
+        cnt += res;
+        d += res;
+        sz -= res;
+        if ( res < 1 )
+        {
+            usleep( 1000 );
+            t--;
+        }
+    } while ( ( sz > 0 ) && ( t > 0 ) );
+    return cnt;
+}
 
 
 

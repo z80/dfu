@@ -18,6 +18,8 @@ public:
     int read( unsigned char * data, int maxSize );
     int setTimeout( int ms );
 
+    int readQueue( unsigned char * data, int maxSize );
+    
     std::basic_string<unsigned char> & data();
 protected:
     class PD;

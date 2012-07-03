@@ -99,20 +99,6 @@ int LowlevelIo::execFunc( int index )
     return res;
 }
 
-int LowlevelIo::readQueue( unsigned char * data, int maxSize )
-{
-    int res;
-    int sz = maxSize;
-    int cnt = 0;
-    unsigned char * d = data;
-    do {
-        res = read( d, sz );
-        cnt += res;
-        d += res;
-        sz -= res;
-    } while ( ( res > 0 ) && ( sz > 0 ) );
-    return cnt;
-}
 
 
 

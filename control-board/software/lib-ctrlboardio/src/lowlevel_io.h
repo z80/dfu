@@ -16,7 +16,7 @@ public:
     int putUInt16( unsigned short val );
     int putUInt32( unsigned long val );
     int execFunc( int index );
-    int readQueue( unsigned char * data, int maxSize );
+
 };
 
 

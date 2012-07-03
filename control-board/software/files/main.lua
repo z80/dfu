@@ -20,15 +20,17 @@ end
 function Joystick:refresh()
     print( "Refresh" )
     if ( self.dev:isOpen() ) then
-        local val = self.dev:gpio( 1 )
-        val = bit.band( val, 1 + 2 + 1024 + 2048 )
+        local ver = self.dev:version()
+        print( "version = " .. tostring( ver ) )
+        local val = self.dev:gpio( 1 ) or 0
+        --val = bit.band( val, 2 + 4 + 1024 + 2048 )
         local stri = bit.tohex( val )
         self.wnd.hex:setText( stri )
         stri = ""
-        if ( bit.band( val, 1 ) > 0 ) then
+        if ( bit.band( val, 2 ) > 0 ) then
             stri = stri .. "Up"
         end
-        if ( bit.band( val, 2 ) > 0 ) then
+        if ( bit.band( val, 4 ) > 0 ) then
             stri = stri .. "Down"
         end
         if ( bit.band( val, 1024 ) > 0 ) then
