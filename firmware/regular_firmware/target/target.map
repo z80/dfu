@@ -204,6 +204,13 @@ Discarded input sections
  .text          0x00000000        0x0 target/src/routines/gpio.o
  .data          0x00000000        0x0 target/src/routines/gpio.o
  .bss           0x00000000        0x0 target/src/routines/gpio.o
+ .text          0x00000000        0x0 target/src/routines/i2c.o
+ .data          0x00000000        0x0 target/src/routines/i2c.o
+ .bss           0x00000000        0x0 target/src/routines/i2c.o
+ .text.i2cSetEn
+                0x00000000       0xa0 target/src/routines/i2c.o
+ .text.i2cConfig
+                0x00000000       0x70 target/src/routines/i2c.o
  .text          0x00000000        0x0 target/src/usb_related/hw_config.o
  .data          0x00000000        0x0 target/src/usb_related/hw_config.o
  .bss           0x00000000        0x0 target/src/usb_related/hw_config.o
@@ -2040,6 +2047,7 @@ LOAD target/src/routines/cr_dbg.o
 LOAD target/src/routines/cr_funcs.o
 LOAD target/src/routines/cr_usbio.o
 LOAD target/src/routines/gpio.o
+LOAD target/src/routines/i2c.o
 LOAD target/src/usb_related/hw_config.o
 LOAD target/src/usb_related/newlib_stubs.o
 LOAD target/src/usb_related/usb_desc.o
@@ -2728,231 +2736,233 @@ LOAD /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.
  .ARM.attributes
                 0x0800aa38       0x31 target/src/routines/gpio.o
  .ARM.attributes
-                0x0800aa69       0x31 target/src/usb_related/hw_config.o
+                0x0800aa69       0x31 target/src/routines/i2c.o
  .ARM.attributes
-                0x0800aa9a       0x31 target/src/usb_related/newlib_stubs.o
+                0x0800aa9a       0x31 target/src/usb_related/hw_config.o
  .ARM.attributes
-                0x0800aacb       0x31 target/src/usb_related/usb_desc.o
+                0x0800aacb       0x31 target/src/usb_related/newlib_stubs.o
  .ARM.attributes
-                0x0800aafc       0x31 target/src/usb_related/usb_endp.o
+                0x0800aafc       0x31 target/src/usb_related/usb_desc.o
  .ARM.attributes
-                0x0800ab2d       0x31 target/src/usb_related/usb_istr.o
+                0x0800ab2d       0x31 target/src/usb_related/usb_endp.o
  .ARM.attributes
-                0x0800ab5e       0x31 target/src/usb_related/usb_prop.o
+                0x0800ab5e       0x31 target/src/usb_related/usb_istr.o
  .ARM.attributes
-                0x0800ab8f       0x31 target/src/usb_related/usb_pwr.o
+                0x0800ab8f       0x31 target/src/usb_related/usb_prop.o
  .ARM.attributes
-                0x0800abc0       0x31 target/3310/3310-backend.o
+                0x0800abc0       0x31 target/src/usb_related/usb_pwr.o
  .ARM.attributes
-                0x0800abf1       0x31 target/3310/3310.o
+                0x0800abf1       0x31 target/3310/3310-backend.o
  .ARM.attributes
-                0x0800ac22       0x31 target/fatfs/ff.o
+                0x0800ac22       0x31 target/3310/3310.o
  .ARM.attributes
-                0x0800ac53       0x31 target/fatfs/sd_spi_stm32.o
+                0x0800ac53       0x31 target/fatfs/ff.o
  .ARM.attributes
-                0x0800ac84       0x31 target/freertos/croutine.o
+                0x0800ac84       0x31 target/fatfs/sd_spi_stm32.o
  .ARM.attributes
-                0x0800acb5       0x31 target/freertos/list.o
+                0x0800acb5       0x31 target/freertos/croutine.o
  .ARM.attributes
-                0x0800ace6       0x31 target/freertos/queue.o
+                0x0800ace6       0x31 target/freertos/list.o
  .ARM.attributes
-                0x0800ad17       0x31 target/freertos/tasks.o
+                0x0800ad17       0x31 target/freertos/queue.o
  .ARM.attributes
-                0x0800ad48       0x31 target/freertos/timers.o
+                0x0800ad48       0x31 target/freertos/tasks.o
  .ARM.attributes
-                0x0800ad79       0x31 target/pawn/amx.o
+                0x0800ad79       0x31 target/freertos/timers.o
  .ARM.attributes
-                0x0800adaa       0x31 target/pawn/amxpool.o
+                0x0800adaa       0x31 target/pawn/amx.o
  .ARM.attributes
-                0x0800addb       0x31 target/pawn/pawn_loader.o
+                0x0800addb       0x31 target/pawn/amxpool.o
  .ARM.attributes
-                0x0800ae0c       0x31 target/src/main.o
+                0x0800ae0c       0x31 target/pawn/pawn_loader.o
  .ARM.attributes
-                0x0800ae3d       0x31 target/src/stm32f10x_it.o
+                0x0800ae3d       0x31 target/src/main.o
  .ARM.attributes
-                0x0800ae6e       0x31 target/src/system_stm32f10x.o
+                0x0800ae6e       0x31 target/src/stm32f10x_it.o
  .ARM.attributes
-                0x0800ae9f       0x31 target/stdperiph/misc.o
+                0x0800ae9f       0x31 target/src/system_stm32f10x.o
  .ARM.attributes
-                0x0800aed0       0x31 target/stdperiph/stm32f10x_adc.o
+                0x0800aed0       0x31 target/stdperiph/misc.o
  .ARM.attributes
-                0x0800af01       0x31 target/stdperiph/stm32f10x_bkp.o
+                0x0800af01       0x31 target/stdperiph/stm32f10x_adc.o
  .ARM.attributes
-                0x0800af32       0x31 target/stdperiph/stm32f10x_can.o
+                0x0800af32       0x31 target/stdperiph/stm32f10x_bkp.o
  .ARM.attributes
-                0x0800af63       0x31 target/stdperiph/stm32f10x_cec.o
+                0x0800af63       0x31 target/stdperiph/stm32f10x_can.o
  .ARM.attributes
-                0x0800af94       0x31 target/stdperiph/stm32f10x_crc.o
+                0x0800af94       0x31 target/stdperiph/stm32f10x_cec.o
  .ARM.attributes
-                0x0800afc5       0x31 target/stdperiph/stm32f10x_dac.o
+                0x0800afc5       0x31 target/stdperiph/stm32f10x_crc.o
  .ARM.attributes
-                0x0800aff6       0x31 target/stdperiph/stm32f10x_dbgmcu.o
+                0x0800aff6       0x31 target/stdperiph/stm32f10x_dac.o
  .ARM.attributes
-                0x0800b027       0x31 target/stdperiph/stm32f10x_dma.o
+                0x0800b027       0x31 target/stdperiph/stm32f10x_dbgmcu.o
  .ARM.attributes
-                0x0800b058       0x31 target/stdperiph/stm32f10x_exti.o
+                0x0800b058       0x31 target/stdperiph/stm32f10x_dma.o
  .ARM.attributes
-                0x0800b089       0x31 target/stdperiph/stm32f10x_flash.o
+                0x0800b089       0x31 target/stdperiph/stm32f10x_exti.o
  .ARM.attributes
-                0x0800b0ba       0x31 target/stdperiph/stm32f10x_fsmc.o
+                0x0800b0ba       0x31 target/stdperiph/stm32f10x_flash.o
  .ARM.attributes
-                0x0800b0eb       0x31 target/stdperiph/stm32f10x_gpio.o
+                0x0800b0eb       0x31 target/stdperiph/stm32f10x_fsmc.o
  .ARM.attributes
-                0x0800b11c       0x31 target/stdperiph/stm32f10x_i2c.o
+                0x0800b11c       0x31 target/stdperiph/stm32f10x_gpio.o
  .ARM.attributes
-                0x0800b14d       0x31 target/stdperiph/stm32f10x_iwdg.o
+                0x0800b14d       0x31 target/stdperiph/stm32f10x_i2c.o
  .ARM.attributes
-                0x0800b17e       0x31 target/stdperiph/stm32f10x_pwr.o
+                0x0800b17e       0x31 target/stdperiph/stm32f10x_iwdg.o
  .ARM.attributes
-                0x0800b1af       0x31 target/stdperiph/stm32f10x_rcc.o
+                0x0800b1af       0x31 target/stdperiph/stm32f10x_pwr.o
  .ARM.attributes
-                0x0800b1e0       0x31 target/stdperiph/stm32f10x_rtc.o
+                0x0800b1e0       0x31 target/stdperiph/stm32f10x_rcc.o
  .ARM.attributes
-                0x0800b211       0x31 target/stdperiph/stm32f10x_sdio.o
+                0x0800b211       0x31 target/stdperiph/stm32f10x_rtc.o
  .ARM.attributes
-                0x0800b242       0x31 target/stdperiph/stm32f10x_spi.o
+                0x0800b242       0x31 target/stdperiph/stm32f10x_sdio.o
  .ARM.attributes
-                0x0800b273       0x31 target/stdperiph/stm32f10x_tim.o
+                0x0800b273       0x31 target/stdperiph/stm32f10x_spi.o
  .ARM.attributes
-                0x0800b2a4       0x31 target/stdperiph/stm32f10x_usart.o
+                0x0800b2a4       0x31 target/stdperiph/stm32f10x_tim.o
  .ARM.attributes
-                0x0800b2d5       0x31 target/stdperiph/stm32f10x_wwdg.o
+                0x0800b2d5       0x31 target/stdperiph/stm32f10x_usart.o
  .ARM.attributes
-                0x0800b306       0x31 target/usb/usb_core.o
+                0x0800b306       0x31 target/stdperiph/stm32f10x_wwdg.o
  .ARM.attributes
-                0x0800b337       0x31 target/usb/usb_init.o
+                0x0800b337       0x31 target/usb/usb_core.o
  .ARM.attributes
-                0x0800b368       0x31 target/usb/usb_int.o
+                0x0800b368       0x31 target/usb/usb_init.o
  .ARM.attributes
-                0x0800b399       0x31 target/usb/usb_mem.o
+                0x0800b399       0x31 target/usb/usb_int.o
  .ARM.attributes
-                0x0800b3ca       0x31 target/usb/usb_regs.o
+                0x0800b3ca       0x31 target/usb/usb_mem.o
  .ARM.attributes
-                0x0800b3fb       0x31 target/usb/usb_sil.o
+                0x0800b3fb       0x31 target/usb/usb_regs.o
  .ARM.attributes
-                0x0800b42c       0x21 target/cmsis/startup/startup_stm32f10x_md.o
+                0x0800b42c       0x31 target/usb/usb_sil.o
  .ARM.attributes
-                0x0800b44d       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-assert.o)
+                0x0800b45d       0x21 target/cmsis/startup/startup_stm32f10x_md.o
  .ARM.attributes
-                0x0800b476       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fiprintf.o)
+                0x0800b47e       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-assert.o)
  .ARM.attributes
-                0x0800b49f       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-impure.o)
+                0x0800b4a7       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fiprintf.o)
  .ARM.attributes
-                0x0800b4c8       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcmp.o)
+                0x0800b4d0       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-impure.o)
  .ARM.attributes
-                0x0800b4f1       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcpy.o)
+                0x0800b4f9       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcmp.o)
  .ARM.attributes
-                0x0800b51a       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
+                0x0800b522       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcpy.o)
  .ARM.attributes
-                0x0800b543       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reent.o)
+                0x0800b54b       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
  .ARM.attributes
-                0x0800b56c       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcmp.o)
+                0x0800b574       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reent.o)
  .ARM.attributes
-                0x0800b595       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcpy.o)
+                0x0800b59d       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcmp.o)
  .ARM.attributes
-                0x0800b5be       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strlen.o)
+                0x0800b5c6       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcpy.o)
  .ARM.attributes
-                0x0800b5e7       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strncpy.o)
+                0x0800b5ef       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strlen.o)
  .ARM.attributes
-                0x0800b610       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-vfiprintf.o)
+                0x0800b618       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strncpy.o)
  .ARM.attributes
-                0x0800b639       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcslen.o)
+                0x0800b641       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-vfiprintf.o)
  .ARM.attributes
-                0x0800b662       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wsetup.o)
+                0x0800b66a       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcslen.o)
  .ARM.attributes
-                0x0800b68b       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-abort.o)
+                0x0800b693       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wsetup.o)
  .ARM.attributes
-                0x0800b6b4       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fflush.o)
+                0x0800b6bc       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-abort.o)
  .ARM.attributes
-                0x0800b6dd       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-findfp.o)
+                0x0800b6e5       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fflush.o)
  .ARM.attributes
-                0x0800b706       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fputwc.o)
+                0x0800b70e       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-findfp.o)
  .ARM.attributes
-                0x0800b72f       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-freer.o)
+                0x0800b737       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fputwc.o)
  .ARM.attributes
-                0x0800b758       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fvwrite.o)
+                0x0800b760       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-freer.o)
  .ARM.attributes
-                0x0800b781       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fwalk.o)
+                0x0800b789       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fvwrite.o)
  .ARM.attributes
-                0x0800b7aa       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-locale.o)
+                0x0800b7b2       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fwalk.o)
  .ARM.attributes
-                0x0800b7d3       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-makebuf.o)
+                0x0800b7db       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-locale.o)
  .ARM.attributes
-                0x0800b7fc       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mallocr.o)
+                0x0800b804       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-makebuf.o)
  .ARM.attributes
-                0x0800b825       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memchr.o)
+                0x0800b82d       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mallocr.o)
  .ARM.attributes
-                0x0800b84e       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memmove.o)
+                0x0800b856       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memchr.o)
  .ARM.attributes
-                0x0800b877       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mlock.o)
+                0x0800b87f       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memmove.o)
  .ARM.attributes
-                0x0800b8a0       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reallocr.o)
+                0x0800b8a8       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mlock.o)
  .ARM.attributes
-                0x0800b8c9       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-sbrkr.o)
+                0x0800b8d1       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reallocr.o)
  .ARM.attributes
-                0x0800b8f2       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signal.o)
+                0x0800b8fa       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-sbrkr.o)
  .ARM.attributes
-                0x0800b91b       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signalr.o)
+                0x0800b923       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signal.o)
  .ARM.attributes
-                0x0800b944       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-stdio.o)
+                0x0800b94c       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signalr.o)
  .ARM.attributes
-                0x0800b96d       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wbuf.o)
+                0x0800b975       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-stdio.o)
  .ARM.attributes
-                0x0800b996       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcrtomb.o)
+                0x0800b99e       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wbuf.o)
  .ARM.attributes
-                0x0800b9bf       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wctomb_r.o)
+                0x0800b9c7       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcrtomb.o)
  .ARM.attributes
-                0x0800b9e8       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-writer.o)
+                0x0800b9f0       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wctomb_r.o)
  .ARM.attributes
-                0x0800ba11       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-closer.o)
+                0x0800ba19       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-writer.o)
  .ARM.attributes
-                0x0800ba3a       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fclose.o)
+                0x0800ba42       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-closer.o)
  .ARM.attributes
-                0x0800ba63       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fstatr.o)
+                0x0800ba6b       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fclose.o)
  .ARM.attributes
-                0x0800ba8c       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-isattyr.o)
+                0x0800ba94       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fstatr.o)
  .ARM.attributes
-                0x0800bab5       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-lseekr.o)
+                0x0800babd       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-isattyr.o)
  .ARM.attributes
-                0x0800bade       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-readr.o)
+                0x0800bae6       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-lseekr.o)
  .ARM.attributes
-                0x0800bb07       0x1b /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_aeabi_uldivmod.o)
+                0x0800bb0f       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-readr.o)
  .ARM.attributes
-                0x0800bb22       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(bpabi.o)
+                0x0800bb38       0x1b /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_aeabi_uldivmod.o)
  .ARM.attributes
-                0x0800bb4b       0x1b /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_dvmd_tls.o)
+                0x0800bb53       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(bpabi.o)
  .ARM.attributes
-                0x0800bb66       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_divdi3.o)
+                0x0800bb7c       0x1b /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_dvmd_tls.o)
  .ARM.attributes
-                0x0800bb8f       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivdi3.o)
+                0x0800bb97       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_divdi3.o)
  .ARM.attributes
-                0x0800bbb8       0x1b /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivsi3.o)
+                0x0800bbc0       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivdi3.o)
  .ARM.attributes
-                0x0800bbd3       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtend.o
+                0x0800bbe9       0x1b /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivsi3.o)
  .ARM.attributes
-                0x0800bbfc       0x19 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtn.o
+                0x0800bc04       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtend.o
+ .ARM.attributes
+                0x0800bc2d       0x19 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtn.o
 
-.preinit_array  0x0800bc15        0x0
-                0x0800bc15                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x0800bc46        0x0
+                0x0800bc46                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x0800bc15                PROVIDE (__preinit_array_end, .)
+                0x0800bc46                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x0800bc18        0x4
-                0x0800bc18                PROVIDE (__init_array_start, .)
+.init_array     0x0800bc48        0x4
+                0x0800bc48                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  *(.init_array*)
- .init_array    0x0800bc18        0x4 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtbegin.o
-                0x0800bc1c                PROVIDE (__init_array_end, .)
+ .init_array    0x0800bc48        0x4 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtbegin.o
+                0x0800bc4c                PROVIDE (__init_array_end, .)
 
-.fini_array     0x0800bc1c        0x4
-                0x0800bc1c                PROVIDE (__fini_array_start, .)
+.fini_array     0x0800bc4c        0x4
+                0x0800bc4c                PROVIDE (__fini_array_start, .)
  *(.fini_array*)
- .fini_array    0x0800bc1c        0x4 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtbegin.o
+ .fini_array    0x0800bc4c        0x4 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtbegin.o
  *(SORT(.fini_array.*))
-                0x0800bc20                PROVIDE (__fini_array_end, .)
-                0x0800bc20                _sidata = .
+                0x0800bc50                PROVIDE (__fini_array_end, .)
+                0x0800bc50                _sidata = .
 
-.data           0x20000000       0xec load address 0x0800bc20
+.data           0x20000000       0xec load address 0x0800bc50
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -2994,11 +3004,11 @@ LOAD /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.
                 0x200000ec                . = ALIGN (0x4)
                 0x200000ec                _edata = .
 
-.jcr            0x200000ec        0x0 load address 0x0800bd0c
+.jcr            0x200000ec        0x0 load address 0x0800bd3c
  .jcr           0x200000ec        0x0 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/crtbegin.o
                 0x200000ec                . = ALIGN (0x4)
 
-.bss            0x200000f0     0x1ad8 load address 0x0800bd10
+.bss            0x200000f0     0x1ad8 load address 0x0800bd40
                 0x200000f0                _sbss = .
                 0x200000f0                __bss_start__ = _sbss
  *(.bss)
@@ -3168,7 +3178,7 @@ LOAD /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.
                 0x20001bc8                PROVIDE (_end, _ebss)
 
 ._user_heap_stack
-                0x20001bc8       0x80 load address 0x0800d7e8
+                0x20001bc8       0x80 load address 0x0800d818
                 0x20001bc8                . = ALIGN (0x4)
                 0x20001bc8                . = (. + _Min_Heap_Size)
                 0x20001c48                . = (. + _Min_Stack_Size)
@@ -3187,7 +3197,7 @@ LOAD /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.
  libgcc.a(*)
 OUTPUT(target/target.elf elf32-littlearm)
 
-.debug_abbrev   0x00000000     0x4b78
+.debug_abbrev   0x00000000     0x4c8d
  .debug_abbrev  0x00000000       0xd7 target/cmsis/src/core_cm3.o
  .debug_abbrev  0x000000d7      0x122 target/freertos/cm3/port.o
  .debug_abbrev  0x000001f9      0x118 target/freertos/memmang/heap_1.o
@@ -3195,60 +3205,61 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_abbrev  0x0000048c       0xfe target/src/routines/cr_funcs.o
  .debug_abbrev  0x0000058a      0x122 target/src/routines/cr_usbio.o
  .debug_abbrev  0x000006ac      0x154 target/src/routines/gpio.o
- .debug_abbrev  0x00000800      0x1a1 target/src/usb_related/hw_config.o
- .debug_abbrev  0x000009a1      0x1c4 target/src/usb_related/newlib_stubs.o
- .debug_abbrev  0x00000b65       0x79 target/src/usb_related/usb_desc.o
- .debug_abbrev  0x00000bde       0xe6 target/src/usb_related/usb_endp.o
- .debug_abbrev  0x00000cc4       0xf9 target/src/usb_related/usb_istr.o
- .debug_abbrev  0x00000dbd      0x1ca target/src/usb_related/usb_prop.o
- .debug_abbrev  0x00000f87      0x126 target/src/usb_related/usb_pwr.o
- .debug_abbrev  0x000010ad      0x18e target/3310/3310-backend.o
- .debug_abbrev  0x0000123b      0x151 target/3310/3310.o
- .debug_abbrev  0x0000138c      0x162 target/fatfs/ff.o
- .debug_abbrev  0x000014ee      0x233 target/fatfs/sd_spi_stm32.o
- .debug_abbrev  0x00001721      0x188 target/freertos/croutine.o
- .debug_abbrev  0x000018a9       0xb8 target/freertos/list.o
- .debug_abbrev  0x00001961      0x109 target/freertos/queue.o
- .debug_abbrev  0x00001a6a      0x193 target/freertos/tasks.o
- .debug_abbrev  0x00001bfd      0x132 target/freertos/timers.o
- .debug_abbrev  0x00001d2f      0x1e4 target/pawn/amx.o
- .debug_abbrev  0x00001f13      0x162 target/pawn/amxpool.o
- .debug_abbrev  0x00002075      0x219 target/pawn/pawn_loader.o
- .debug_abbrev  0x0000228e       0xcd target/src/main.o
- .debug_abbrev  0x0000235b       0x59 target/src/stm32f10x_it.o
- .debug_abbrev  0x000023b4      0x180 target/src/system_stm32f10x.o
- .debug_abbrev  0x00002534      0x137 target/stdperiph/misc.o
- .debug_abbrev  0x0000266b      0x176 target/stdperiph/stm32f10x_adc.o
- .debug_abbrev  0x000027e1      0x158 target/stdperiph/stm32f10x_bkp.o
- .debug_abbrev  0x00002939      0x1ae target/stdperiph/stm32f10x_can.o
- .debug_abbrev  0x00002ae7      0x18b target/stdperiph/stm32f10x_cec.o
- .debug_abbrev  0x00002c72      0x10c target/stdperiph/stm32f10x_crc.o
- .debug_abbrev  0x00002d7e      0x16b target/stdperiph/stm32f10x_dac.o
- .debug_abbrev  0x00002ee9       0xdc target/stdperiph/stm32f10x_dbgmcu.o
- .debug_abbrev  0x00002fc5      0x150 target/stdperiph/stm32f10x_dma.o
- .debug_abbrev  0x00003115      0x14c target/stdperiph/stm32f10x_exti.o
- .debug_abbrev  0x00003261      0x164 target/stdperiph/stm32f10x_flash.o
- .debug_abbrev  0x000033c5      0x168 target/stdperiph/stm32f10x_fsmc.o
- .debug_abbrev  0x0000352d      0x1a6 target/stdperiph/stm32f10x_gpio.o
- .debug_abbrev  0x000036d3      0x15f target/stdperiph/stm32f10x_i2c.o
- .debug_abbrev  0x00003832       0xfc target/stdperiph/stm32f10x_iwdg.o
- .debug_abbrev  0x0000392e      0x186 target/stdperiph/stm32f10x_pwr.o
- .debug_abbrev  0x00003ab4      0x193 target/stdperiph/stm32f10x_rcc.o
- .debug_abbrev  0x00003c47      0x168 target/stdperiph/stm32f10x_rtc.o
- .debug_abbrev  0x00003daf      0x1a4 target/stdperiph/stm32f10x_sdio.o
- .debug_abbrev  0x00003f53      0x15f target/stdperiph/stm32f10x_spi.o
- .debug_abbrev  0x000040b2      0x174 target/stdperiph/stm32f10x_tim.o
- .debug_abbrev  0x00004226      0x15d target/stdperiph/stm32f10x_usart.o
- .debug_abbrev  0x00004383       0xfa target/stdperiph/stm32f10x_wwdg.o
- .debug_abbrev  0x0000447d      0x25c target/usb/usb_core.o
- .debug_abbrev  0x000046d9      0x11f target/usb/usb_init.o
- .debug_abbrev  0x000047f8       0xcf target/usb/usb_int.o
- .debug_abbrev  0x000048c7       0x9e target/usb/usb_mem.o
- .debug_abbrev  0x00004965      0x148 target/usb/usb_regs.o
- .debug_abbrev  0x00004aad       0xb9 target/usb/usb_sil.o
- .debug_abbrev  0x00004b66       0x12 target/cmsis/startup/startup_stm32f10x_md.o
+ .debug_abbrev  0x00000800      0x115 target/src/routines/i2c.o
+ .debug_abbrev  0x00000915      0x1a1 target/src/usb_related/hw_config.o
+ .debug_abbrev  0x00000ab6      0x1c4 target/src/usb_related/newlib_stubs.o
+ .debug_abbrev  0x00000c7a       0x79 target/src/usb_related/usb_desc.o
+ .debug_abbrev  0x00000cf3       0xe6 target/src/usb_related/usb_endp.o
+ .debug_abbrev  0x00000dd9       0xf9 target/src/usb_related/usb_istr.o
+ .debug_abbrev  0x00000ed2      0x1ca target/src/usb_related/usb_prop.o
+ .debug_abbrev  0x0000109c      0x126 target/src/usb_related/usb_pwr.o
+ .debug_abbrev  0x000011c2      0x18e target/3310/3310-backend.o
+ .debug_abbrev  0x00001350      0x151 target/3310/3310.o
+ .debug_abbrev  0x000014a1      0x162 target/fatfs/ff.o
+ .debug_abbrev  0x00001603      0x233 target/fatfs/sd_spi_stm32.o
+ .debug_abbrev  0x00001836      0x188 target/freertos/croutine.o
+ .debug_abbrev  0x000019be       0xb8 target/freertos/list.o
+ .debug_abbrev  0x00001a76      0x109 target/freertos/queue.o
+ .debug_abbrev  0x00001b7f      0x193 target/freertos/tasks.o
+ .debug_abbrev  0x00001d12      0x132 target/freertos/timers.o
+ .debug_abbrev  0x00001e44      0x1e4 target/pawn/amx.o
+ .debug_abbrev  0x00002028      0x162 target/pawn/amxpool.o
+ .debug_abbrev  0x0000218a      0x219 target/pawn/pawn_loader.o
+ .debug_abbrev  0x000023a3       0xcd target/src/main.o
+ .debug_abbrev  0x00002470       0x59 target/src/stm32f10x_it.o
+ .debug_abbrev  0x000024c9      0x180 target/src/system_stm32f10x.o
+ .debug_abbrev  0x00002649      0x137 target/stdperiph/misc.o
+ .debug_abbrev  0x00002780      0x176 target/stdperiph/stm32f10x_adc.o
+ .debug_abbrev  0x000028f6      0x158 target/stdperiph/stm32f10x_bkp.o
+ .debug_abbrev  0x00002a4e      0x1ae target/stdperiph/stm32f10x_can.o
+ .debug_abbrev  0x00002bfc      0x18b target/stdperiph/stm32f10x_cec.o
+ .debug_abbrev  0x00002d87      0x10c target/stdperiph/stm32f10x_crc.o
+ .debug_abbrev  0x00002e93      0x16b target/stdperiph/stm32f10x_dac.o
+ .debug_abbrev  0x00002ffe       0xdc target/stdperiph/stm32f10x_dbgmcu.o
+ .debug_abbrev  0x000030da      0x150 target/stdperiph/stm32f10x_dma.o
+ .debug_abbrev  0x0000322a      0x14c target/stdperiph/stm32f10x_exti.o
+ .debug_abbrev  0x00003376      0x164 target/stdperiph/stm32f10x_flash.o
+ .debug_abbrev  0x000034da      0x168 target/stdperiph/stm32f10x_fsmc.o
+ .debug_abbrev  0x00003642      0x1a6 target/stdperiph/stm32f10x_gpio.o
+ .debug_abbrev  0x000037e8      0x15f target/stdperiph/stm32f10x_i2c.o
+ .debug_abbrev  0x00003947       0xfc target/stdperiph/stm32f10x_iwdg.o
+ .debug_abbrev  0x00003a43      0x186 target/stdperiph/stm32f10x_pwr.o
+ .debug_abbrev  0x00003bc9      0x193 target/stdperiph/stm32f10x_rcc.o
+ .debug_abbrev  0x00003d5c      0x168 target/stdperiph/stm32f10x_rtc.o
+ .debug_abbrev  0x00003ec4      0x1a4 target/stdperiph/stm32f10x_sdio.o
+ .debug_abbrev  0x00004068      0x15f target/stdperiph/stm32f10x_spi.o
+ .debug_abbrev  0x000041c7      0x174 target/stdperiph/stm32f10x_tim.o
+ .debug_abbrev  0x0000433b      0x15d target/stdperiph/stm32f10x_usart.o
+ .debug_abbrev  0x00004498       0xfa target/stdperiph/stm32f10x_wwdg.o
+ .debug_abbrev  0x00004592      0x25c target/usb/usb_core.o
+ .debug_abbrev  0x000047ee      0x11f target/usb/usb_init.o
+ .debug_abbrev  0x0000490d       0xcf target/usb/usb_int.o
+ .debug_abbrev  0x000049dc       0x9e target/usb/usb_mem.o
+ .debug_abbrev  0x00004a7a      0x148 target/usb/usb_regs.o
+ .debug_abbrev  0x00004bc2       0xb9 target/usb/usb_sil.o
+ .debug_abbrev  0x00004c7b       0x12 target/cmsis/startup/startup_stm32f10x_md.o
 
-.debug_info     0x00000000    0x19990
+.debug_info     0x00000000    0x19db4
  .debug_info    0x00000000      0x54c target/cmsis/src/core_cm3.o
  .debug_info    0x0000054c      0x1db target/freertos/cm3/port.o
  .debug_info    0x00000727      0x18a target/freertos/memmang/heap_1.o
@@ -3256,60 +3267,61 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_info    0x00000c4f      0x2d1 target/src/routines/cr_funcs.o
  .debug_info    0x00000f20      0x34e target/src/routines/cr_usbio.o
  .debug_info    0x0000126e      0x367 target/src/routines/gpio.o
- .debug_info    0x000015d5      0x5b2 target/src/usb_related/hw_config.o
- .debug_info    0x00001b87      0x847 target/src/usb_related/newlib_stubs.o
- .debug_info    0x000023ce      0x17d target/src/usb_related/usb_desc.o
- .debug_info    0x0000254b      0x1f6 target/src/usb_related/usb_endp.o
- .debug_info    0x00002741      0x2b4 target/src/usb_related/usb_istr.o
- .debug_info    0x000029f5      0x98a target/src/usb_related/usb_prop.o
- .debug_info    0x0000337f      0x2f2 target/src/usb_related/usb_pwr.o
- .debug_info    0x00003671      0x751 target/3310/3310-backend.o
- .debug_info    0x00003dc2      0x721 target/3310/3310.o
- .debug_info    0x000044e3     0x16d8 target/fatfs/ff.o
- .debug_info    0x00005bbb      0x9ff target/fatfs/sd_spi_stm32.o
- .debug_info    0x000065ba      0x4b3 target/freertos/croutine.o
- .debug_info    0x00006a6d      0x2aa target/freertos/list.o
- .debug_info    0x00006d17      0x919 target/freertos/queue.o
- .debug_info    0x00007630      0xe37 target/freertos/tasks.o
- .debug_info    0x00008467      0x731 target/freertos/timers.o
- .debug_info    0x00008b98     0x23c7 target/pawn/amx.o
- .debug_info    0x0000af5f      0x460 target/pawn/amxpool.o
- .debug_info    0x0000b3bf      0x9b9 target/pawn/pawn_loader.o
- .debug_info    0x0000bd78      0x202 target/src/main.o
- .debug_info    0x0000bf7a      0x10f target/src/stm32f10x_it.o
- .debug_info    0x0000c089      0x4a4 target/src/system_stm32f10x.o
- .debug_info    0x0000c52d      0x54a target/stdperiph/misc.o
- .debug_info    0x0000ca77      0xc12 target/stdperiph/stm32f10x_adc.o
- .debug_info    0x0000d689      0x87d target/stdperiph/stm32f10x_bkp.o
- .debug_info    0x0000df06      0xc5b target/stdperiph/stm32f10x_can.o
- .debug_info    0x0000eb61      0x440 target/stdperiph/stm32f10x_cec.o
- .debug_info    0x0000efa1      0x204 target/stdperiph/stm32f10x_crc.o
- .debug_info    0x0000f1a5      0x4dc target/stdperiph/stm32f10x_dac.o
- .debug_info    0x0000f681      0x15e target/stdperiph/stm32f10x_dbgmcu.o
- .debug_info    0x0000f7df      0x4a6 target/stdperiph/stm32f10x_dma.o
- .debug_info    0x0000fc85      0x365 target/stdperiph/stm32f10x_exti.o
- .debug_info    0x0000ffea      0x81d target/stdperiph/stm32f10x_flash.o
- .debug_info    0x00010807      0x99d target/stdperiph/stm32f10x_fsmc.o
- .debug_info    0x000111a4      0x727 target/stdperiph/stm32f10x_gpio.o
- .debug_info    0x000118cb      0xb98 target/stdperiph/stm32f10x_i2c.o
- .debug_info    0x00012463      0x204 target/stdperiph/stm32f10x_iwdg.o
- .debug_info    0x00012667      0x45f target/stdperiph/stm32f10x_pwr.o
- .debug_info    0x00012ac6      0x905 target/stdperiph/stm32f10x_rcc.o
- .debug_info    0x000133cb      0x46e target/stdperiph/stm32f10x_rtc.o
- .debug_info    0x00013839      0x893 target/stdperiph/stm32f10x_sdio.o
- .debug_info    0x000140cc      0x975 target/stdperiph/stm32f10x_spi.o
- .debug_info    0x00014a41     0x1e1c target/stdperiph/stm32f10x_tim.o
- .debug_info    0x0001685d      0xa70 target/stdperiph/stm32f10x_usart.o
- .debug_info    0x000172cd      0x239 target/stdperiph/stm32f10x_wwdg.o
- .debug_info    0x00017506      0xc60 target/usb/usb_core.o
- .debug_info    0x00018166      0x4e2 target/usb/usb_init.o
- .debug_info    0x00018648      0x22f target/usb/usb_int.o
- .debug_info    0x00018877      0x1b4 target/usb/usb_mem.o
- .debug_info    0x00018a2b      0xd6b target/usb/usb_regs.o
- .debug_info    0x00019796      0x17b target/usb/usb_sil.o
- .debug_info    0x00019911       0x7f target/cmsis/startup/startup_stm32f10x_md.o
+ .debug_info    0x000015d5      0x424 target/src/routines/i2c.o
+ .debug_info    0x000019f9      0x5b2 target/src/usb_related/hw_config.o
+ .debug_info    0x00001fab      0x847 target/src/usb_related/newlib_stubs.o
+ .debug_info    0x000027f2      0x17d target/src/usb_related/usb_desc.o
+ .debug_info    0x0000296f      0x1f6 target/src/usb_related/usb_endp.o
+ .debug_info    0x00002b65      0x2b4 target/src/usb_related/usb_istr.o
+ .debug_info    0x00002e19      0x98a target/src/usb_related/usb_prop.o
+ .debug_info    0x000037a3      0x2f2 target/src/usb_related/usb_pwr.o
+ .debug_info    0x00003a95      0x751 target/3310/3310-backend.o
+ .debug_info    0x000041e6      0x721 target/3310/3310.o
+ .debug_info    0x00004907     0x16d8 target/fatfs/ff.o
+ .debug_info    0x00005fdf      0x9ff target/fatfs/sd_spi_stm32.o
+ .debug_info    0x000069de      0x4b3 target/freertos/croutine.o
+ .debug_info    0x00006e91      0x2aa target/freertos/list.o
+ .debug_info    0x0000713b      0x919 target/freertos/queue.o
+ .debug_info    0x00007a54      0xe37 target/freertos/tasks.o
+ .debug_info    0x0000888b      0x731 target/freertos/timers.o
+ .debug_info    0x00008fbc     0x23c7 target/pawn/amx.o
+ .debug_info    0x0000b383      0x460 target/pawn/amxpool.o
+ .debug_info    0x0000b7e3      0x9b9 target/pawn/pawn_loader.o
+ .debug_info    0x0000c19c      0x202 target/src/main.o
+ .debug_info    0x0000c39e      0x10f target/src/stm32f10x_it.o
+ .debug_info    0x0000c4ad      0x4a4 target/src/system_stm32f10x.o
+ .debug_info    0x0000c951      0x54a target/stdperiph/misc.o
+ .debug_info    0x0000ce9b      0xc12 target/stdperiph/stm32f10x_adc.o
+ .debug_info    0x0000daad      0x87d target/stdperiph/stm32f10x_bkp.o
+ .debug_info    0x0000e32a      0xc5b target/stdperiph/stm32f10x_can.o
+ .debug_info    0x0000ef85      0x440 target/stdperiph/stm32f10x_cec.o
+ .debug_info    0x0000f3c5      0x204 target/stdperiph/stm32f10x_crc.o
+ .debug_info    0x0000f5c9      0x4dc target/stdperiph/stm32f10x_dac.o
+ .debug_info    0x0000faa5      0x15e target/stdperiph/stm32f10x_dbgmcu.o
+ .debug_info    0x0000fc03      0x4a6 target/stdperiph/stm32f10x_dma.o
+ .debug_info    0x000100a9      0x365 target/stdperiph/stm32f10x_exti.o
+ .debug_info    0x0001040e      0x81d target/stdperiph/stm32f10x_flash.o
+ .debug_info    0x00010c2b      0x99d target/stdperiph/stm32f10x_fsmc.o
+ .debug_info    0x000115c8      0x727 target/stdperiph/stm32f10x_gpio.o
+ .debug_info    0x00011cef      0xb98 target/stdperiph/stm32f10x_i2c.o
+ .debug_info    0x00012887      0x204 target/stdperiph/stm32f10x_iwdg.o
+ .debug_info    0x00012a8b      0x45f target/stdperiph/stm32f10x_pwr.o
+ .debug_info    0x00012eea      0x905 target/stdperiph/stm32f10x_rcc.o
+ .debug_info    0x000137ef      0x46e target/stdperiph/stm32f10x_rtc.o
+ .debug_info    0x00013c5d      0x893 target/stdperiph/stm32f10x_sdio.o
+ .debug_info    0x000144f0      0x975 target/stdperiph/stm32f10x_spi.o
+ .debug_info    0x00014e65     0x1e1c target/stdperiph/stm32f10x_tim.o
+ .debug_info    0x00016c81      0xa70 target/stdperiph/stm32f10x_usart.o
+ .debug_info    0x000176f1      0x239 target/stdperiph/stm32f10x_wwdg.o
+ .debug_info    0x0001792a      0xc60 target/usb/usb_core.o
+ .debug_info    0x0001858a      0x4e2 target/usb/usb_init.o
+ .debug_info    0x00018a6c      0x22f target/usb/usb_int.o
+ .debug_info    0x00018c9b      0x1b4 target/usb/usb_mem.o
+ .debug_info    0x00018e4f      0xd6b target/usb/usb_regs.o
+ .debug_info    0x00019bba      0x17b target/usb/usb_sil.o
+ .debug_info    0x00019d35       0x7f target/cmsis/startup/startup_stm32f10x_md.o
 
-.debug_line     0x00000000     0xabca
+.debug_line     0x00000000     0xad4a
  .debug_line    0x00000000      0x262 target/cmsis/src/core_cm3.o
  .debug_line    0x00000262      0x134 target/freertos/cm3/port.o
  .debug_line    0x00000396       0xf8 target/freertos/memmang/heap_1.o
@@ -3317,60 +3329,61 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_line    0x00000617      0x179 target/src/routines/cr_funcs.o
  .debug_line    0x00000790      0x1b8 target/src/routines/cr_usbio.o
  .debug_line    0x00000948      0x169 target/src/routines/gpio.o
- .debug_line    0x00000ab1      0x1d3 target/src/usb_related/hw_config.o
- .debug_line    0x00000c84      0x317 target/src/usb_related/newlib_stubs.o
- .debug_line    0x00000f9b       0xd0 target/src/usb_related/usb_desc.o
- .debug_line    0x0000106b      0x14d target/src/usb_related/usb_endp.o
- .debug_line    0x000011b8      0x11b target/src/usb_related/usb_istr.o
- .debug_line    0x000012d3      0x260 target/src/usb_related/usb_prop.o
- .debug_line    0x00001533      0x1ad target/src/usb_related/usb_pwr.o
- .debug_line    0x000016e0      0x2de target/3310/3310-backend.o
- .debug_line    0x000019be      0x388 target/3310/3310.o
- .debug_line    0x00001d46      0xb9c target/fatfs/ff.o
- .debug_line    0x000028e2      0x532 target/fatfs/sd_spi_stm32.o
- .debug_line    0x00002e14      0x1a5 target/freertos/croutine.o
- .debug_line    0x00002fb9       0xd9 target/freertos/list.o
- .debug_line    0x00003092      0x4da target/freertos/queue.o
- .debug_line    0x0000356c      0x736 target/freertos/tasks.o
- .debug_line    0x00003ca2      0x267 target/freertos/timers.o
- .debug_line    0x00003f09     0x12ab target/pawn/amx.o
- .debug_line    0x000051b4      0x209 target/pawn/amxpool.o
- .debug_line    0x000053bd      0x226 target/pawn/pawn_loader.o
- .debug_line    0x000055e3      0x194 target/src/main.o
- .debug_line    0x00005777       0xbf target/src/stm32f10x_it.o
- .debug_line    0x00005836      0x198 target/src/system_stm32f10x.o
- .debug_line    0x000059ce      0x14b target/stdperiph/misc.o
- .debug_line    0x00005b19      0x42a target/stdperiph/stm32f10x_adc.o
- .debug_line    0x00005f43      0x1c5 target/stdperiph/stm32f10x_bkp.o
- .debug_line    0x00006108      0x472 target/stdperiph/stm32f10x_can.o
- .debug_line    0x0000657a      0x218 target/stdperiph/stm32f10x_cec.o
- .debug_line    0x00006792      0x15e target/stdperiph/stm32f10x_crc.o
- .debug_line    0x000068f0      0x1ef target/stdperiph/stm32f10x_dac.o
- .debug_line    0x00006adf      0x119 target/stdperiph/stm32f10x_dbgmcu.o
- .debug_line    0x00006bf8      0x20a target/stdperiph/stm32f10x_dma.o
- .debug_line    0x00006e02      0x1ab target/stdperiph/stm32f10x_exti.o
- .debug_line    0x00006fad      0x3e0 target/stdperiph/stm32f10x_flash.o
- .debug_line    0x0000738d      0x35a target/stdperiph/stm32f10x_fsmc.o
- .debug_line    0x000076e7      0x2b5 target/stdperiph/stm32f10x_gpio.o
- .debug_line    0x0000799c      0x3de target/stdperiph/stm32f10x_i2c.o
- .debug_line    0x00007d7a      0x14f target/stdperiph/stm32f10x_iwdg.o
- .debug_line    0x00007ec9      0x1c9 target/stdperiph/stm32f10x_pwr.o
- .debug_line    0x00008092      0x3cb target/stdperiph/stm32f10x_rcc.o
- .debug_line    0x0000845d      0x209 target/stdperiph/stm32f10x_rtc.o
- .debug_line    0x00008666      0x352 target/stdperiph/stm32f10x_sdio.o
- .debug_line    0x000089b8      0x329 target/stdperiph/stm32f10x_spi.o
- .debug_line    0x00008ce1      0x995 target/stdperiph/stm32f10x_tim.o
- .debug_line    0x00009676      0x3a1 target/stdperiph/stm32f10x_usart.o
- .debug_line    0x00009a17      0x176 target/stdperiph/stm32f10x_wwdg.o
- .debug_line    0x00009b8d      0x442 target/usb/usb_core.o
- .debug_line    0x00009fcf       0xf5 target/usb/usb_init.o
- .debug_line    0x0000a0c4      0x1e1 target/usb/usb_int.o
- .debug_line    0x0000a2a5      0x12d target/usb/usb_mem.o
- .debug_line    0x0000a3d2      0x66b target/usb/usb_regs.o
- .debug_line    0x0000aa3d      0x114 target/usb/usb_sil.o
- .debug_line    0x0000ab51       0x79 target/cmsis/startup/startup_stm32f10x_md.o
+ .debug_line    0x00000ab1      0x180 target/src/routines/i2c.o
+ .debug_line    0x00000c31      0x1d3 target/src/usb_related/hw_config.o
+ .debug_line    0x00000e04      0x317 target/src/usb_related/newlib_stubs.o
+ .debug_line    0x0000111b       0xd0 target/src/usb_related/usb_desc.o
+ .debug_line    0x000011eb      0x14d target/src/usb_related/usb_endp.o
+ .debug_line    0x00001338      0x11b target/src/usb_related/usb_istr.o
+ .debug_line    0x00001453      0x260 target/src/usb_related/usb_prop.o
+ .debug_line    0x000016b3      0x1ad target/src/usb_related/usb_pwr.o
+ .debug_line    0x00001860      0x2de target/3310/3310-backend.o
+ .debug_line    0x00001b3e      0x388 target/3310/3310.o
+ .debug_line    0x00001ec6      0xb9c target/fatfs/ff.o
+ .debug_line    0x00002a62      0x532 target/fatfs/sd_spi_stm32.o
+ .debug_line    0x00002f94      0x1a5 target/freertos/croutine.o
+ .debug_line    0x00003139       0xd9 target/freertos/list.o
+ .debug_line    0x00003212      0x4da target/freertos/queue.o
+ .debug_line    0x000036ec      0x736 target/freertos/tasks.o
+ .debug_line    0x00003e22      0x267 target/freertos/timers.o
+ .debug_line    0x00004089     0x12ab target/pawn/amx.o
+ .debug_line    0x00005334      0x209 target/pawn/amxpool.o
+ .debug_line    0x0000553d      0x226 target/pawn/pawn_loader.o
+ .debug_line    0x00005763      0x194 target/src/main.o
+ .debug_line    0x000058f7       0xbf target/src/stm32f10x_it.o
+ .debug_line    0x000059b6      0x198 target/src/system_stm32f10x.o
+ .debug_line    0x00005b4e      0x14b target/stdperiph/misc.o
+ .debug_line    0x00005c99      0x42a target/stdperiph/stm32f10x_adc.o
+ .debug_line    0x000060c3      0x1c5 target/stdperiph/stm32f10x_bkp.o
+ .debug_line    0x00006288      0x472 target/stdperiph/stm32f10x_can.o
+ .debug_line    0x000066fa      0x218 target/stdperiph/stm32f10x_cec.o
+ .debug_line    0x00006912      0x15e target/stdperiph/stm32f10x_crc.o
+ .debug_line    0x00006a70      0x1ef target/stdperiph/stm32f10x_dac.o
+ .debug_line    0x00006c5f      0x119 target/stdperiph/stm32f10x_dbgmcu.o
+ .debug_line    0x00006d78      0x20a target/stdperiph/stm32f10x_dma.o
+ .debug_line    0x00006f82      0x1ab target/stdperiph/stm32f10x_exti.o
+ .debug_line    0x0000712d      0x3e0 target/stdperiph/stm32f10x_flash.o
+ .debug_line    0x0000750d      0x35a target/stdperiph/stm32f10x_fsmc.o
+ .debug_line    0x00007867      0x2b5 target/stdperiph/stm32f10x_gpio.o
+ .debug_line    0x00007b1c      0x3de target/stdperiph/stm32f10x_i2c.o
+ .debug_line    0x00007efa      0x14f target/stdperiph/stm32f10x_iwdg.o
+ .debug_line    0x00008049      0x1c9 target/stdperiph/stm32f10x_pwr.o
+ .debug_line    0x00008212      0x3cb target/stdperiph/stm32f10x_rcc.o
+ .debug_line    0x000085dd      0x209 target/stdperiph/stm32f10x_rtc.o
+ .debug_line    0x000087e6      0x352 target/stdperiph/stm32f10x_sdio.o
+ .debug_line    0x00008b38      0x329 target/stdperiph/stm32f10x_spi.o
+ .debug_line    0x00008e61      0x995 target/stdperiph/stm32f10x_tim.o
+ .debug_line    0x000097f6      0x3a1 target/stdperiph/stm32f10x_usart.o
+ .debug_line    0x00009b97      0x176 target/stdperiph/stm32f10x_wwdg.o
+ .debug_line    0x00009d0d      0x442 target/usb/usb_core.o
+ .debug_line    0x0000a14f       0xf5 target/usb/usb_init.o
+ .debug_line    0x0000a244      0x1e1 target/usb/usb_int.o
+ .debug_line    0x0000a425      0x12d target/usb/usb_mem.o
+ .debug_line    0x0000a552      0x66b target/usb/usb_regs.o
+ .debug_line    0x0000abbd      0x114 target/usb/usb_sil.o
+ .debug_line    0x0000acd1       0x79 target/cmsis/startup/startup_stm32f10x_md.o
 
-.debug_loc      0x00000000     0xc29c
+.debug_loc      0x00000000     0xc30c
  .debug_loc     0x00000000      0x3f0 target/cmsis/src/core_cm3.o
  .debug_loc     0x000003f0      0x178 target/freertos/cm3/port.o
  .debug_loc     0x00000568       0xc8 target/freertos/memmang/heap_1.o
@@ -3378,59 +3391,60 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_loc     0x00000774       0x70 target/src/routines/cr_funcs.o
  .debug_loc     0x000007e4       0xe8 target/src/routines/cr_usbio.o
  .debug_loc     0x000008cc      0x118 target/src/routines/gpio.o
- .debug_loc     0x000009e4      0x19c target/src/usb_related/hw_config.o
- .debug_loc     0x00000b80      0x3a0 target/src/usb_related/newlib_stubs.o
- .debug_loc     0x00000f20       0x9c target/src/usb_related/usb_endp.o
- .debug_loc     0x00000fbc       0x2c target/src/usb_related/usb_istr.o
- .debug_loc     0x00000fe8      0x2d4 target/src/usb_related/usb_prop.o
- .debug_loc     0x000012bc      0x10c target/src/usb_related/usb_pwr.o
- .debug_loc     0x000013c8      0x338 target/3310/3310-backend.o
- .debug_loc     0x00001700      0x454 target/3310/3310.o
- .debug_loc     0x00001b54      0x8d0 target/fatfs/ff.o
- .debug_loc     0x00002424      0x47c target/fatfs/sd_spi_stm32.o
- .debug_loc     0x000028a0      0x188 target/freertos/croutine.o
- .debug_loc     0x00002a28      0x118 target/freertos/list.o
- .debug_loc     0x00002b40      0x498 target/freertos/queue.o
- .debug_loc     0x00002fd8      0x7b0 target/freertos/tasks.o
- .debug_loc     0x00003788      0x304 target/freertos/timers.o
- .debug_loc     0x00003a8c      0xa8a target/pawn/amx.o
- .debug_loc     0x00004516      0x188 target/pawn/amxpool.o
- .debug_loc     0x0000469e      0x102 target/pawn/pawn_loader.o
- .debug_loc     0x000047a0      0x164 target/src/main.o
- .debug_loc     0x00004904      0x108 target/src/stm32f10x_it.o
- .debug_loc     0x00004a0c       0xc8 target/src/system_stm32f10x.o
- .debug_loc     0x00004ad4      0x118 target/stdperiph/misc.o
- .debug_loc     0x00004bec      0x7d4 target/stdperiph/stm32f10x_adc.o
- .debug_loc     0x000053c0      0x264 target/stdperiph/stm32f10x_bkp.o
- .debug_loc     0x00005624      0x578 target/stdperiph/stm32f10x_can.o
- .debug_loc     0x00005b9c      0x2ec target/stdperiph/stm32f10x_cec.o
- .debug_loc     0x00005e88      0x12c target/stdperiph/stm32f10x_crc.o
- .debug_loc     0x00005fb4      0x294 target/stdperiph/stm32f10x_dac.o
- .debug_loc     0x00006248       0x90 target/stdperiph/stm32f10x_dbgmcu.o
- .debug_loc     0x000062d8      0x268 target/stdperiph/stm32f10x_dma.o
- .debug_loc     0x00006540      0x1b4 target/stdperiph/stm32f10x_exti.o
- .debug_loc     0x000066f4      0x5d8 target/stdperiph/stm32f10x_flash.o
- .debug_loc     0x00006ccc      0x41c target/stdperiph/stm32f10x_fsmc.o
- .debug_loc     0x000070e8      0x3e4 target/stdperiph/stm32f10x_gpio.o
- .debug_loc     0x000074cc      0x738 target/stdperiph/stm32f10x_i2c.o
- .debug_loc     0x00007c04      0x138 target/stdperiph/stm32f10x_iwdg.o
- .debug_loc     0x00007d3c      0x238 target/stdperiph/stm32f10x_pwr.o
- .debug_loc     0x00007f74      0x6dc target/stdperiph/stm32f10x_rcc.o
- .debug_loc     0x00008650      0x2e0 target/stdperiph/stm32f10x_rtc.o
- .debug_loc     0x00008930      0x648 target/stdperiph/stm32f10x_sdio.o
- .debug_loc     0x00008f78      0x508 target/stdperiph/stm32f10x_spi.o
- .debug_loc     0x00009480     0x13e8 target/stdperiph/stm32f10x_tim.o
- .debug_loc     0x0000a868      0x658 target/stdperiph/stm32f10x_usart.o
- .debug_loc     0x0000aec0      0x190 target/stdperiph/stm32f10x_wwdg.o
- .debug_loc     0x0000b050      0x3f8 target/usb/usb_core.o
- .debug_loc     0x0000b448       0x2c target/usb/usb_init.o
- .debug_loc     0x0000b474       0x70 target/usb/usb_int.o
- .debug_loc     0x0000b4e4       0x70 target/usb/usb_mem.o
- .debug_loc     0x0000b554      0xcac target/usb/usb_regs.o
- .debug_loc     0x0000c200       0x9c target/usb/usb_sil.o
+ .debug_loc     0x000009e4       0x70 target/src/routines/i2c.o
+ .debug_loc     0x00000a54      0x19c target/src/usb_related/hw_config.o
+ .debug_loc     0x00000bf0      0x3a0 target/src/usb_related/newlib_stubs.o
+ .debug_loc     0x00000f90       0x9c target/src/usb_related/usb_endp.o
+ .debug_loc     0x0000102c       0x2c target/src/usb_related/usb_istr.o
+ .debug_loc     0x00001058      0x2d4 target/src/usb_related/usb_prop.o
+ .debug_loc     0x0000132c      0x10c target/src/usb_related/usb_pwr.o
+ .debug_loc     0x00001438      0x338 target/3310/3310-backend.o
+ .debug_loc     0x00001770      0x454 target/3310/3310.o
+ .debug_loc     0x00001bc4      0x8d0 target/fatfs/ff.o
+ .debug_loc     0x00002494      0x47c target/fatfs/sd_spi_stm32.o
+ .debug_loc     0x00002910      0x188 target/freertos/croutine.o
+ .debug_loc     0x00002a98      0x118 target/freertos/list.o
+ .debug_loc     0x00002bb0      0x498 target/freertos/queue.o
+ .debug_loc     0x00003048      0x7b0 target/freertos/tasks.o
+ .debug_loc     0x000037f8      0x304 target/freertos/timers.o
+ .debug_loc     0x00003afc      0xa8a target/pawn/amx.o
+ .debug_loc     0x00004586      0x188 target/pawn/amxpool.o
+ .debug_loc     0x0000470e      0x102 target/pawn/pawn_loader.o
+ .debug_loc     0x00004810      0x164 target/src/main.o
+ .debug_loc     0x00004974      0x108 target/src/stm32f10x_it.o
+ .debug_loc     0x00004a7c       0xc8 target/src/system_stm32f10x.o
+ .debug_loc     0x00004b44      0x118 target/stdperiph/misc.o
+ .debug_loc     0x00004c5c      0x7d4 target/stdperiph/stm32f10x_adc.o
+ .debug_loc     0x00005430      0x264 target/stdperiph/stm32f10x_bkp.o
+ .debug_loc     0x00005694      0x578 target/stdperiph/stm32f10x_can.o
+ .debug_loc     0x00005c0c      0x2ec target/stdperiph/stm32f10x_cec.o
+ .debug_loc     0x00005ef8      0x12c target/stdperiph/stm32f10x_crc.o
+ .debug_loc     0x00006024      0x294 target/stdperiph/stm32f10x_dac.o
+ .debug_loc     0x000062b8       0x90 target/stdperiph/stm32f10x_dbgmcu.o
+ .debug_loc     0x00006348      0x268 target/stdperiph/stm32f10x_dma.o
+ .debug_loc     0x000065b0      0x1b4 target/stdperiph/stm32f10x_exti.o
+ .debug_loc     0x00006764      0x5d8 target/stdperiph/stm32f10x_flash.o
+ .debug_loc     0x00006d3c      0x41c target/stdperiph/stm32f10x_fsmc.o
+ .debug_loc     0x00007158      0x3e4 target/stdperiph/stm32f10x_gpio.o
+ .debug_loc     0x0000753c      0x738 target/stdperiph/stm32f10x_i2c.o
+ .debug_loc     0x00007c74      0x138 target/stdperiph/stm32f10x_iwdg.o
+ .debug_loc     0x00007dac      0x238 target/stdperiph/stm32f10x_pwr.o
+ .debug_loc     0x00007fe4      0x6dc target/stdperiph/stm32f10x_rcc.o
+ .debug_loc     0x000086c0      0x2e0 target/stdperiph/stm32f10x_rtc.o
+ .debug_loc     0x000089a0      0x648 target/stdperiph/stm32f10x_sdio.o
+ .debug_loc     0x00008fe8      0x508 target/stdperiph/stm32f10x_spi.o
+ .debug_loc     0x000094f0     0x13e8 target/stdperiph/stm32f10x_tim.o
+ .debug_loc     0x0000a8d8      0x658 target/stdperiph/stm32f10x_usart.o
+ .debug_loc     0x0000af30      0x190 target/stdperiph/stm32f10x_wwdg.o
+ .debug_loc     0x0000b0c0      0x3f8 target/usb/usb_core.o
+ .debug_loc     0x0000b4b8       0x2c target/usb/usb_init.o
+ .debug_loc     0x0000b4e4       0x70 target/usb/usb_int.o
+ .debug_loc     0x0000b554       0x70 target/usb/usb_mem.o
+ .debug_loc     0x0000b5c4      0xcac target/usb/usb_regs.o
+ .debug_loc     0x0000c270       0x9c target/usb/usb_sil.o
 
 .debug_pubnames
-                0x00000000     0x4aa4
+                0x00000000     0x4ad1
  .debug_pubnames
                 0x00000000      0x159 target/cmsis/src/core_cm3.o
  .debug_pubnames
@@ -3446,110 +3460,112 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_pubnames
                 0x000003cb       0x41 target/src/routines/gpio.o
  .debug_pubnames
-                0x0000040c       0xa1 target/src/usb_related/hw_config.o
+                0x0000040c       0x2d target/src/routines/i2c.o
  .debug_pubnames
-                0x000004ad       0xdf target/src/usb_related/newlib_stubs.o
+                0x00000439       0xa1 target/src/usb_related/hw_config.o
  .debug_pubnames
-                0x0000058c       0xe7 target/src/usb_related/usb_desc.o
+                0x000004da       0xdf target/src/usb_related/newlib_stubs.o
  .debug_pubnames
-                0x00000673       0x4c target/src/usb_related/usb_endp.o
+                0x000005b9       0xe7 target/src/usb_related/usb_desc.o
  .debug_pubnames
-                0x000006bf       0x56 target/src/usb_related/usb_istr.o
+                0x000006a0       0x4c target/src/usb_related/usb_endp.o
  .debug_pubnames
-                0x00000715      0x29d target/src/usb_related/usb_prop.o
+                0x000006ec       0x56 target/src/usb_related/usb_istr.o
  .debug_pubnames
-                0x000009b2       0x83 target/src/usb_related/usb_pwr.o
+                0x00000742      0x29d target/src/usb_related/usb_prop.o
  .debug_pubnames
-                0x00000a35      0x105 target/3310/3310-backend.o
+                0x000009df       0x83 target/src/usb_related/usb_pwr.o
  .debug_pubnames
-                0x00000b3a      0x111 target/3310/3310.o
+                0x00000a62      0x105 target/3310/3310-backend.o
  .debug_pubnames
-                0x00000c4b      0x10c target/fatfs/ff.o
+                0x00000b67      0x111 target/3310/3310.o
  .debug_pubnames
-                0x00000d57       0x75 target/fatfs/sd_spi_stm32.o
+                0x00000c78      0x10c target/fatfs/ff.o
  .debug_pubnames
-                0x00000dcc       0x96 target/freertos/croutine.o
+                0x00000d84       0x75 target/fatfs/sd_spi_stm32.o
  .debug_pubnames
-                0x00000e62       0x71 target/freertos/list.o
+                0x00000df9       0x96 target/freertos/croutine.o
  .debug_pubnames
-                0x00000ed3      0x1a9 target/freertos/queue.o
+                0x00000e8f       0x71 target/freertos/list.o
  .debug_pubnames
-                0x0000107c      0x2ca target/freertos/tasks.o
+                0x00000f00      0x1a9 target/freertos/queue.o
  .debug_pubnames
-                0x00001346       0x84 target/freertos/timers.o
+                0x000010a9      0x2ca target/freertos/tasks.o
  .debug_pubnames
-                0x000013ca      0x308 target/pawn/amx.o
+                0x00001373       0x84 target/freertos/timers.o
  .debug_pubnames
-                0x000016d2       0x6b target/pawn/amxpool.o
+                0x000013f7      0x308 target/pawn/amx.o
  .debug_pubnames
-                0x0000173d       0x49 target/pawn/pawn_loader.o
+                0x000016ff       0x6b target/pawn/amxpool.o
  .debug_pubnames
-                0x00001786       0xb3 target/src/main.o
+                0x0000176a       0x49 target/pawn/pawn_loader.o
  .debug_pubnames
-                0x00001839       0x8f target/src/stm32f10x_it.o
+                0x000017b3       0xb3 target/src/main.o
  .debug_pubnames
-                0x000018c8       0x61 target/src/system_stm32f10x.o
+                0x00001866       0x8f target/src/stm32f10x_it.o
  .debug_pubnames
-                0x00001929       0x89 target/stdperiph/misc.o
+                0x000018f5       0x61 target/src/system_stm32f10x.o
  .debug_pubnames
-                0x000019b2      0x401 target/stdperiph/stm32f10x_adc.o
+                0x00001956       0x89 target/stdperiph/misc.o
  .debug_pubnames
-                0x00001db3      0x128 target/stdperiph/stm32f10x_bkp.o
+                0x000019df      0x401 target/stdperiph/stm32f10x_adc.o
  .debug_pubnames
-                0x00001edb      0x208 target/stdperiph/stm32f10x_can.o
+                0x00001de0      0x128 target/stdperiph/stm32f10x_bkp.o
  .debug_pubnames
-                0x000020e3      0x12b target/stdperiph/stm32f10x_cec.o
+                0x00001f08      0x208 target/stdperiph/stm32f10x_can.o
  .debug_pubnames
-                0x0000220e       0x82 target/stdperiph/stm32f10x_crc.o
+                0x00002110      0x12b target/stdperiph/stm32f10x_cec.o
  .debug_pubnames
-                0x00002290      0x116 target/stdperiph/stm32f10x_dac.o
+                0x0000223b       0x82 target/stdperiph/stm32f10x_crc.o
  .debug_pubnames
-                0x000023a6       0x4c target/stdperiph/stm32f10x_dbgmcu.o
+                0x000022bd      0x116 target/stdperiph/stm32f10x_dac.o
  .debug_pubnames
-                0x000023f2       0xea target/stdperiph/stm32f10x_dma.o
+                0x000023d3       0x4c target/stdperiph/stm32f10x_dbgmcu.o
  .debug_pubnames
-                0x000024dc       0xbb target/stdperiph/stm32f10x_exti.o
+                0x0000241f       0xea target/stdperiph/stm32f10x_dma.o
  .debug_pubnames
-                0x00002597      0x2f2 target/stdperiph/stm32f10x_flash.o
+                0x00002509       0xbb target/stdperiph/stm32f10x_exti.o
  .debug_pubnames
-                0x00002889      0x1a3 target/stdperiph/stm32f10x_fsmc.o
+                0x000025c4      0x2f2 target/stdperiph/stm32f10x_flash.o
  .debug_pubnames
-                0x00002a2c      0x19d target/stdperiph/stm32f10x_gpio.o
+                0x000028b6      0x1a3 target/stdperiph/stm32f10x_fsmc.o
  .debug_pubnames
-                0x00002bc9      0x2cb target/stdperiph/stm32f10x_i2c.o
+                0x00002a59      0x19d target/stdperiph/stm32f10x_gpio.o
  .debug_pubnames
-                0x00002e94       0x91 target/stdperiph/stm32f10x_iwdg.o
+                0x00002bf6      0x2cb target/stdperiph/stm32f10x_i2c.o
  .debug_pubnames
-                0x00002f25       0xcb target/stdperiph/stm32f10x_pwr.o
+                0x00002ec1       0x91 target/stdperiph/stm32f10x_iwdg.o
  .debug_pubnames
-                0x00002ff0      0x2c4 target/stdperiph/stm32f10x_rcc.o
+                0x00002f52       0xcb target/stdperiph/stm32f10x_pwr.o
  .debug_pubnames
-                0x000032b4      0x136 target/stdperiph/stm32f10x_rtc.o
+                0x0000301d      0x2c4 target/stdperiph/stm32f10x_rcc.o
  .debug_pubnames
-                0x000033ea      0x2ac target/stdperiph/stm32f10x_sdio.o
+                0x000032e1      0x136 target/stdperiph/stm32f10x_rtc.o
  .debug_pubnames
-                0x00003696      0x1f6 target/stdperiph/stm32f10x_spi.o
+                0x00003417      0x2ac target/stdperiph/stm32f10x_sdio.o
  .debug_pubnames
-                0x0000388c      0x7b0 target/stdperiph/stm32f10x_tim.o
+                0x000036c3      0x1f6 target/stdperiph/stm32f10x_spi.o
  .debug_pubnames
-                0x0000403c      0x294 target/stdperiph/stm32f10x_usart.o
+                0x000038b9      0x7b0 target/stdperiph/stm32f10x_tim.o
  .debug_pubnames
-                0x000042d0       0xb0 target/stdperiph/stm32f10x_wwdg.o
+                0x00004069      0x294 target/stdperiph/stm32f10x_usart.o
  .debug_pubnames
-                0x00004380      0x1a5 target/usb/usb_core.o
+                0x000042fd       0xb0 target/stdperiph/stm32f10x_wwdg.o
  .debug_pubnames
-                0x00004525       0x98 target/usb/usb_init.o
+                0x000043ad      0x1a5 target/usb/usb_core.o
  .debug_pubnames
-                0x000045bd       0x46 target/usb/usb_int.o
+                0x00004552       0x98 target/usb/usb_init.o
  .debug_pubnames
-                0x00004603       0x42 target/usb/usb_mem.o
+                0x000045ea       0x46 target/usb/usb_int.o
  .debug_pubnames
-                0x00004645      0x419 target/usb/usb_regs.o
+                0x00004630       0x42 target/usb/usb_mem.o
  .debug_pubnames
-                0x00004a5e       0x46 target/usb/usb_sil.o
+                0x00004672      0x419 target/usb/usb_regs.o
+ .debug_pubnames
+                0x00004a8b       0x46 target/usb/usb_sil.o
 
 .debug_pubtypes
-                0x00000000     0x244e
+                0x00000000     0x24fb
  .debug_pubtypes
                 0x00000000       0x50 target/cmsis/src/core_cm3.o
  .debug_pubtypes
@@ -3565,109 +3581,111 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_pubtypes
                 0x000002f3       0x89 target/src/routines/gpio.o
  .debug_pubtypes
-                0x0000037c       0xde target/src/usb_related/hw_config.o
+                0x0000037c       0xad target/src/routines/i2c.o
  .debug_pubtypes
-                0x0000045a       0xf6 target/src/usb_related/newlib_stubs.o
+                0x00000429       0xde target/src/usb_related/hw_config.o
  .debug_pubtypes
-                0x00000550       0x1e target/src/usb_related/usb_desc.o
+                0x00000507       0xf6 target/src/usb_related/newlib_stubs.o
  .debug_pubtypes
-                0x0000056e       0x5b target/src/usb_related/usb_endp.o
+                0x000005fd       0x1e target/src/usb_related/usb_desc.o
  .debug_pubtypes
-                0x000005c9       0x63 target/src/usb_related/usb_istr.o
+                0x0000061b       0x5b target/src/usb_related/usb_endp.o
  .debug_pubtypes
-                0x0000062c      0x17b target/src/usb_related/usb_prop.o
+                0x00000676       0x63 target/src/usb_related/usb_istr.o
  .debug_pubtypes
-                0x000007a7       0x8d target/src/usb_related/usb_pwr.o
+                0x000006d9      0x17b target/src/usb_related/usb_prop.o
  .debug_pubtypes
-                0x00000834       0xd6 target/3310/3310-backend.o
+                0x00000854       0x8d target/src/usb_related/usb_pwr.o
  .debug_pubtypes
-                0x0000090a       0x8a target/3310/3310.o
+                0x000008e1       0xd6 target/3310/3310-backend.o
  .debug_pubtypes
-                0x00000994       0x7f target/fatfs/ff.o
+                0x000009b7       0x8a target/3310/3310.o
  .debug_pubtypes
-                0x00000a13       0xf9 target/fatfs/sd_spi_stm32.o
+                0x00000a41       0x7f target/fatfs/ff.o
  .debug_pubtypes
-                0x00000b0c       0xcd target/freertos/croutine.o
+                0x00000ac0       0xf9 target/fatfs/sd_spi_stm32.o
  .debug_pubtypes
-                0x00000bd9       0x7a target/freertos/list.o
+                0x00000bb9       0xcd target/freertos/croutine.o
  .debug_pubtypes
-                0x00000c53       0xd4 target/freertos/queue.o
+                0x00000c86       0x7a target/freertos/list.o
  .debug_pubtypes
-                0x00000d27      0x10c target/freertos/tasks.o
+                0x00000d00       0xd4 target/freertos/queue.o
  .debug_pubtypes
-                0x00000e33       0xfd target/freertos/timers.o
+                0x00000dd4      0x10c target/freertos/tasks.o
  .debug_pubtypes
-                0x00000f30      0x144 target/pawn/amx.o
+                0x00000ee0       0xfd target/freertos/timers.o
  .debug_pubtypes
-                0x00001074       0x29 target/pawn/amxpool.o
+                0x00000fdd      0x144 target/pawn/amx.o
  .debug_pubtypes
-                0x0000109d      0x13e target/pawn/pawn_loader.o
+                0x00001121       0x29 target/pawn/amxpool.o
  .debug_pubtypes
-                0x000011db       0x45 target/src/main.o
+                0x0000114a      0x13e target/pawn/pawn_loader.o
  .debug_pubtypes
-                0x00001220       0x12 target/src/stm32f10x_it.o
+                0x00001288       0x45 target/src/main.o
  .debug_pubtypes
-                0x00001232       0x67 target/src/system_stm32f10x.o
+                0x000012cd       0x12 target/src/stm32f10x_it.o
  .debug_pubtypes
-                0x00001299       0x80 target/stdperiph/misc.o
+                0x000012df       0x67 target/src/system_stm32f10x.o
  .debug_pubtypes
-                0x00001319       0x8c target/stdperiph/stm32f10x_adc.o
+                0x00001346       0x80 target/stdperiph/misc.o
  .debug_pubtypes
-                0x000013a5       0x78 target/stdperiph/stm32f10x_bkp.o
+                0x000013c6       0x8c target/stdperiph/stm32f10x_adc.o
  .debug_pubtypes
-                0x0000141d      0x115 target/stdperiph/stm32f10x_can.o
+                0x00001452       0x78 target/stdperiph/stm32f10x_bkp.o
  .debug_pubtypes
-                0x00001532       0x8c target/stdperiph/stm32f10x_cec.o
+                0x000014ca      0x115 target/stdperiph/stm32f10x_can.o
  .debug_pubtypes
-                0x000015be       0x48 target/stdperiph/stm32f10x_crc.o
+                0x000015df       0x8c target/stdperiph/stm32f10x_cec.o
  .debug_pubtypes
-                0x00001606       0x70 target/stdperiph/stm32f10x_dac.o
+                0x0000166b       0x48 target/stdperiph/stm32f10x_crc.o
  .debug_pubtypes
-                0x00001676       0x46 target/stdperiph/stm32f10x_dbgmcu.o
+                0x000016b3       0x70 target/stdperiph/stm32f10x_dac.o
  .debug_pubtypes
-                0x000016bc       0x98 target/stdperiph/stm32f10x_dma.o
+                0x00001723       0x46 target/stdperiph/stm32f10x_dbgmcu.o
  .debug_pubtypes
-                0x00001754       0xa2 target/stdperiph/stm32f10x_exti.o
+                0x00001769       0x98 target/stdperiph/stm32f10x_dma.o
  .debug_pubtypes
-                0x000017f6       0x8d target/stdperiph/stm32f10x_flash.o
+                0x00001801       0xa2 target/stdperiph/stm32f10x_exti.o
  .debug_pubtypes
-                0x00001883      0x168 target/stdperiph/stm32f10x_fsmc.o
+                0x000018a3       0x8d target/stdperiph/stm32f10x_flash.o
  .debug_pubtypes
-                0x000019eb       0xc3 target/stdperiph/stm32f10x_gpio.o
+                0x00001930      0x168 target/stdperiph/stm32f10x_fsmc.o
  .debug_pubtypes
-                0x00001aae       0xb2 target/stdperiph/stm32f10x_i2c.o
+                0x00001a98       0xc3 target/stdperiph/stm32f10x_gpio.o
  .debug_pubtypes
-                0x00001b60       0x58 target/stdperiph/stm32f10x_iwdg.o
+                0x00001b5b       0xb2 target/stdperiph/stm32f10x_i2c.o
  .debug_pubtypes
-                0x00001bb8       0x78 target/stdperiph/stm32f10x_pwr.o
+                0x00001c0d       0x58 target/stdperiph/stm32f10x_iwdg.o
  .debug_pubtypes
-                0x00001c30       0x9e target/stdperiph/stm32f10x_rcc.o
+                0x00001c65       0x78 target/stdperiph/stm32f10x_pwr.o
  .debug_pubtypes
-                0x00001cce       0x78 target/stdperiph/stm32f10x_rtc.o
+                0x00001cdd       0x9e target/stdperiph/stm32f10x_rcc.o
  .debug_pubtypes
-                0x00001d46       0xb2 target/stdperiph/stm32f10x_sdio.o
+                0x00001d7b       0x78 target/stdperiph/stm32f10x_rtc.o
  .debug_pubtypes
-                0x00001df8       0xb6 target/stdperiph/stm32f10x_spi.o
+                0x00001df3       0xb2 target/stdperiph/stm32f10x_sdio.o
  .debug_pubtypes
-                0x00001eae       0xd8 target/stdperiph/stm32f10x_tim.o
+                0x00001ea5       0xb6 target/stdperiph/stm32f10x_spi.o
  .debug_pubtypes
-                0x00001f86       0xc9 target/stdperiph/stm32f10x_usart.o
+                0x00001f5b       0xd8 target/stdperiph/stm32f10x_tim.o
  .debug_pubtypes
-                0x0000204f       0x4b target/stdperiph/stm32f10x_wwdg.o
+                0x00002033       0xc9 target/stdperiph/stm32f10x_usart.o
  .debug_pubtypes
-                0x0000209a      0x1b7 target/usb/usb_core.o
+                0x000020fc       0x4b target/stdperiph/stm32f10x_wwdg.o
  .debug_pubtypes
-                0x00002251       0xfc target/usb/usb_init.o
+                0x00002147      0x1b7 target/usb/usb_core.o
  .debug_pubtypes
-                0x0000234d       0x38 target/usb/usb_int.o
+                0x000022fe       0xfc target/usb/usb_init.o
  .debug_pubtypes
-                0x00002385       0x38 target/usb/usb_mem.o
+                0x000023fa       0x38 target/usb/usb_int.o
  .debug_pubtypes
-                0x000023bd       0x59 target/usb/usb_regs.o
+                0x00002432       0x38 target/usb/usb_mem.o
  .debug_pubtypes
-                0x00002416       0x38 target/usb/usb_sil.o
+                0x0000246a       0x59 target/usb/usb_regs.o
+ .debug_pubtypes
+                0x000024c3       0x38 target/usb/usb_sil.o
 
-.debug_aranges  0x00000000     0x2250
+.debug_aranges  0x00000000     0x2278
  .debug_aranges
                 0x00000000       0xc8 target/cmsis/src/core_cm3.o
  .debug_aranges
@@ -3683,109 +3701,111 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_aranges
                 0x00000220       0x40 target/src/routines/gpio.o
  .debug_aranges
-                0x00000260       0x58 target/src/usb_related/hw_config.o
+                0x00000260       0x28 target/src/routines/i2c.o
  .debug_aranges
-                0x000002b8       0xa0 target/src/usb_related/newlib_stubs.o
+                0x00000288       0x58 target/src/usb_related/hw_config.o
  .debug_aranges
-                0x00000358       0x30 target/src/usb_related/usb_endp.o
+                0x000002e0       0xa0 target/src/usb_related/newlib_stubs.o
  .debug_aranges
-                0x00000388       0x20 target/src/usb_related/usb_istr.o
+                0x00000380       0x30 target/src/usb_related/usb_endp.o
  .debug_aranges
-                0x000003a8       0x88 target/src/usb_related/usb_prop.o
+                0x000003b0       0x20 target/src/usb_related/usb_istr.o
  .debug_aranges
-                0x00000430       0x40 target/src/usb_related/usb_pwr.o
+                0x000003d0       0x88 target/src/usb_related/usb_prop.o
  .debug_aranges
-                0x00000470       0xa0 target/3310/3310-backend.o
+                0x00000458       0x40 target/src/usb_related/usb_pwr.o
  .debug_aranges
-                0x00000510       0xb8 target/3310/3310.o
+                0x00000498       0xa0 target/3310/3310-backend.o
  .debug_aranges
-                0x000005c8      0x158 target/fatfs/ff.o
+                0x00000538       0xb8 target/3310/3310.o
  .debug_aranges
-                0x00000720       0xc8 target/fatfs/sd_spi_stm32.o
+                0x000005f0      0x158 target/fatfs/ff.o
  .debug_aranges
-                0x000007e8       0x50 target/freertos/croutine.o
+                0x00000748       0xc8 target/fatfs/sd_spi_stm32.o
  .debug_aranges
-                0x00000838       0x40 target/freertos/list.o
+                0x00000810       0x50 target/freertos/croutine.o
  .debug_aranges
-                0x00000878       0xc0 target/freertos/queue.o
+                0x00000860       0x40 target/freertos/list.o
  .debug_aranges
-                0x00000938      0x138 target/freertos/tasks.o
+                0x000008a0       0xc0 target/freertos/queue.o
  .debug_aranges
-                0x00000a70       0x88 target/freertos/timers.o
+                0x00000960      0x138 target/freertos/tasks.o
  .debug_aranges
-                0x00000af8      0x198 target/pawn/amx.o
+                0x00000a98       0x88 target/freertos/timers.o
  .debug_aranges
-                0x00000c90       0x50 target/pawn/amxpool.o
+                0x00000b20      0x198 target/pawn/amx.o
  .debug_aranges
-                0x00000ce0       0x40 target/pawn/pawn_loader.o
+                0x00000cb8       0x50 target/pawn/amxpool.o
  .debug_aranges
-                0x00000d20       0x50 target/src/main.o
+                0x00000d08       0x40 target/pawn/pawn_loader.o
  .debug_aranges
-                0x00000d70       0x48 target/src/stm32f10x_it.o
+                0x00000d48       0x50 target/src/main.o
  .debug_aranges
-                0x00000db8       0x38 target/src/system_stm32f10x.o
+                0x00000d98       0x48 target/src/stm32f10x_it.o
  .debug_aranges
-                0x00000df0       0x40 target/stdperiph/misc.o
+                0x00000de0       0x38 target/src/system_stm32f10x.o
  .debug_aranges
-                0x00000e30      0x138 target/stdperiph/stm32f10x_adc.o
+                0x00000e18       0x40 target/stdperiph/misc.o
  .debug_aranges
-                0x00000f68       0x78 target/stdperiph/stm32f10x_bkp.o
+                0x00000e58      0x138 target/stdperiph/stm32f10x_adc.o
  .debug_aranges
-                0x00000fe0       0xe0 target/stdperiph/stm32f10x_can.o
+                0x00000f90       0x78 target/stdperiph/stm32f10x_bkp.o
  .debug_aranges
-                0x000010c0       0x88 target/stdperiph/stm32f10x_cec.o
+                0x00001008       0xe0 target/stdperiph/stm32f10x_can.o
  .debug_aranges
-                0x00001148       0x48 target/stdperiph/stm32f10x_crc.o
+                0x000010e8       0x88 target/stdperiph/stm32f10x_cec.o
  .debug_aranges
-                0x00001190       0x78 target/stdperiph/stm32f10x_dac.o
+                0x00001170       0x48 target/stdperiph/stm32f10x_crc.o
  .debug_aranges
-                0x00001208       0x30 target/stdperiph/stm32f10x_dbgmcu.o
+                0x000011b8       0x78 target/stdperiph/stm32f10x_dac.o
  .debug_aranges
-                0x00001238       0x70 target/stdperiph/stm32f10x_dma.o
+                0x00001230       0x30 target/stdperiph/stm32f10x_dbgmcu.o
  .debug_aranges
-                0x000012a8       0x58 target/stdperiph/stm32f10x_exti.o
+                0x00001260       0x70 target/stdperiph/stm32f10x_dma.o
  .debug_aranges
-                0x00001300       0xf8 target/stdperiph/stm32f10x_flash.o
+                0x000012d0       0x58 target/stdperiph/stm32f10x_exti.o
  .debug_aranges
-                0x000013f8       0xb0 target/stdperiph/stm32f10x_fsmc.o
+                0x00001328       0xf8 target/stdperiph/stm32f10x_flash.o
  .debug_aranges
-                0x000014a8       0xa8 target/stdperiph/stm32f10x_gpio.o
+                0x00001420       0xb0 target/stdperiph/stm32f10x_fsmc.o
  .debug_aranges
-                0x00001550      0x120 target/stdperiph/stm32f10x_i2c.o
+                0x000014d0       0xa8 target/stdperiph/stm32f10x_gpio.o
  .debug_aranges
-                0x00001670       0x48 target/stdperiph/stm32f10x_iwdg.o
+                0x00001578      0x120 target/stdperiph/stm32f10x_i2c.o
  .debug_aranges
-                0x000016b8       0x70 target/stdperiph/stm32f10x_pwr.o
+                0x00001698       0x48 target/stdperiph/stm32f10x_iwdg.o
  .debug_aranges
-                0x00001728      0x118 target/stdperiph/stm32f10x_rcc.o
+                0x000016e0       0x70 target/stdperiph/stm32f10x_pwr.o
  .debug_aranges
-                0x00001840       0x88 target/stdperiph/stm32f10x_rtc.o
+                0x00001750      0x118 target/stdperiph/stm32f10x_rcc.o
  .debug_aranges
-                0x000018c8      0x108 target/stdperiph/stm32f10x_sdio.o
+                0x00001868       0x88 target/stdperiph/stm32f10x_rtc.o
  .debug_aranges
-                0x000019d0       0xd0 target/stdperiph/stm32f10x_spi.o
+                0x000018f0      0x108 target/stdperiph/stm32f10x_sdio.o
  .debug_aranges
-                0x00001aa0      0x2f0 target/stdperiph/stm32f10x_tim.o
+                0x000019f8       0xd0 target/stdperiph/stm32f10x_spi.o
  .debug_aranges
-                0x00001d90      0x100 target/stdperiph/stm32f10x_usart.o
+                0x00001ac8      0x2f0 target/stdperiph/stm32f10x_tim.o
  .debug_aranges
-                0x00001e90       0x58 target/stdperiph/stm32f10x_wwdg.o
+                0x00001db8      0x100 target/stdperiph/stm32f10x_usart.o
  .debug_aranges
-                0x00001ee8       0xb0 target/usb/usb_core.o
+                0x00001eb8       0x58 target/stdperiph/stm32f10x_wwdg.o
  .debug_aranges
-                0x00001f98       0x20 target/usb/usb_init.o
+                0x00001f10       0xb0 target/usb/usb_core.o
  .debug_aranges
-                0x00001fb8       0x28 target/usb/usb_int.o
+                0x00001fc0       0x20 target/usb/usb_init.o
  .debug_aranges
-                0x00001fe0       0x28 target/usb/usb_mem.o
+                0x00001fe0       0x28 target/usb/usb_int.o
  .debug_aranges
-                0x00002008      0x1f0 target/usb/usb_regs.o
+                0x00002008       0x28 target/usb/usb_mem.o
  .debug_aranges
-                0x000021f8       0x30 target/usb/usb_sil.o
+                0x00002030      0x1f0 target/usb/usb_regs.o
  .debug_aranges
-                0x00002228       0x28 target/cmsis/startup/startup_stm32f10x_md.o
+                0x00002220       0x30 target/usb/usb_sil.o
+ .debug_aranges
+                0x00002250       0x28 target/cmsis/startup/startup_stm32f10x_md.o
 
-.debug_ranges   0x00000000     0x1ee8
+.debug_ranges   0x00000000     0x1f00
  .debug_ranges  0x00000000       0xb8 target/cmsis/src/core_cm3.o
  .debug_ranges  0x000000b8       0x60 target/freertos/cm3/port.o
  .debug_ranges  0x00000118       0x28 target/freertos/memmang/heap_1.o
@@ -3793,59 +3813,60 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_ranges  0x00000178       0x18 target/src/routines/cr_funcs.o
  .debug_ranges  0x00000190       0x30 target/src/routines/cr_usbio.o
  .debug_ranges  0x000001c0       0x30 target/src/routines/gpio.o
- .debug_ranges  0x000001f0       0x48 target/src/usb_related/hw_config.o
- .debug_ranges  0x00000238       0x90 target/src/usb_related/newlib_stubs.o
- .debug_ranges  0x000002c8       0x20 target/src/usb_related/usb_endp.o
- .debug_ranges  0x000002e8       0x10 target/src/usb_related/usb_istr.o
- .debug_ranges  0x000002f8       0x78 target/src/usb_related/usb_prop.o
- .debug_ranges  0x00000370       0x30 target/src/usb_related/usb_pwr.o
- .debug_ranges  0x000003a0       0x90 target/3310/3310-backend.o
- .debug_ranges  0x00000430       0xa8 target/3310/3310.o
- .debug_ranges  0x000004d8      0x148 target/fatfs/ff.o
- .debug_ranges  0x00000620       0xb8 target/fatfs/sd_spi_stm32.o
- .debug_ranges  0x000006d8       0x40 target/freertos/croutine.o
- .debug_ranges  0x00000718       0x30 target/freertos/list.o
- .debug_ranges  0x00000748       0xb0 target/freertos/queue.o
- .debug_ranges  0x000007f8      0x128 target/freertos/tasks.o
- .debug_ranges  0x00000920       0x78 target/freertos/timers.o
- .debug_ranges  0x00000998      0x1b8 target/pawn/amx.o
- .debug_ranges  0x00000b50       0x40 target/pawn/amxpool.o
- .debug_ranges  0x00000b90       0x30 target/pawn/pawn_loader.o
- .debug_ranges  0x00000bc0       0x40 target/src/main.o
- .debug_ranges  0x00000c00       0x38 target/src/stm32f10x_it.o
- .debug_ranges  0x00000c38       0x28 target/src/system_stm32f10x.o
- .debug_ranges  0x00000c60       0x30 target/stdperiph/misc.o
- .debug_ranges  0x00000c90      0x128 target/stdperiph/stm32f10x_adc.o
- .debug_ranges  0x00000db8       0x68 target/stdperiph/stm32f10x_bkp.o
- .debug_ranges  0x00000e20       0xd0 target/stdperiph/stm32f10x_can.o
- .debug_ranges  0x00000ef0       0x78 target/stdperiph/stm32f10x_cec.o
- .debug_ranges  0x00000f68       0x38 target/stdperiph/stm32f10x_crc.o
- .debug_ranges  0x00000fa0       0x68 target/stdperiph/stm32f10x_dac.o
- .debug_ranges  0x00001008       0x20 target/stdperiph/stm32f10x_dbgmcu.o
- .debug_ranges  0x00001028       0x60 target/stdperiph/stm32f10x_dma.o
- .debug_ranges  0x00001088       0x48 target/stdperiph/stm32f10x_exti.o
- .debug_ranges  0x000010d0       0xe8 target/stdperiph/stm32f10x_flash.o
- .debug_ranges  0x000011b8       0xa0 target/stdperiph/stm32f10x_fsmc.o
- .debug_ranges  0x00001258       0x98 target/stdperiph/stm32f10x_gpio.o
- .debug_ranges  0x000012f0      0x110 target/stdperiph/stm32f10x_i2c.o
- .debug_ranges  0x00001400       0x38 target/stdperiph/stm32f10x_iwdg.o
- .debug_ranges  0x00001438       0x60 target/stdperiph/stm32f10x_pwr.o
- .debug_ranges  0x00001498      0x108 target/stdperiph/stm32f10x_rcc.o
- .debug_ranges  0x000015a0       0x78 target/stdperiph/stm32f10x_rtc.o
- .debug_ranges  0x00001618       0xf8 target/stdperiph/stm32f10x_sdio.o
- .debug_ranges  0x00001710       0xc0 target/stdperiph/stm32f10x_spi.o
- .debug_ranges  0x000017d0      0x2e0 target/stdperiph/stm32f10x_tim.o
- .debug_ranges  0x00001ab0       0xf0 target/stdperiph/stm32f10x_usart.o
- .debug_ranges  0x00001ba0       0x48 target/stdperiph/stm32f10x_wwdg.o
- .debug_ranges  0x00001be8       0xa0 target/usb/usb_core.o
- .debug_ranges  0x00001c88       0x10 target/usb/usb_init.o
- .debug_ranges  0x00001c98       0x18 target/usb/usb_int.o
- .debug_ranges  0x00001cb0       0x18 target/usb/usb_mem.o
- .debug_ranges  0x00001cc8      0x1e0 target/usb/usb_regs.o
- .debug_ranges  0x00001ea8       0x20 target/usb/usb_sil.o
- .debug_ranges  0x00001ec8       0x20 target/cmsis/startup/startup_stm32f10x_md.o
+ .debug_ranges  0x000001f0       0x18 target/src/routines/i2c.o
+ .debug_ranges  0x00000208       0x48 target/src/usb_related/hw_config.o
+ .debug_ranges  0x00000250       0x90 target/src/usb_related/newlib_stubs.o
+ .debug_ranges  0x000002e0       0x20 target/src/usb_related/usb_endp.o
+ .debug_ranges  0x00000300       0x10 target/src/usb_related/usb_istr.o
+ .debug_ranges  0x00000310       0x78 target/src/usb_related/usb_prop.o
+ .debug_ranges  0x00000388       0x30 target/src/usb_related/usb_pwr.o
+ .debug_ranges  0x000003b8       0x90 target/3310/3310-backend.o
+ .debug_ranges  0x00000448       0xa8 target/3310/3310.o
+ .debug_ranges  0x000004f0      0x148 target/fatfs/ff.o
+ .debug_ranges  0x00000638       0xb8 target/fatfs/sd_spi_stm32.o
+ .debug_ranges  0x000006f0       0x40 target/freertos/croutine.o
+ .debug_ranges  0x00000730       0x30 target/freertos/list.o
+ .debug_ranges  0x00000760       0xb0 target/freertos/queue.o
+ .debug_ranges  0x00000810      0x128 target/freertos/tasks.o
+ .debug_ranges  0x00000938       0x78 target/freertos/timers.o
+ .debug_ranges  0x000009b0      0x1b8 target/pawn/amx.o
+ .debug_ranges  0x00000b68       0x40 target/pawn/amxpool.o
+ .debug_ranges  0x00000ba8       0x30 target/pawn/pawn_loader.o
+ .debug_ranges  0x00000bd8       0x40 target/src/main.o
+ .debug_ranges  0x00000c18       0x38 target/src/stm32f10x_it.o
+ .debug_ranges  0x00000c50       0x28 target/src/system_stm32f10x.o
+ .debug_ranges  0x00000c78       0x30 target/stdperiph/misc.o
+ .debug_ranges  0x00000ca8      0x128 target/stdperiph/stm32f10x_adc.o
+ .debug_ranges  0x00000dd0       0x68 target/stdperiph/stm32f10x_bkp.o
+ .debug_ranges  0x00000e38       0xd0 target/stdperiph/stm32f10x_can.o
+ .debug_ranges  0x00000f08       0x78 target/stdperiph/stm32f10x_cec.o
+ .debug_ranges  0x00000f80       0x38 target/stdperiph/stm32f10x_crc.o
+ .debug_ranges  0x00000fb8       0x68 target/stdperiph/stm32f10x_dac.o
+ .debug_ranges  0x00001020       0x20 target/stdperiph/stm32f10x_dbgmcu.o
+ .debug_ranges  0x00001040       0x60 target/stdperiph/stm32f10x_dma.o
+ .debug_ranges  0x000010a0       0x48 target/stdperiph/stm32f10x_exti.o
+ .debug_ranges  0x000010e8       0xe8 target/stdperiph/stm32f10x_flash.o
+ .debug_ranges  0x000011d0       0xa0 target/stdperiph/stm32f10x_fsmc.o
+ .debug_ranges  0x00001270       0x98 target/stdperiph/stm32f10x_gpio.o
+ .debug_ranges  0x00001308      0x110 target/stdperiph/stm32f10x_i2c.o
+ .debug_ranges  0x00001418       0x38 target/stdperiph/stm32f10x_iwdg.o
+ .debug_ranges  0x00001450       0x60 target/stdperiph/stm32f10x_pwr.o
+ .debug_ranges  0x000014b0      0x108 target/stdperiph/stm32f10x_rcc.o
+ .debug_ranges  0x000015b8       0x78 target/stdperiph/stm32f10x_rtc.o
+ .debug_ranges  0x00001630       0xf8 target/stdperiph/stm32f10x_sdio.o
+ .debug_ranges  0x00001728       0xc0 target/stdperiph/stm32f10x_spi.o
+ .debug_ranges  0x000017e8      0x2e0 target/stdperiph/stm32f10x_tim.o
+ .debug_ranges  0x00001ac8       0xf0 target/stdperiph/stm32f10x_usart.o
+ .debug_ranges  0x00001bb8       0x48 target/stdperiph/stm32f10x_wwdg.o
+ .debug_ranges  0x00001c00       0xa0 target/usb/usb_core.o
+ .debug_ranges  0x00001ca0       0x10 target/usb/usb_init.o
+ .debug_ranges  0x00001cb0       0x18 target/usb/usb_int.o
+ .debug_ranges  0x00001cc8       0x18 target/usb/usb_mem.o
+ .debug_ranges  0x00001ce0      0x1e0 target/usb/usb_regs.o
+ .debug_ranges  0x00001ec0       0x20 target/usb/usb_sil.o
+ .debug_ranges  0x00001ee0       0x20 target/cmsis/startup/startup_stm32f10x_md.o
 
-.debug_str      0x00000000     0x8ea8
+.debug_str      0x00000000     0x8eec
  .debug_str     0x00000000      0x1ec target/cmsis/src/core_cm3.o
                                 0x23d (size before relaxing)
  .debug_str     0x000001ec      0x142 target/freertos/cm3/port.o
@@ -3860,107 +3881,109 @@ OUTPUT(target/target.elf elf32-littlearm)
                                 0x27b (size before relaxing)
  .debug_str     0x00000609      0x16a target/src/routines/gpio.o
                                 0x279 (size before relaxing)
- .debug_str     0x00000773      0x5ac target/src/usb_related/hw_config.o
+ .debug_str     0x00000773      0x13b target/src/routines/i2c.o
+                                0x359 (size before relaxing)
+ .debug_str     0x000008ae      0x5ac target/src/usb_related/hw_config.o
                                 0x6d7 (size before relaxing)
- .debug_str     0x00000d1f      0x220 target/src/usb_related/newlib_stubs.o
+ .debug_str     0x00000e5a      0x1da target/src/usb_related/newlib_stubs.o
                                 0x372 (size before relaxing)
- .debug_str     0x00000f3f       0xba target/src/usb_related/usb_desc.o
+ .debug_str     0x00001034       0xba target/src/usb_related/usb_desc.o
                                 0x1b2 (size before relaxing)
- .debug_str     0x00000ff9       0x72 target/src/usb_related/usb_endp.o
+ .debug_str     0x000010ee       0x72 target/src/usb_related/usb_endp.o
                                 0x1c2 (size before relaxing)
- .debug_str     0x0000106b      0x123 target/src/usb_related/usb_istr.o
+ .debug_str     0x00001160      0x123 target/src/usb_related/usb_istr.o
                                 0x26e (size before relaxing)
- .debug_str     0x0000118e      0x3f6 target/src/usb_related/usb_prop.o
+ .debug_str     0x00001283      0x3f6 target/src/usb_related/usb_prop.o
                                 0x8bc (size before relaxing)
- .debug_str     0x00001584       0xf1 target/src/usb_related/usb_pwr.o
+ .debug_str     0x00001679       0xf1 target/src/usb_related/usb_pwr.o
                                 0x2bf (size before relaxing)
- .debug_str     0x00001675      0x2a5 target/3310/3310-backend.o
+ .debug_str     0x0000176a      0x27e target/3310/3310-backend.o
                                 0x519 (size before relaxing)
- .debug_str     0x0000191a      0x22f target/3310/3310.o
+ .debug_str     0x000019e8      0x22f target/3310/3310.o
                                 0x32f (size before relaxing)
- .debug_str     0x00001b49      0x445 target/fatfs/ff.o
+ .debug_str     0x00001c17      0x445 target/fatfs/ff.o
                                 0x53f (size before relaxing)
- .debug_str     0x00001f8e      0x1c8 target/fatfs/sd_spi_stm32.o
+ .debug_str     0x0000205c      0x1c8 target/fatfs/sd_spi_stm32.o
                                 0x584 (size before relaxing)
- .debug_str     0x00002156      0x25f target/freertos/croutine.o
+ .debug_str     0x00002224      0x25f target/freertos/croutine.o
                                 0x3da (size before relaxing)
- .debug_str     0x000023b5       0xa3 target/freertos/list.o
+ .debug_str     0x00002483       0xa3 target/freertos/list.o
                                 0x20b (size before relaxing)
- .debug_str     0x00002458      0x3a0 target/freertos/queue.o
+ .debug_str     0x00002526      0x3a0 target/freertos/queue.o
                                 0x53a (size before relaxing)
- .debug_str     0x000027f8      0x655 target/freertos/tasks.o
+ .debug_str     0x000028c6      0x655 target/freertos/tasks.o
                                 0x8bf (size before relaxing)
- .debug_str     0x00002e4d      0x339 target/freertos/timers.o
+ .debug_str     0x00002f1b      0x339 target/freertos/timers.o
                                 0x4d8 (size before relaxing)
- .debug_str     0x00003186      0xea8 target/pawn/amx.o
+ .debug_str     0x00003254      0xea0 target/pawn/amx.o
                                0x1027 (size before relaxing)
- .debug_str     0x0000402e       0xb1 target/pawn/amxpool.o
+ .debug_str     0x000040f4       0xb1 target/pawn/amxpool.o
                                 0x347 (size before relaxing)
- .debug_str     0x000040df       0x7f target/pawn/pawn_loader.o
+ .debug_str     0x000041a5       0x7f target/pawn/pawn_loader.o
                                 0x652 (size before relaxing)
- .debug_str     0x0000415e       0x63 target/src/main.o
+ .debug_str     0x00004224       0x63 target/src/main.o
                                 0x19f (size before relaxing)
- .debug_str     0x000041c1       0x78 target/src/stm32f10x_it.o
+ .debug_str     0x00004287       0x78 target/src/stm32f10x_it.o
                                 0x14a (size before relaxing)
- .debug_str     0x00004239      0x13b target/src/system_stm32f10x.o
+ .debug_str     0x000042ff      0x13b target/src/system_stm32f10x.o
                                 0x245 (size before relaxing)
- .debug_str     0x00004374      0x119 target/stdperiph/misc.o
+ .debug_str     0x0000443a      0x119 target/stdperiph/misc.o
                                 0x32e (size before relaxing)
- .debug_str     0x0000448d      0x519 target/stdperiph/stm32f10x_adc.o
+ .debug_str     0x00004553      0x519 target/stdperiph/stm32f10x_adc.o
                                 0x666 (size before relaxing)
- .debug_str     0x000049a6      0x37b target/stdperiph/stm32f10x_bkp.o
+ .debug_str     0x00004a6c      0x37b target/stdperiph/stm32f10x_bkp.o
                                 0x520 (size before relaxing)
- .debug_str     0x00004d21      0x4fd target/stdperiph/stm32f10x_can.o
+ .debug_str     0x00004de7      0x4fd target/stdperiph/stm32f10x_can.o
                                 0x699 (size before relaxing)
- .debug_str     0x0000521e      0x18b target/stdperiph/stm32f10x_cec.o
+ .debug_str     0x000052e4      0x18b target/stdperiph/stm32f10x_cec.o
                                 0x2e1 (size before relaxing)
- .debug_str     0x000053a9       0x9b target/stdperiph/stm32f10x_crc.o
+ .debug_str     0x0000546f       0x9b target/stdperiph/stm32f10x_crc.o
                                 0x1a6 (size before relaxing)
- .debug_str     0x00005444      0x1ec target/stdperiph/stm32f10x_dac.o
+ .debug_str     0x0000550a      0x1ec target/stdperiph/stm32f10x_dac.o
                                 0x31a (size before relaxing)
- .debug_str     0x00005630       0x6f target/stdperiph/stm32f10x_dbgmcu.o
+ .debug_str     0x000056f6       0x6f target/stdperiph/stm32f10x_dbgmcu.o
                                 0x172 (size before relaxing)
- .debug_str     0x0000569f      0x118 target/stdperiph/stm32f10x_dma.o
+ .debug_str     0x00005765      0x118 target/stdperiph/stm32f10x_dma.o
                                 0x32c (size before relaxing)
- .debug_str     0x000057b7      0x19e target/stdperiph/stm32f10x_exti.o
+ .debug_str     0x0000587d      0x19e target/stdperiph/stm32f10x_exti.o
                                 0x2c9 (size before relaxing)
- .debug_str     0x00005955      0x3d2 target/stdperiph/stm32f10x_flash.o
+ .debug_str     0x00005a1b      0x3d2 target/stdperiph/stm32f10x_flash.o
                                 0x553 (size before relaxing)
- .debug_str     0x00005d27      0x5ac target/stdperiph/stm32f10x_fsmc.o
+ .debug_str     0x00005ded      0x5ac target/stdperiph/stm32f10x_fsmc.o
                                 0x6ef (size before relaxing)
- .debug_str     0x000062d3      0x238 target/stdperiph/stm32f10x_gpio.o
+ .debug_str     0x00006399      0x238 target/stdperiph/stm32f10x_gpio.o
                                 0x484 (size before relaxing)
- .debug_str     0x0000650b      0x402 target/stdperiph/stm32f10x_i2c.o
+ .debug_str     0x000065d1      0x380 target/stdperiph/stm32f10x_i2c.o
                                 0x5d1 (size before relaxing)
- .debug_str     0x0000690d       0xb9 target/stdperiph/stm32f10x_iwdg.o
+ .debug_str     0x00006951       0xb9 target/stdperiph/stm32f10x_iwdg.o
                                 0x1c7 (size before relaxing)
- .debug_str     0x000069c6       0xf9 target/stdperiph/stm32f10x_pwr.o
+ .debug_str     0x00006a0a       0xf9 target/stdperiph/stm32f10x_pwr.o
                                 0x27d (size before relaxing)
- .debug_str     0x00006abf      0x344 target/stdperiph/stm32f10x_rcc.o
+ .debug_str     0x00006b03      0x344 target/stdperiph/stm32f10x_rcc.o
                                 0x585 (size before relaxing)
- .debug_str     0x00006e03      0x171 target/stdperiph/stm32f10x_rtc.o
+ .debug_str     0x00006e47      0x171 target/stdperiph/stm32f10x_rtc.o
                                 0x30d (size before relaxing)
- .debug_str     0x00006f74      0x452 target/stdperiph/stm32f10x_sdio.o
+ .debug_str     0x00006fb8      0x452 target/stdperiph/stm32f10x_sdio.o
                                 0x5a6 (size before relaxing)
- .debug_str     0x000073c6      0x291 target/stdperiph/stm32f10x_spi.o
+ .debug_str     0x0000740a      0x291 target/stdperiph/stm32f10x_spi.o
                                 0x568 (size before relaxing)
- .debug_str     0x00007657      0xad3 target/stdperiph/stm32f10x_tim.o
+ .debug_str     0x0000769b      0xad3 target/stdperiph/stm32f10x_tim.o
                                 0xd48 (size before relaxing)
- .debug_str     0x0000812a      0x3ee target/stdperiph/stm32f10x_usart.o
+ .debug_str     0x0000816e      0x3ee target/stdperiph/stm32f10x_usart.o
                                 0x5fb (size before relaxing)
- .debug_str     0x00008518       0xb5 target/stdperiph/stm32f10x_wwdg.o
+ .debug_str     0x0000855c       0xb5 target/stdperiph/stm32f10x_wwdg.o
                                 0x1d3 (size before relaxing)
- .debug_str     0x000085cd      0x404 target/usb/usb_core.o
+ .debug_str     0x00008611      0x404 target/usb/usb_core.o
                                 0x9be (size before relaxing)
- .debug_str     0x000089d1       0x2a target/usb/usb_init.o
+ .debug_str     0x00008a15       0x2a target/usb/usb_init.o
                                 0x49d (size before relaxing)
- .debug_str     0x000089fb       0x23 target/usb/usb_int.o
+ .debug_str     0x00008a3f       0x23 target/usb/usb_int.o
                                 0x151 (size before relaxing)
- .debug_str     0x00008a1e       0x66 target/usb/usb_mem.o
+ .debug_str     0x00008a62       0x66 target/usb/usb_mem.o
                                 0x152 (size before relaxing)
- .debug_str     0x00008a84      0x3cb target/usb/usb_regs.o
+ .debug_str     0x00008ac8      0x3cb target/usb/usb_regs.o
                                 0x4da (size before relaxing)
- .debug_str     0x00008e4f       0x59 target/usb/usb_sil.o
+ .debug_str     0x00008e93       0x59 target/usb/usb_sil.o
                                 0x160 (size before relaxing)
 
 .comment        0x00000000       0x2a
@@ -3972,6 +3995,7 @@ OUTPUT(target/target.elf elf32-littlearm)
  .comment       0x00000000       0x2b target/src/routines/cr_funcs.o
  .comment       0x00000000       0x2b target/src/routines/cr_usbio.o
  .comment       0x00000000       0x2b target/src/routines/gpio.o
+ .comment       0x00000000       0x2b target/src/routines/i2c.o
  .comment       0x00000000       0x2b target/src/usb_related/hw_config.o
  .comment       0x00000000       0x2b target/src/usb_related/newlib_stubs.o
  .comment       0x00000000       0x2b target/src/usb_related/usb_desc.o
@@ -4024,7 +4048,7 @@ OUTPUT(target/target.elf elf32-littlearm)
  .comment       0x00000000       0x2b target/usb/usb_regs.o
  .comment       0x00000000       0x2b target/usb/usb_sil.o
 
-.debug_frame    0x00000000     0x773c
+.debug_frame    0x00000000     0x778c
  .debug_frame   0x00000000      0x280 target/cmsis/src/core_cm3.o
  .debug_frame   0x00000280      0x110 target/freertos/cm3/port.o
  .debug_frame   0x00000390       0x7c target/freertos/memmang/heap_1.o
@@ -4032,101 +4056,102 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_frame   0x000004cc       0x4c target/src/routines/cr_funcs.o
  .debug_frame   0x00000518       0x94 target/src/routines/cr_usbio.o
  .debug_frame   0x000005ac       0xac target/src/routines/gpio.o
- .debug_frame   0x00000658       0xf0 target/src/usb_related/hw_config.o
- .debug_frame   0x00000748      0x1f0 target/src/usb_related/newlib_stubs.o
- .debug_frame   0x00000938       0x68 target/src/usb_related/usb_endp.o
- .debug_frame   0x000009a0       0x2c target/src/usb_related/usb_istr.o
- .debug_frame   0x000009cc      0x19c target/src/usb_related/usb_prop.o
- .debug_frame   0x00000b68       0xac target/src/usb_related/usb_pwr.o
- .debug_frame   0x00000c14      0x200 target/3310/3310-backend.o
- .debug_frame   0x00000e14      0x27c target/3310/3310.o
- .debug_frame   0x00001090      0x4f4 target/fatfs/ff.o
- .debug_frame   0x00001584      0x294 target/fatfs/sd_spi_stm32.o
- .debug_frame   0x00001818       0xf0 target/freertos/croutine.o
- .debug_frame   0x00001908       0x9c target/freertos/list.o
- .debug_frame   0x000019a4      0x2a4 target/freertos/queue.o
- .debug_frame   0x00001c48      0x460 target/freertos/tasks.o
- .debug_frame   0x000020a8      0x1c4 target/freertos/timers.o
- .debug_frame   0x0000226c      0x5f0 target/pawn/amx.o
- .debug_frame   0x0000285c       0xf0 target/pawn/amxpool.o
- .debug_frame   0x0000294c       0xa0 target/pawn/pawn_loader.o
- .debug_frame   0x000029ec       0xd4 target/src/main.o
- .debug_frame   0x00002ac0       0xa0 target/src/stm32f10x_it.o
- .debug_frame   0x00002b60       0x80 target/src/system_stm32f10x.o
- .debug_frame   0x00002be0       0x9c target/stdperiph/misc.o
- .debug_frame   0x00002c7c      0x400 target/stdperiph/stm32f10x_adc.o
- .debug_frame   0x0000307c      0x150 target/stdperiph/stm32f10x_bkp.o
- .debug_frame   0x000031cc      0x2d4 target/stdperiph/stm32f10x_can.o
- .debug_frame   0x000034a0      0x190 target/stdperiph/stm32f10x_cec.o
- .debug_frame   0x00003630       0xac target/stdperiph/stm32f10x_crc.o
- .debug_frame   0x000036dc      0x160 target/stdperiph/stm32f10x_dac.o
- .debug_frame   0x0000383c       0x5c target/stdperiph/stm32f10x_dbgmcu.o
- .debug_frame   0x00003898      0x144 target/stdperiph/stm32f10x_dma.o
- .debug_frame   0x000039dc       0xec target/stdperiph/stm32f10x_exti.o
- .debug_frame   0x00003ac8      0x338 target/stdperiph/stm32f10x_flash.o
- .debug_frame   0x00003e00      0x220 target/stdperiph/stm32f10x_fsmc.o
- .debug_frame   0x00004020      0x210 target/stdperiph/stm32f10x_gpio.o
- .debug_frame   0x00004230      0x3b4 target/stdperiph/stm32f10x_i2c.o
- .debug_frame   0x000045e4       0xb0 target/stdperiph/stm32f10x_iwdg.o
- .debug_frame   0x00004694      0x140 target/stdperiph/stm32f10x_pwr.o
- .debug_frame   0x000047d4      0x388 target/stdperiph/stm32f10x_rcc.o
- .debug_frame   0x00004b5c      0x194 target/stdperiph/stm32f10x_rtc.o
- .debug_frame   0x00004cf0      0x340 target/stdperiph/stm32f10x_sdio.o
- .debug_frame   0x00005030      0x29c target/stdperiph/stm32f10x_spi.o
- .debug_frame   0x000052cc      0xa20 target/stdperiph/stm32f10x_tim.o
- .debug_frame   0x00005cec      0x344 target/stdperiph/stm32f10x_usart.o
- .debug_frame   0x00006030       0xe4 target/stdperiph/stm32f10x_wwdg.o
- .debug_frame   0x00006114      0x254 target/usb/usb_core.o
- .debug_frame   0x00006368       0x2c target/usb/usb_init.o
- .debug_frame   0x00006394       0x50 target/usb/usb_int.o
- .debug_frame   0x000063e4       0x48 target/usb/usb_mem.o
- .debug_frame   0x0000642c      0x684 target/usb/usb_regs.o
- .debug_frame   0x00006ab0       0x68 target/usb/usb_sil.o
- .debug_frame   0x00006b18       0x44 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-assert.o)
- .debug_frame   0x00006b5c       0x5c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fiprintf.o)
- .debug_frame   0x00006bb8       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcmp.o)
- .debug_frame   0x00006be4       0x30 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcpy.o)
- .debug_frame   0x00006c14       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
- .debug_frame   0x00006c40       0x68 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reent.o)
- .debug_frame   0x00006ca8       0x30 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcmp.o)
- .debug_frame   0x00006cd8       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcpy.o)
- .debug_frame   0x00006cf8       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strlen.o)
- .debug_frame   0x00006d18       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strncpy.o)
- .debug_frame   0x00006d44       0x7c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-vfiprintf.o)
- .debug_frame   0x00006dc0       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcslen.o)
- .debug_frame   0x00006de0       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wsetup.o)
- .debug_frame   0x00006e0c       0x28 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-abort.o)
- .debug_frame   0x00006e34       0x40 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fflush.o)
- .debug_frame   0x00006e74      0x114 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-findfp.o)
- .debug_frame   0x00006f88       0x54 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fputwc.o)
- .debug_frame   0x00006fdc       0x50 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-freer.o)
- .debug_frame   0x0000702c       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fvwrite.o)
- .debug_frame   0x00007068       0x58 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fwalk.o)
- .debug_frame   0x000070c0       0x98 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-locale.o)
- .debug_frame   0x00007158       0x34 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-makebuf.o)
- .debug_frame   0x0000718c       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mallocr.o)
- .debug_frame   0x000071c8       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memchr.o)
- .debug_frame   0x000071f4       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memmove.o)
- .debug_frame   0x00007220       0x30 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mlock.o)
- .debug_frame   0x00007250       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reallocr.o)
- .debug_frame   0x0000728c       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-sbrkr.o)
- .debug_frame   0x000072b8       0xc0 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signal.o)
- .debug_frame   0x00007378       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signalr.o)
- .debug_frame   0x000073b4       0x80 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-stdio.o)
- .debug_frame   0x00007434       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wbuf.o)
- .debug_frame   0x00007470       0x5c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcrtomb.o)
- .debug_frame   0x000074cc       0x44 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wctomb_r.o)
- .debug_frame   0x00007510       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-writer.o)
- .debug_frame   0x0000753c       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-closer.o)
- .debug_frame   0x00007568       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fclose.o)
- .debug_frame   0x000075a4       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fstatr.o)
- .debug_frame   0x000075d0       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-isattyr.o)
- .debug_frame   0x000075fc       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-lseekr.o)
- .debug_frame   0x00007628       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-readr.o)
- .debug_frame   0x00007654       0x50 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(bpabi.o)
- .debug_frame   0x000076a4       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_divdi3.o)
- .debug_frame   0x000076e0       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivdi3.o)
- .debug_frame   0x0000771c       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivsi3.o)
+ .debug_frame   0x00000658       0x50 target/src/routines/i2c.o
+ .debug_frame   0x000006a8       0xf0 target/src/usb_related/hw_config.o
+ .debug_frame   0x00000798      0x1f0 target/src/usb_related/newlib_stubs.o
+ .debug_frame   0x00000988       0x68 target/src/usb_related/usb_endp.o
+ .debug_frame   0x000009f0       0x2c target/src/usb_related/usb_istr.o
+ .debug_frame   0x00000a1c      0x19c target/src/usb_related/usb_prop.o
+ .debug_frame   0x00000bb8       0xac target/src/usb_related/usb_pwr.o
+ .debug_frame   0x00000c64      0x200 target/3310/3310-backend.o
+ .debug_frame   0x00000e64      0x27c target/3310/3310.o
+ .debug_frame   0x000010e0      0x4f4 target/fatfs/ff.o
+ .debug_frame   0x000015d4      0x294 target/fatfs/sd_spi_stm32.o
+ .debug_frame   0x00001868       0xf0 target/freertos/croutine.o
+ .debug_frame   0x00001958       0x9c target/freertos/list.o
+ .debug_frame   0x000019f4      0x2a4 target/freertos/queue.o
+ .debug_frame   0x00001c98      0x460 target/freertos/tasks.o
+ .debug_frame   0x000020f8      0x1c4 target/freertos/timers.o
+ .debug_frame   0x000022bc      0x5f0 target/pawn/amx.o
+ .debug_frame   0x000028ac       0xf0 target/pawn/amxpool.o
+ .debug_frame   0x0000299c       0xa0 target/pawn/pawn_loader.o
+ .debug_frame   0x00002a3c       0xd4 target/src/main.o
+ .debug_frame   0x00002b10       0xa0 target/src/stm32f10x_it.o
+ .debug_frame   0x00002bb0       0x80 target/src/system_stm32f10x.o
+ .debug_frame   0x00002c30       0x9c target/stdperiph/misc.o
+ .debug_frame   0x00002ccc      0x400 target/stdperiph/stm32f10x_adc.o
+ .debug_frame   0x000030cc      0x150 target/stdperiph/stm32f10x_bkp.o
+ .debug_frame   0x0000321c      0x2d4 target/stdperiph/stm32f10x_can.o
+ .debug_frame   0x000034f0      0x190 target/stdperiph/stm32f10x_cec.o
+ .debug_frame   0x00003680       0xac target/stdperiph/stm32f10x_crc.o
+ .debug_frame   0x0000372c      0x160 target/stdperiph/stm32f10x_dac.o
+ .debug_frame   0x0000388c       0x5c target/stdperiph/stm32f10x_dbgmcu.o
+ .debug_frame   0x000038e8      0x144 target/stdperiph/stm32f10x_dma.o
+ .debug_frame   0x00003a2c       0xec target/stdperiph/stm32f10x_exti.o
+ .debug_frame   0x00003b18      0x338 target/stdperiph/stm32f10x_flash.o
+ .debug_frame   0x00003e50      0x220 target/stdperiph/stm32f10x_fsmc.o
+ .debug_frame   0x00004070      0x210 target/stdperiph/stm32f10x_gpio.o
+ .debug_frame   0x00004280      0x3b4 target/stdperiph/stm32f10x_i2c.o
+ .debug_frame   0x00004634       0xb0 target/stdperiph/stm32f10x_iwdg.o
+ .debug_frame   0x000046e4      0x140 target/stdperiph/stm32f10x_pwr.o
+ .debug_frame   0x00004824      0x388 target/stdperiph/stm32f10x_rcc.o
+ .debug_frame   0x00004bac      0x194 target/stdperiph/stm32f10x_rtc.o
+ .debug_frame   0x00004d40      0x340 target/stdperiph/stm32f10x_sdio.o
+ .debug_frame   0x00005080      0x29c target/stdperiph/stm32f10x_spi.o
+ .debug_frame   0x0000531c      0xa20 target/stdperiph/stm32f10x_tim.o
+ .debug_frame   0x00005d3c      0x344 target/stdperiph/stm32f10x_usart.o
+ .debug_frame   0x00006080       0xe4 target/stdperiph/stm32f10x_wwdg.o
+ .debug_frame   0x00006164      0x254 target/usb/usb_core.o
+ .debug_frame   0x000063b8       0x2c target/usb/usb_init.o
+ .debug_frame   0x000063e4       0x50 target/usb/usb_int.o
+ .debug_frame   0x00006434       0x48 target/usb/usb_mem.o
+ .debug_frame   0x0000647c      0x684 target/usb/usb_regs.o
+ .debug_frame   0x00006b00       0x68 target/usb/usb_sil.o
+ .debug_frame   0x00006b68       0x44 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-assert.o)
+ .debug_frame   0x00006bac       0x5c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fiprintf.o)
+ .debug_frame   0x00006c08       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcmp.o)
+ .debug_frame   0x00006c34       0x30 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memcpy.o)
+ .debug_frame   0x00006c64       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
+ .debug_frame   0x00006c90       0x68 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reent.o)
+ .debug_frame   0x00006cf8       0x30 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcmp.o)
+ .debug_frame   0x00006d28       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcpy.o)
+ .debug_frame   0x00006d48       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strlen.o)
+ .debug_frame   0x00006d68       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strncpy.o)
+ .debug_frame   0x00006d94       0x7c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-vfiprintf.o)
+ .debug_frame   0x00006e10       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcslen.o)
+ .debug_frame   0x00006e30       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wsetup.o)
+ .debug_frame   0x00006e5c       0x28 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-abort.o)
+ .debug_frame   0x00006e84       0x40 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fflush.o)
+ .debug_frame   0x00006ec4      0x114 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-findfp.o)
+ .debug_frame   0x00006fd8       0x54 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fputwc.o)
+ .debug_frame   0x0000702c       0x50 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-freer.o)
+ .debug_frame   0x0000707c       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fvwrite.o)
+ .debug_frame   0x000070b8       0x58 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fwalk.o)
+ .debug_frame   0x00007110       0x98 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-locale.o)
+ .debug_frame   0x000071a8       0x34 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-makebuf.o)
+ .debug_frame   0x000071dc       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mallocr.o)
+ .debug_frame   0x00007218       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memchr.o)
+ .debug_frame   0x00007244       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memmove.o)
+ .debug_frame   0x00007270       0x30 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-mlock.o)
+ .debug_frame   0x000072a0       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-reallocr.o)
+ .debug_frame   0x000072dc       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-sbrkr.o)
+ .debug_frame   0x00007308       0xc0 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signal.o)
+ .debug_frame   0x000073c8       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-signalr.o)
+ .debug_frame   0x00007404       0x80 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-stdio.o)
+ .debug_frame   0x00007484       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wbuf.o)
+ .debug_frame   0x000074c0       0x5c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wcrtomb.o)
+ .debug_frame   0x0000751c       0x44 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-wctomb_r.o)
+ .debug_frame   0x00007560       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-writer.o)
+ .debug_frame   0x0000758c       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-closer.o)
+ .debug_frame   0x000075b8       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fclose.o)
+ .debug_frame   0x000075f4       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-fstatr.o)
+ .debug_frame   0x00007620       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-isattyr.o)
+ .debug_frame   0x0000764c       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-lseekr.o)
+ .debug_frame   0x00007678       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-readr.o)
+ .debug_frame   0x000076a4       0x50 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(bpabi.o)
+ .debug_frame   0x000076f4       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_divdi3.o)
+ .debug_frame   0x00007730       0x3c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivdi3.o)
+ .debug_frame   0x0000776c       0x20 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a(_udivsi3.o)
 
 Cross Reference Table
 
@@ -4375,6 +4400,7 @@ GPIO_EventOutputConfig                            target/stdperiph/stm32f10x_gpi
 GPIO_Init                                         target/stdperiph/stm32f10x_gpio.o
                                                   target/fatfs/sd_spi_stm32.o
                                                   target/3310/3310-backend.o
+                                                  target/src/routines/i2c.o
                                                   target/src/routines/gpio.o
 GPIO_PinLockConfig                                target/stdperiph/stm32f10x_gpio.o
 GPIO_PinRemapConfig                               target/stdperiph/stm32f10x_gpio.o
@@ -4435,9 +4461,11 @@ I2C_CheckEvent                                    target/stdperiph/stm32f10x_i2c
 I2C_ClearFlag                                     target/stdperiph/stm32f10x_i2c.o
 I2C_ClearITPendingBit                             target/stdperiph/stm32f10x_i2c.o
 I2C_Cmd                                           target/stdperiph/stm32f10x_i2c.o
+                                                  target/src/routines/i2c.o
 I2C_DMACmd                                        target/stdperiph/stm32f10x_i2c.o
 I2C_DMALastTransferCmd                            target/stdperiph/stm32f10x_i2c.o
 I2C_DeInit                                        target/stdperiph/stm32f10x_i2c.o
+                                                  target/src/routines/i2c.o
 I2C_DualAddressCmd                                target/stdperiph/stm32f10x_i2c.o
 I2C_FastModeDutyCycleConfig                       target/stdperiph/stm32f10x_i2c.o
 I2C_GeneralCallCmd                                target/stdperiph/stm32f10x_i2c.o
@@ -4449,6 +4477,7 @@ I2C_GetLastEvent                                  target/stdperiph/stm32f10x_i2c
 I2C_GetPEC                                        target/stdperiph/stm32f10x_i2c.o
 I2C_ITConfig                                      target/stdperiph/stm32f10x_i2c.o
 I2C_Init                                          target/stdperiph/stm32f10x_i2c.o
+                                                  target/src/routines/i2c.o
 I2C_NACKPositionConfig                            target/stdperiph/stm32f10x_i2c.o
 I2C_OwnAddress2Config                             target/stdperiph/stm32f10x_i2c.o
 I2C_PECPositionConfig                             target/stdperiph/stm32f10x_i2c.o
@@ -4512,6 +4541,7 @@ RCC_AHBPeriphClockCmd                             target/stdperiph/stm32f10x_rcc
 RCC_APB1PeriphClockCmd                            target/stdperiph/stm32f10x_rcc.o
                                                   target/fatfs/sd_spi_stm32.o
                                                   target/src/usb_related/hw_config.o
+                                                  target/src/routines/i2c.o
 RCC_APB1PeriphResetCmd                            target/stdperiph/stm32f10x_rcc.o
                                                   target/stdperiph/stm32f10x_wwdg.o
                                                   target/stdperiph/stm32f10x_usart.o
@@ -4525,6 +4555,7 @@ RCC_APB1PeriphResetCmd                            target/stdperiph/stm32f10x_rcc
 RCC_APB2PeriphClockCmd                            target/stdperiph/stm32f10x_rcc.o
                                                   target/fatfs/sd_spi_stm32.o
                                                   target/3310/3310-backend.o
+                                                  target/src/routines/i2c.o
                                                   target/src/routines/gpio.o
 RCC_APB2PeriphResetCmd                            target/stdperiph/stm32f10x_rcc.o
                                                   target/stdperiph/stm32f10x_usart.o
@@ -5344,6 +5375,8 @@ gpioEn                                            target/src/routines/gpio.o
 gpioSet                                           target/src/routines/gpio.o
                                                   target/src/routines/cr_funcs.o
 green                                             target/src/routines/cr_dbg.o
+i2cConfig                                         target/src/routines/i2c.o
+i2cSetEn                                          target/src/routines/i2c.o
 init3310                                          target/3310/3310-backend.o
                                                   target/3310/3310.o
 invokeFunc                                        target/src/routines/cr_funcs.o
