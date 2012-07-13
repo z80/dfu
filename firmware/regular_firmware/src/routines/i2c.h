@@ -2,8 +2,11 @@
 #ifndef __I2C_H_
 #define __I2C_H_
 
+#include "stm32f10x.h"
+
+
 void i2cInit( void );
-void i2cConfig( uint8_t host, uint16_t address );
+void i2cConfig( uint8_t host, uint16_t address, uint8_t _10bit, uint16_t speed );
 
 #define HDW_I2C                         I2C1
 #define HDW_I2C_CLK                     RCC_APB1Periph_I2C1

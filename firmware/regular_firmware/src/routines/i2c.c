@@ -12,7 +12,7 @@ void i2cInit( void )
     //     and HDW_I2C_SMBUSALERT_GPIO_CLK Periph clock enable
     RCC_APB2PeriphClockCmd( HDW_I2C_SCL_GPIO_CLK | HDW_I2C_SDA_GPIO_CLK |
                             HDW_I2C_SMBUSALERT_GPIO_CLK, ENABLE );
-  
+    
     // Configure HDW_I2C pins: SCL
     GPIO_InitStructure.GPIO_Pin   = HDW_I2C_SCL_PIN;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -28,26 +28,26 @@ void i2cInit( void )
 }
 
 
-void i2cConfig( uint8_t host, uint8_t address )
+void i2cConfig( uint8_t host, uint16_t address, uint8_t _10bit, uint16_t speed )
 {
     I2C_InitTypeDef   I2C_InitStructure;
     
-    LM75_LowLevel_Init();
+    //LM75_LowLevel_Init();
     
-    I2C_DeInit(LM75_I2C);
-
+    I2C_DeInit( HDW_I2C );
+    
     // HDW_I2C Init
-    I2C_InitStructure.I2C_Mode = ( host ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusClient;
+    I2C_InitStructure.I2C_Mode                = ( host ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
     I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_2;
-    I2C_InitStructure.I2C_OwnAddress1         = (address & 0xEFFF);
+    I2C_InitStructure.I2C_OwnAddress1         = address;
     I2C_InitStructure.I2C_Ack                 = I2C_Ack_Enable;
-    I2C_InitStructure.I2C_AcknowledgedAddress = (address & 0x8000) ? I2C_Acknowledged Address_11Bit : I2C_AcknowledgedAddress_7bit;
-    I2C_InitStructure.I2C_ClockSpeed          = HDW_I2C_SPEED;
+    I2C_InitStructure.I2C_AcknowledgedAddress = ( _10bit ) ? I2C_AcknowledgedAddress_10Bit : I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed          = speed;
     I2C_Init( HDW_I2C, &I2C_InitStructure );
-
+    
     // Enable SMBus Alert interrupt
-    I2C_ITConfig( HDW_I2C, I2C_IT_ERR, ENABLE );
-
+    //I2C_ITConfig( HDW_I2C, I2C_IT_ERR, ENABLE );
+    
     // HDW_I2C Init
     I2C_Cmd(LM75_I2C, ENABLE);
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
@@ -56,8 +56,6 @@ void i2cConfig( uint8_t host, uint8_t address )
 
 
 
-
-}
 
 
 
