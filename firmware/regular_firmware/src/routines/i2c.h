@@ -7,6 +7,8 @@
 
 void i2cSetEn( uint8_t en );
 void i2cConfig( uint8_t host, uint16_t address, uint8_t _10bit, uint16_t speed );
+void i2cSetTimeout( uint32_t timeout );
+uint8_t i2cSendByte( uint16_t address, uint8_t value );
 
 #define HDW_I2C                         I2C1
 #define HDW_I2C_CLK                     RCC_APB1Periph_I2C1
