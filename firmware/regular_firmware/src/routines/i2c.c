@@ -88,7 +88,7 @@ uint8_t i2cSendByte( uint16_t address, uint8_t value )
     }
     
     // Enable the I2C peripheral
-    I2C_GenerateSTART(LM75_I2C, ENABLE);
+    I2C_GenerateSTART( HDW_I2C, ENABLE);
   
     // Test on SB Flag
     timeout = g_i2cTimeout;
@@ -103,60 +103,41 @@ uint8_t i2cSendByte( uint16_t address, uint8_t value )
   
     // Test on ADDR Flag
     timeout = g_i2cTimeout;
-    while (!I2C_CheckEvent(LM75_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+    while (!I2C_CheckEvent( HDW_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ) )
     {
         if( ( timeout-- ) == 0 )
             return 3;
     }
   
     // Transmit the first address for r/w operations
-    I2C_SendData( HDW_I2C, RegName );
+    I2C_SendData( HDW_I2C, value );
   
     // Test on TXE FLag (data sent)
     timeout = g_i2cTimeout;
     while ( ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_TXE ) ) && ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_BTF ) ) )  
     {
-        if((LM75_Timeout--) == 0) return 2;
+        if ( ( timeout--) == 0 )
+          return 4;
     }
   
-    // Enable I2C DMA request
-    I2C_DMACmd(LM75_I2C,ENABLE);
-  
-    // Enable DMA TX Channel
-    DMA_Cmd(LM75_DMA_TX_CHANNEL, ENABLE);
-  
-    // Wait until DMA Transfer Complete
-    LM75_Timeout = LM75_LONG_TIMEOUT;
-    while (!DMA_GetFlagStatus(LM75_DMA_TX_TCFLAG))
-    {
-        if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
-    }  
   
     // Wait until BTF Flag is set before generating STOP
-    LM75_Timeout = LM75_LONG_TIMEOUT;
-    while (I2C_GetFlagStatus(LM75_I2C,I2C_FLAG_BTF))  
+    timeout = g_i2cTimeout;
+    while ( I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_BTF ) )  
     {
-        if((LM75_Timeout--) == 0) return LM75_TIMEOUT_UserCallback();
+        if ( ( timeout-- ) == 0 )
+            return 5;
     }
   
     // Send STOP Condition
-    I2C_GenerateSTOP(LM75_I2C, ENABLE);
+    I2C_GenerateSTOP( HDW_I2C, ENABLE );
   
-    // Disable DMA TX Channel
-    DMA_Cmd(LM75_DMA_TX_CHANNEL, DISABLE);
-  
-    // Disable I2C DMA request
-    I2C_DMACmd(LM75_I2C,DISABLE);
-  
-    // Clear DMA TX Transfer Complete Flag
-    DMA_ClearFlag(LM75_DMA_TX_TCFLAG);
-  
-    return LM75_OK;
+    return 0;
 }
 
 static uint8_t submitAddress( uint16_t address )
 {
-    uint32_t I2C_TimeOut = g_i2cTimeout;
+    uint32_t timeout = g_i2cTimeout;
 
     // Clear the LM75_I2C AF flag
     I2C_ClearFlag( HDW_I2C, I2C_FLAG_AF );
@@ -170,26 +151,26 @@ static uint8_t submitAddress( uint16_t address )
     I2C_GenerateSTART( HDW_I2C, ENABLE );
 
     // Test on LM75_I2C EV5 and clear it
-    while ( ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_SB ) ) && I2C_TimeOut )  // EV5
+    while ( ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_SB ) ) && timeout )  // EV5
     {
-        I2C_TimeOut--;
+        timeout--;
     }
-    if ( I2C_TimeOut == 0 )
+    if ( timeout == 0 )
     {
         return 1;
     }
       
-    I2C_TimeOut = g_i2cTimeout;
+    timeout = g_i2cTimeout;
 
     // Send STLM75 slave address for write
     I2C_Send7bitAddress( HDW_I2C, address, I2C_Direction_Transmitter );
 
-    while ( ( !I2C_CheckEvent( HDW_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ) ) && I2C_TimeOut ) // EV6
+    while ( ( !I2C_CheckEvent( HDW_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ) ) && timeout ) // EV6
     {
-        I2C_TimeOut--;
+        timeout--;
     }
 
-    if ((I2C_GetFlagStatus(LM75_I2C, I2C_FLAG_AF) != 0x00) || (I2C_TimeOut == 0))
+    if ((I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_AF) != 0x00) || (timeout == 0 ) )
     {
         return 2;
     }
