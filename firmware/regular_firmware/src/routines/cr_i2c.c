@@ -1,12 +1,13 @@
 
 #include "cr_i2c.h"
 #include "config.h"
+#include "stm32f10x.h"
 
 xQueueHandle g_sendQueue;
 xQueueHandle g_receiveQueue;
-uint8_t      g_status = I2C_IDLE;
-
-
+uint8_t      g_state = I2C_IDLE;
+uint8_t      g_cmd   = I2C_IDLE;
+uint8_t      g_address = 0;
 
 uint8_t g_initialized = 0;
 
@@ -42,7 +43,10 @@ void crI2c( xCoRoutineHandle xHandle,
             init();
 	    g_initialized = 1;
         }
-
+        if ( g_cmd == I2C_SEND )
+	{
+	    
+	}
 
     }
     crEND();
