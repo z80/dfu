@@ -6,7 +6,15 @@
 
 #define IN_QUEUE_SIZE  64
 #define OUT_QUEUE_SIZE 64
+
 #define STATE_RESET_TIMEOUT 50
+
+
+#define I2C_QUEUE_SIZE 64
+#define I2C_IDLE       0
+#define I2C_SEND       1
+#define I2C_RECEIVE    2
+
 
 #define CMD_DATA 0
 #define CMD_FUNC 1
