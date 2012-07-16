@@ -1,6 +1,92 @@
 
 #include "i2c.h"
 
+TI2C g_i2c[2];
+
+TI2C * i2c( uint8_t index )
+{
+    return &(g_i2c[index]);
+}
+
+void i2cInit( uint8_t index )
+{
+    TI2C * i2c = &(g_i2c[index]);
+    i2c->sendQueue    = xQueueCreate( I2C_QUEUE_SIZE, 1 );
+    i2c->receiveQueue = xQueueCreate( I2C_QUEUE_SIZE, 1 );
+    i2c->sendCnt    = 0;
+    i2c->receiveCnt = 0;
+    i2c->master  = 0;
+    i2c->status  = I2C_IDLE;
+    
+    i2c->i2c     = ( index == 0 ) ? I2C1 : I2C2;
+    i2c->address = 0;
+    i2c->speed   = 100000;
+    i2c->timeout = 128;
+}
+
+void i2cSetEn( uint8_t index, uint8_t en )
+{
+    I2C_TypeDef * i2c = ( index == 0 ) ? I2C1 : I2C2;
+    uint32_t      periph = ( index == 0 ) ? RCC_APB1Periph_I2C1 : RCC_APB1Periph_I2C2;
+    uint16_t      sckPin = ( index == 0 ) ? GPIO_Pin_6 : GPIO_Pin_10;
+    uint16_t      sdaPin = ( index == 0 ) ? GPIO_Pin_7 : GPIO_Pin_11;
+    if ( en )
+    {
+        GPIO_InitTypeDef  GPIO_InitStructure;
+        
+        // HDW_I2C Periph clock enable
+        RCC_APB1PeriphClockCmd( RCC_I2C_CLK, ENABLE );
+        
+        // HDW_I2C_SCL_GPIO_CLK, HDW_I2C_SDA_GPIO_CLK 
+        //     and HDW_I2C_SMBUSALERT_GPIO_CLK Periph clock enable
+        RCC_APB2PeriphClockCmd( RCC_I2C_GPIO_CLK, ENABLE );
+        
+        // Configure HDW_I2C pins: SCL and SDA
+        GPIO_InitStructure.GPIO_Pin   = sckPin | sdaPin;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_OD;
+        GPIO_Init( HDW_I2C_SCL_GPIO_PORT, &GPIO_InitStructure );
+    }
+    else
+    {
+        I2C_DeInit( i2c );
+        I2C_Cmd( i2c, DISABLE );
+        // Because there are at least two of them don't turn off clock.
+        //RCC_APB1PeriphClockCmd( HDW_I2C_CLK, DISABLE );
+    }
+
+}
+
+void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
+{
+    TI2C * i2c = &(g_i2c[index]);
+    i2c->master  = master;
+    i2c->address = address;
+    i2c->speed   = speed;
+}
+
+xQueueHandle sendQueue( uint8_t index )
+{
+    TI2C * i2c = &(g_i2c[index]);
+    return i2c->sendQueue;
+}
+
+xQueueHandle receiveQueue( uint8_t index )
+{
+    TI2C * i2c = &(g_i2c[index]);
+    return i2c->receiveQueue;
+}
+
+
+
+
+
+
+
+
+
+
+/*
 uint32_t g_i2cTimeout = 1024;
 
 void i2cSetEn( uint8_t en )
@@ -176,7 +262,7 @@ static uint8_t submitAddress( uint16_t address )
     }
     return 0;
 }
-
+*/
 
 
 
