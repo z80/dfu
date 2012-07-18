@@ -27,7 +27,9 @@
 // Coroutines for hardware control and USB interaction.
 #include "cr_usbio.h"
 #include "cr_funcs.h"
+#include "cr_i2c.h"
 #include "cr_dbg.h"
+#include "i2c.h"
 // FreeRTOS stuff.
 #include "FreeRTOS.h"
 #include "task.h"
@@ -97,6 +99,8 @@ void main(void)
             }
         }
     }*/
+    i2cInit( 0 );
+    i2cInit( 1 );
     portBASE_TYPE res;
     //res = xTaskCreate( vTaskDbg, "d", 128, 0, tskIDLE_PRIORITY+1, 0 );
     res = xCoRoutineCreate( crDbg,   1, 0 );

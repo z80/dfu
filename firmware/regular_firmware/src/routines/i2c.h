@@ -7,6 +7,7 @@
 #include "task.h"
 #include "croutine.h"
 #include "queue.h"
+#include "config.h"
 
 /*
 //void i2cSetEn( uint8_t en );
@@ -42,16 +43,18 @@ typedef struct
     uint32_t speed;
     uint32_t timeout;
     uint32_t elapsed;
-    xQueueHandle sendQueue;
-    xQueueHandle receiveQueue;
+    uint8_t sendQueue[ I2C_QUEUE_SIZE ];
+    uint8_t receiveQueue[ I2C_QUEUE_SIZE ];
 } TI2C;
 
 TI2C * i2c( uint8_t index );
+uint8_t i2cStatus( uint8_t index );
 void i2cInit( uint8_t index );
 void i2cSetEn( uint8_t index, uint8_t en );
 void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed );
-xQueueHandle sendQueue( uint8_t index );
-xQueueHandle receiveQueue( uint8_t index );
+uint8_t * i2cSendQueue( uint8_t index );
+uint8_t * i2cReceiveQueue( uint8_t index );
+void i2cIo( uint8_t index, uint8_t address, uint8_t sendCnt, uint8_t receiveCnt, uint8_t * sendData );
 
 #endif
 

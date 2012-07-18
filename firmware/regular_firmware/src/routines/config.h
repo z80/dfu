@@ -19,8 +19,9 @@
 #define I2C_SLAVE_SEND     3
 #define I2C_SLAVE_RECEIVE  4
 // I2C possible status
-#define I2C_ERROR          1
-#define I2C_WAIT_BUSY      2
+#define I2C_STARTED        1
+#define I2C_ERROR          2
+#define I2C_WAIT_BUSY      3
 
 #define CMD_DATA 0
 #define CMD_FUNC 1
@@ -34,7 +35,12 @@
 #define FUNC_GPIO_CONFIG    3
 #define FUNC_GPIO_SET       4
 #define FUNC_GPIO           5
-
+// I2C
+#define FUNC_I2C_STATUS     10
+#define FUNC_I2C_EN         11
+#define FUNC_I2C_CONFIG     12
+#define FUNC_I2C_IO         13
+#define FUNC_I2C_RESULT     14
 
 #endif
 

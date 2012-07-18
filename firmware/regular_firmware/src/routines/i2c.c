@@ -1,6 +1,5 @@
 
 #include "i2c.h"
-#include "config.h"
 
 TI2C g_i2c[2];
 
@@ -9,11 +8,17 @@ TI2C * i2c( uint8_t index )
     return &(g_i2c[index]);
 }
 
+uint8_t i2cStatus( uint8_t index )
+{
+    TI2C * i2c = &(g_i2c[index]);
+    return i2c->status;
+}
+
 void i2cInit( uint8_t index )
 {
     TI2C * i2c = &(g_i2c[index]);
-    i2c->sendQueue    = xQueueCreate( I2C_QUEUE_SIZE, 1 );
-    i2c->receiveQueue = xQueueCreate( I2C_QUEUE_SIZE, 1 );
+    //i2c->sendQueue    = xQueueCreate( I2C_QUEUE_SIZE, 1 );
+    //i2c->receiveQueue = xQueueCreate( I2C_QUEUE_SIZE, 1 );
     i2c->sendCnt    = 0;
     i2c->receiveCnt = 0;
     i2c->master  = 0;
@@ -63,19 +68,30 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
     i2c->speed   = speed;
 }
 
-xQueueHandle sendQueue( uint8_t index )
+uint8_t * i2cSendQueue( uint8_t index )
 {
     TI2C * i2c = &(g_i2c[index]);
     return i2c->sendQueue;
 }
 
-xQueueHandle receiveQueue( uint8_t index )
+uint8_t * i2cReceiveQueue( uint8_t index )
 {
     TI2C * i2c = &(g_i2c[index]);
     return i2c->receiveQueue;
 }
 
-
+void i2cIo( uint8_t index, uint8_t address, uint8_t sendCnt, uint8_t receiveCnt, uint8_t * sendData )
+{
+    uint8_t i;
+    TI2C * idc = i2c( index );
+    uint8_t * d = i2cSendQueue( index );
+    for ( i=0; i<sendCnt; i++ )
+        d[i] = sendData[i];
+    idc->address    = address;
+    idc->sendCnt    = sendCnt;
+    idc->receiveCnt = receiveCnt;
+    idc->status     = I2C_STARTED;
+}
 
 
 

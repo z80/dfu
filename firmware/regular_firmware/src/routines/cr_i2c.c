@@ -81,13 +81,15 @@ void crI2c( xCoRoutineHandle xHandle,
 	            }
 
                     // Read data from send queue.
-	            uint8_t data;
-	            portBASE_TYPE  rc;
-                    crQUEUE_RECEIVE( xHandle, idc->sendQueue, &data, 0, &rc );
-	            if ( rc == pdPASS )
+	            uint8_t data, i;
+	            //portBASE_TYPE  rc;
+                    //crQUEUE_RECEIVE( xHandle, idc->sendQueue, &data, 0, &rc );
+	            //if ( rc == pdPASS )
+                    for ( i=0; i<idc->sendCnt; i++ )
                     {
 	                idc = i2c( uxIndex );
 	                // Transmit data.
+                        data = idc->sendQueue[i];
 	                I2C_SendData( idc->i2c, data );
                 
 	                // Test for TXE flag (data sent).
@@ -155,7 +157,8 @@ void crI2c( xCoRoutineHandle xHandle,
 			}
                         
 			// Receiving a number of bytes from slave.
-                        while ( idc->receiveCnt-- )
+                        uint8_t i;
+                        for ( i=0; i<idc->receiveCnt; i++ )
 			{
 			    // Wait for data available.
 			    idc->elapsed = 0;
@@ -174,17 +177,18 @@ void crI2c( xCoRoutineHandle xHandle,
                             uint8_t data = I2C_ReceiveData( idc->i2c );
 
 			    // Send data through queue.
-		            portBASE_TYPE  rc;
-                            crQUEUE_SEND( xHandle, idc->receiveQueue, &data, 0, &rc );
-			    if ( rc != pdPASS )
-			    {
-			        idc->status = I2C_ERROR;
-				goto i2c_end;
-			    }
+		            //portBASE_TYPE  rc;
+                            //crQUEUE_SEND( xHandle, idc->receiveQueue, &data, 0, &rc );
+			    //if ( rc != pdPASS )
+			    //{
+			    //    idc->status = I2C_ERROR;
+			    //      goto i2c_end;
+			    //}
+                            idc->receiveQueue[i] = data;
 		        }
 
                         // Send STOP Condition
-                        I2C_GenerateSTOP( idc->i2c, ENABLE );
+                        //I2C_GenerateSTOP( idc->i2c, ENABLE );
 		    }
 		}
             
@@ -200,6 +204,7 @@ void crI2c( xCoRoutineHandle xHandle,
 	{
 	    // slave mode IO.
 	}
+        idc->status = I2C_IDLE;
 i2c_end:
 	crDELAY( xHandle, 1 );
     }
