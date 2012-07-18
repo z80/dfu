@@ -1,5 +1,6 @@
 
 #include "i2c.h"
+#include "config.h"
 
 TI2C g_i2c[2];
 
@@ -32,27 +33,24 @@ void i2cSetEn( uint8_t index, uint8_t en )
     uint16_t      sdaPin = ( index == 0 ) ? GPIO_Pin_7 : GPIO_Pin_11;
     if ( en )
     {
-        GPIO_InitTypeDef  GPIO_InitStructure;
+        GPIO_InitTypeDef  gpio;
         
-        // HDW_I2C Periph clock enable
-        RCC_APB1PeriphClockCmd( RCC_I2C_CLK, ENABLE );
-        
-        // HDW_I2C_SCL_GPIO_CLK, HDW_I2C_SDA_GPIO_CLK 
-        //     and HDW_I2C_SMBUSALERT_GPIO_CLK Periph clock enable
         RCC_APB2PeriphClockCmd( RCC_I2C_GPIO_CLK, ENABLE );
+        // HDW_I2C Periph clock enable
+        RCC_APB1PeriphClockCmd( periph, ENABLE );
         
         // Configure HDW_I2C pins: SCL and SDA
-        GPIO_InitStructure.GPIO_Pin   = sckPin | sdaPin;
-        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_OD;
-        GPIO_Init( HDW_I2C_SCL_GPIO_PORT, &GPIO_InitStructure );
+        gpio.GPIO_Pin   = sckPin | sdaPin;
+        gpio.GPIO_Speed = GPIO_Speed_50MHz;
+        gpio.GPIO_Mode  = GPIO_Mode_AF_OD;
+        GPIO_Init( I2C_PORT, &gpio );
     }
     else
     {
         I2C_DeInit( i2c );
         I2C_Cmd( i2c, DISABLE );
         // Because there are at least two of them don't turn off clock.
-        //RCC_APB1PeriphClockCmd( HDW_I2C_CLK, DISABLE );
+        RCC_APB1PeriphClockCmd( periph, DISABLE );
     }
 
 }

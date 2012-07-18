@@ -53,7 +53,7 @@ void crI2c( xCoRoutineHandle xHandle,
 	        timeout = 0;
 	        while ( I2C_GetFlagStatus( idc->i2c, I2C_FLAG_SB ) == RESET )
 	        {
-	            if ( pd->elapsed++ > idc->timeout )
+	            if ( idc->elapsed++ > idc->timeout )
 		    {
 		        idc->status = I2C_ERROR;
 		        goto i2c_end;
@@ -68,10 +68,10 @@ void crI2c( xCoRoutineHandle xHandle,
 	            I2C_Send7bitAddress( idc->i2c, idc->address, I2C_Direction_Transmitter );
 
 	            // Test on ADDR flag.
-	            pd->elapsed = 0;
+	            idc->elapsed = 0;
 	            while (  !I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ) )
 	            {
-	                if ( pd->elapsed++ > idc->timeout )
+	                if ( idc->elapsed++ > idc->timeout )
 		        {
 		            idc->status = I2C_ERROR;
 		            goto i2c_end;
@@ -91,11 +91,11 @@ void crI2c( xCoRoutineHandle xHandle,
 	                I2C_SendData( idc->i2c, data );
                 
 	                // Test for TXE flag (data sent).
-                        pd->elapsed = 0;
+                        idc->elapsed = 0;
                         while ( ( !I2C_GetFlagStatus( idc->i2c, I2C_FLAG_TXE ) ) && 
 	                        ( !I2C_GetFlagStatus( idc->i2c, I2C_FLAG_BTF ) ) )
                         {
-	                    if ( pd->elapsed++ > idc->timeout )
+	                    if ( idc->elapsed++ > idc->timeout )
 		            {
 		                idc->status = I2C_ERROR;
 		                goto i2c_end;
@@ -106,10 +106,10 @@ void crI2c( xCoRoutineHandle xHandle,
                     }
                 
 	            // Wait untill BTF flag is set before generating STOP.
-	            pd->elapsed = 0;
+	            idc->elapsed = 0;
 	            while ( I2C_GetFlagStatus( idc->i2c, I2C_FLAG_BTF ) )
 	            {
-	                if ( pd->elapsed++ > idc->i2ctimeout )
+	                if ( idc->elapsed++ > idc->timeout )
 	                {
 		            idc->status = I2C_ERROR;
 		            goto i2c_end;
@@ -127,7 +127,7 @@ void crI2c( xCoRoutineHandle xHandle,
 		        I2C_GenerateSTART( idc->i2c, ENABLE );
                         
 			// Wait for SB flag.
-			pd->elapsed = 0;
+			idc->elapsed = 0;
 			while ( !I2C_GetFlagStatus( idc->i2c, I2C_FLAG_SB ) )
 			{
 			    if ( idc->elapsed++ > idc->timeout )
@@ -159,7 +159,7 @@ void crI2c( xCoRoutineHandle xHandle,
 			{
 			    // Wait for data available.
 			    idc->elapsed = 0;
-			    while ( !I2C_GetFlagStatus( idc->i2c, I2C_FLAG_RXE ) )
+			    while ( !I2C_GetFlagStatus( idc->i2c, /*I2C_FLAG_RXE*/ 0 ) )
 			    {
 			        if ( idc->elapsed++ > idc->timeout )
 				{
@@ -184,7 +184,7 @@ void crI2c( xCoRoutineHandle xHandle,
 		        }
 
                         // Send STOP Condition
-                        I2C_GenerateSTOP(LM75_I2C, ENABLE);
+                        I2C_GenerateSTOP( idc->i2c, ENABLE );
 		    }
 		}
             
@@ -201,7 +201,6 @@ void crI2c( xCoRoutineHandle xHandle,
 	    // slave mode IO.
 	}
 i2c_end:
-        g_cmd = I2C_IDLE;
 	crDELAY( xHandle, 1 );
     }
     crEND();
