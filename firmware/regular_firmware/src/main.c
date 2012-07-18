@@ -106,6 +106,8 @@ void main(void)
     res = xCoRoutineCreate( crDbg,   1, 0 );
     res = xCoRoutineCreate( crUsbIo, 1, 0 );
     res = xCoRoutineCreate( crFuncs, 1, 0 );
+    res = xCoRoutineCreate( crI2c,   1, 0 );
+    // res = xCoRoutineCreate( crI2c,   1, 1 );
     vTaskStartScheduler();   
     for ( ;; )
     {

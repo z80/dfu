@@ -31,16 +31,17 @@ void crFuncs( xCoRoutineHandle xHandle,
     static xQueueHandle  q;
 
     static uint8_t initialized = 0;
-    if ( !initialized )
-    {
-        initialized = 255;
-        buf = buffer();
-        q   = fromMcu();
-    }
-    crSTART( xHandle );
+   crSTART( xHandle );
 
     for ( ;; )
     {
+        if ( !initialized )
+        {
+            initialized = 255;
+            buf = buffer();
+            q   = fromMcu();
+        }
+
         g_funcId = FUNC_IDLE;
         crDELAY( xHandle, 1 );
         //Debug;
