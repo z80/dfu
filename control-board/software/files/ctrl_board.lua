@@ -11,6 +11,13 @@ local FUNC_GPIO_CONFIG = 3
 local FUNC_GPIO_SET    = 4
 local FUNC_GPIO        = 5
 
+local FUNC_I2C_STATUS = 10
+local FUNC_I2C_EN     = 11
+local FUNC_I2C_CONFIG = 12
+local FUNC_I2C_IO     = 13
+local FUNC_I2C_RESULT = 14
+
+
 CtrlBoard = class()
 
 function CtrlBoard:__init()
@@ -47,6 +54,11 @@ end
 
 function CtrlBoard:putUInt16( val )
     local res = self.dev:putUInt16( val )
+    return res
+end
+
+function CtrlBoard:uptUInt32( val )
+    local res = self.dev:putUInt32
     return res
 end
 
