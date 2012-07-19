@@ -10,7 +10,7 @@
 
 OPTIMIZATION = 0
 #CROSS_PATH   = c:/programs/codesourcery/arm-2011.09-70
-CROSS_PATH   = c:/programs/codesourcery/2011.03-42
+CROSS_PATH   = c:/programs/codesourcery/arm-2011.03-42
 #CROSS_PATH   = ~/programs/code-sourcery/2011.03-42
 #CROSS_PREFIX = arm-none-linux-gnueabi-
 CROSS_PREFIX = arm-none-eabi-
@@ -42,8 +42,6 @@ CC = $(CROSS)gcc
 OBJCOPY = $(CROSS)objcopy
 SIZE = $(CROSS)size
 RM=rm -rf
-#MKDIR=mkdir -p
-MKDIR=C:/Programs/git/bin/mkdir -p
 
 # Assembler, Compiler and Linker flags and linker script settings
 LINKER_FLAGS=
@@ -118,8 +116,8 @@ clean:
 # Specific targets
 ##################
 $(OBJECT_DIR)/src/main.o: src/main.c
-	@echo ... make directory "./$(dir $@)"
-	@$(MKDIR) ./$(dir $@)
+	@echo make directory "./$(dir $@)"
+	@mkdir -p ./$(dir $@)
 	$(CC) $(COMPILER_FLAGS) src/main.c -o $(OBJECT_DIR)/src/main.o 
 
 
@@ -127,19 +125,18 @@ $(OBJECT_DIR)/src/main.o: src/main.c
 # Implicit targets
 ##################
 $(OBJECT_DIR)/%.o: %.c
-	@echo ... make directory "./$(dir $@)"
-	@echo command: "$(MKDIR) ./$(dir $@)"
-	@$(MKDIR) ./$(dir $@)
+	@echo make directory "./$(dir $@)"
+	@mkdir -p ./$(dir $@)
 	$(CC) $(COMPILER_FLAGS) $< -o $@
 
 $(OBJECT_DIR)/%.o: %.s
 	@echo make directory "./$(dir $@)"
-	@$(MKDIR) ./$(dir $@)
+	@mkdir -p ./$(dir $@)
 	$(CC) $(ASSEMBLER_FLAGS) $< -o $@
 	
 $(OBJECT_DIR)/%.o: %.S
 	@echo make directory "./$(dir $@)"
-	@mkdir ./$(dir $@)
+	@mkdir -p ./$(dir $@)
 	$(CC) $(ASSEMBLER_FLAGS) $< -o $@
 
 
