@@ -116,6 +116,50 @@ function CtrlBoard:gpio( index )
     return res
 end
 
+function CtrlBoard:i2cStatus( index )
+    self.dev:putUInt8( index )
+    self.dev:execFunc( FUNC_I2C_STATUS )
+    local t = self.dev:readQueue( 1 )
+    if ( #t < 1 ) then
+        return nil, "ERROR: Nothing returned"
+    end
+    local res = t[1]
+    return res
+end
 
+function CtrlBoard:i2cEn( index, en )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( ( en ) and true or false )
+    self.dev:execFunc( FUNC_I2C_EN )
+end
+
+function CtrlBoard:i2cConfig( index, master, address, speed )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( master )
+    self.dev:putUInt8( address )
+    self.dev:putUInt32( speed )
+    self.dev:execFunc( FUNC_I2C_CONFIG )
+end
+
+function CtrlBoard:i2cIo( index, address, sendQueue, receiveCnt )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( address )
+    local sendCnt = #sendQueue
+    self.dev:putUInt8( sendCnt )
+    self.dev:putUInt8( receiveCnt )
+    for i=1,sendCnt do
+        local v = sendQueue[i]
+        self.dev:putUInt8( v )
+    end
+    self.dev:execFunc( FUNC_I2C_IO )
+end
+
+function CtrlBoard:i2cResult( index, cnt )
+   self.dev:putUInt8( index )
+   self.dev:putUInt8( cnt )
+   self.dev:execFunc( FUNC_I2C_RESULT )
+   local t = self.dev:readQueue( cnt )
+   return t
+end
 
 
