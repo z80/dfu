@@ -29,7 +29,7 @@ void crI2c( xCoRoutineHandle xHandle,
 
 	TI2C * idc = i2c( uxIndex );
 	// Commands loop.
-        if ( idc->master )
+    if ( idc->master )
 	{
 	    if ( ( idc->sendCnt ) || ( idc->receiveCnt ) )
 	    {
@@ -62,8 +62,8 @@ void crI2c( xCoRoutineHandle xHandle,
                     idc = i2c( uxIndex );
 	        }
                 
-		if ( idc->sendCnt )
-		{
+		    if ( idc->sendCnt )
+		    {
 	            // Transmit the slave address with write operation enabled.
 	            I2C_Send7bitAddress( idc->i2c, idc->address, I2C_Direction_Transmitter );
 
@@ -119,81 +119,80 @@ void crI2c( xCoRoutineHandle xHandle,
 	                crDELAY( xHandle, 1 );
 		        idc = i2c( uxIndex );
 	            }
-		}
-		// Receiving data if necessary.
-                if ( idc->receiveCnt )
-		{
-		    if ( idc->sendCnt )
-		    {
-		        // Generate START condition if there was at least one byte written.
-		        I2C_GenerateSTART( idc->i2c, ENABLE );
-                        
-			// Wait for SB flag.
-			idc->elapsed = 0;
-			while ( !I2C_GetFlagStatus( idc->i2c, I2C_FLAG_SB ) )
-			{
-			    if ( idc->elapsed++ > idc->timeout )
-			    {
-			        idc->status = I2C_ERROR;
-				goto i2c_end;
-			    }
-			    crDELAY( xHandle, 1 );
-			    idc = i2c( uxIndex );
-			}
-
-                        I2C_Send7bitAddress( idc->i2c, idc->address, I2C_Direction_Receiver );
- 
-                        // Test on ADDR Flag
-			idc->timeout = 0;
-                        while ( !I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED ) )
-			{
-			    if ( idc->elapsed++ > idc->timeout )
-			    {
-			        idc->status = I2C_ERROR;
-				goto i2c_end;
-			    }
-			    crDELAY( xHandle, 1 );
-			    idc = i2c( uxIndex );
-			}
-                        
-			// Receiving a number of bytes from slave.
-                        uint8_t i;
-                        for ( i=0; i<idc->receiveCnt; i++ )
-			{
-			    // Wait for data available.
-			    idc->elapsed = 0;
-			    while ( !I2C_GetFlagStatus( idc->i2c, /*I2C_FLAG_RXE*/ 0 ) )
-			    {
-			        if ( idc->elapsed++ > idc->timeout )
-				{
-				    idc->status = I2C_ERROR;
-				    goto i2c_end;
-				}
-				crDELAY( xHandle, 1 );
-				idc = i2c( uxIndex );
-			    }
-
-                            // Read the data.
-                            uint8_t data = I2C_ReceiveData( idc->i2c );
-
-			    // Send data through queue.
-		            //portBASE_TYPE  rc;
-                            //crQUEUE_SEND( xHandle, idc->receiveQueue, &data, 0, &rc );
-			    //if ( rc != pdPASS )
-			    //{
-			    //    idc->status = I2C_ERROR;
-			    //      goto i2c_end;
-			    //}
-                            idc->receiveQueue[i] = data;
-		        }
-
-                        // Send STOP Condition
-                        //I2C_GenerateSTOP( idc->i2c, ENABLE );
 		    }
-		}
-            
-	        // Generating STOP.
-                I2C_GenerateSTOP( idc->i2c, ENABLE );
+		    // Receiving data if necessary.
+            if ( idc->receiveCnt )
+            {
+				if ( idc->sendCnt )
+				{
+					// Generate START condition if there was at least one byte written.
+					I2C_GenerateSTART( idc->i2c, ENABLE );
+                    // Wait for SB flag.
+				    idc->elapsed = 0;
+					while ( !I2C_GetFlagStatus( idc->i2c, I2C_FLAG_SB ) )
+					{
+						if ( idc->elapsed++ > idc->timeout )
+						{
+							idc->status = I2C_ERROR;
+						goto i2c_end;
+						}
+						crDELAY( xHandle, 1 );
+						idc = i2c( uxIndex );
+					}
+
+					I2C_Send7bitAddress( idc->i2c, idc->address, I2C_Direction_Receiver );
+
+					// Test on ADDR Flag
+					idc->timeout = 0;
+					while ( !I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED ) )
+					{
+						if ( idc->elapsed++ > idc->timeout )
+						{
+							idc->status = I2C_ERROR;
+						    goto i2c_end;
+						}
+						crDELAY( xHandle, 1 );
+						idc = i2c( uxIndex );
+					}
+
+					// Receiving a number of bytes from slave.
+					uint8_t i;
+					for ( i=0; i<idc->receiveCnt; i++ )
+					{
+						// Wait for data available.
+						idc->elapsed = 0;
+						while ( !I2C_GetFlagStatus( idc->i2c, I2C_FLAG_RXNE ) )
+						{
+							if ( idc->elapsed++ > idc->timeout )
+						{
+							idc->status = I2C_ERROR;
+							goto i2c_end;
+						}
+							crDELAY( xHandle, 1 );
+							idc = i2c( uxIndex );
+						}
+
+						// Read the data.
+						uint8_t data = I2C_ReceiveData( idc->i2c );
+
+						// Send data through queue.
+							//portBASE_TYPE  rc;
+									//crQUEUE_SEND( xHandle, idc->receiveQueue, &data, 0, &rc );
+						//if ( rc != pdPASS )
+						//{
+						//    idc->status = I2C_ERROR;
+						//      goto i2c_end;
+						//}
+						idc->receiveQueue[i] = data;
+					}
+
+					// Send STOP Condition
+					//I2C_GenerateSTOP( idc->i2c, ENABLE );
+				}
+			}
+
+			// Generating STOP.
+			I2C_GenerateSTOP( idc->i2c, ENABLE );
 
 	        // To prevent cyclic writes of zero data.
 	       idc->sendCnt = 0;
