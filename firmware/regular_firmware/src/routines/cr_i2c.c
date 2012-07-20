@@ -61,7 +61,7 @@ void crI2c( xCoRoutineHandle xHandle,
 				I2C_GenerateSTART( idc->i2c, ENABLE );
 
 				// Wait for SB to be set
-				timeout = 0;
+				idc->elapsed = 0;
 				while ( I2C_GetFlagStatus( idc->i2c, I2C_FLAG_SB ) == RESET )
 				{
 					if ( idc->elapsed++ > idc->timeout )
