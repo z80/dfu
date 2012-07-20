@@ -10,16 +10,17 @@ function I2c:__init()
     self.wnd:show()
 
     self.dev = CtrlBoard()
-    self.dev:open()
-    print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
-    self.dev:gpioEn( 1, true )
-    self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_IPD )
-    --self.dev:gpioSet( 1, 65535, 65535 )
+    --self.dev:open()
+    --print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
+    --self.dev:gpioEn( 1, true )
+    --self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_IPD )
+    
     qt.connect( self.wnd.open,    'clicked', self, self.open )
     qt.connect( self.wnd.close,   'clicked', self, self.close )
     qt.connect( self.wnd.enable,  'clicked', self, self.enable )
     qt.connect( self.wnd.disable, 'clicked', self, self.disable )
     qt.connect( self.wnd.config,  'clicked', self, self.config )
+    qt.connect( self.wnd.status,  'clicked', self, self.status )
     qt.connect( self.wnd.send01,  'clicked', self, self.send01 )
     qt.connect( self.wnd.send02,  'clicked', self, self.send02 )
     qt.connect( self.wnd.send03,  'clicked', self, self.send03 )
@@ -48,11 +49,16 @@ function I2c:config()
     self.dev:i2cConfig( 0, true, 0, 100 )
 end
 
+function I2c:status()
+    local st = self.dev:i2cStatus( 0 )
+    print( "status: " .. tostring( st ) )
+end
+
 function I2c:send01()
     local addr = 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
-    self.dev:i2cSend( 0, 0xA0 + addr, {0}, 1 )
+    self.dev:i2cIo( 0, 0xA0 + addr, {0}, 1 )
     for i=1, 10 do
         st = self.dev:i2cStatus( 0 )
         print( "status = " .. tostring( st ) )

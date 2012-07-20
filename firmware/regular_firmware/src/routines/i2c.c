@@ -21,7 +21,7 @@ void i2cInit( uint8_t index )
     //i2c->receiveQueue = xQueueCreate( I2C_QUEUE_SIZE, 1 );
     i2c->sendCnt    = 0;
     i2c->receiveCnt = 0;
-    i2c->master  = 0;
+    i2c->master  = 1;
     i2c->status  = I2C_IDLE;
     
     i2c->i2c     = ( index == 0 ) ? I2C1 : I2C2;
@@ -39,16 +39,36 @@ void i2cSetEn( uint8_t index, uint8_t en )
     if ( en )
     {
         GPIO_InitTypeDef  gpio;
-        
         RCC_APB2PeriphClockCmd( RCC_I2C_GPIO_CLK, ENABLE );
         // HDW_I2C Periph clock enable
         RCC_APB1PeriphClockCmd( periph, ENABLE );
-        
         // Configure HDW_I2C pins: SCL and SDA
         gpio.GPIO_Pin   = sckPin | sdaPin;
         gpio.GPIO_Speed = GPIO_Speed_50MHz;
         gpio.GPIO_Mode  = GPIO_Mode_AF_OD;
         GPIO_Init( I2C_PORT, &gpio );
+
+
+        TI2C * idc = &(g_i2c[index]);
+        I2C_DeInit( i2c );
+        // HDW_I2C Init
+        I2C_InitTypeDef   I2C_InitStructure;
+        I2C_InitStructure.I2C_Mode                = ( idc->master ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
+        I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_2;
+        I2C_InitStructure.I2C_OwnAddress1         = idc->address;
+        I2C_InitStructure.I2C_Ack                 = I2C_Ack_Enable;
+        I2C_InitStructure.I2C_AcknowledgedAddress = /*( _10bit ) ? I2C_AcknowledgedAddress_10bit :*/ I2C_AcknowledgedAddress_7bit;
+        I2C_InitStructure.I2C_ClockSpeed          = idc->speed;
+        //I2C_Init( i2c, &I2C_InitStructure );
+        // Enable SMBus Alert interrupt
+        //I2C_ITConfig( i2c, I2C_IT_ERR, ENABLE );
+        // HDW_I2C Init
+        //I2C_Cmd( i2c, ENABLE );
+        I2C_Cmd( i2c, ENABLE );
+        I2C_Init( i2c, &I2C_InitStructure );
+        I2C_AcknowledgeConfig( i2c, ENABLE );
+
+        I2C_GenerateSTOP( i2c, ENABLE );
     }
     else
     {
@@ -90,7 +110,7 @@ void i2cIo( uint8_t index, uint8_t address, uint8_t sendCnt, uint8_t receiveCnt,
     idc->address    = address;
     idc->sendCnt    = sendCnt;
     idc->receiveCnt = receiveCnt;
-    idc->status     = I2C_STARTED;
+    idc->status     = I2C_IO_INVOKED;
 }
 
 

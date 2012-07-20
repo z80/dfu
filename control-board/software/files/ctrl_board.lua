@@ -57,8 +57,8 @@ function CtrlBoard:putUInt16( val )
     return res
 end
 
-function CtrlBoard:uptUInt32( val )
-    local res = self.dev:putUInt32
+function CtrlBoard:putUInt32( val )
+    local res = self.dev:putUInt32( val )
     return res
 end
 
@@ -135,7 +135,7 @@ end
 
 function CtrlBoard:i2cConfig( index, master, address, speed )
     self.dev:putUInt8( index )
-    self.dev:putUInt8( master )
+    self.dev:putUInt8( master and 1 or 0 )
     self.dev:putUInt8( address )
     self.dev:putUInt32( speed )
     self.dev:execFunc( FUNC_I2C_CONFIG )

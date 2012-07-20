@@ -19,9 +19,12 @@
 #define I2C_SLAVE_SEND     3
 #define I2C_SLAVE_RECEIVE  4
 // I2C possible status
-#define I2C_STARTED        1
-#define I2C_ERROR          2
-#define I2C_WAIT_BUSY      3
+#define I2C_IO_INVOKED     1
+#define I2C_MASTER_IO      2
+#define I2C_ENTERED_IO     3
+#define I2C_STARTED        4
+#define I2C_ERROR          5
+#define I2C_WAIT_BUSY      6
 
 #define CMD_DATA 0
 #define CMD_FUNC 1
