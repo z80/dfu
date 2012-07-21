@@ -39,12 +39,15 @@ typedef struct
     uint8_t  status;
     
     I2C_TypeDef * i2c;
+    uint8_t  selfAddress;
     uint8_t  address;
     uint32_t speed;
     uint32_t timeout;
     uint32_t elapsed;
     uint8_t sendQueue[ I2C_QUEUE_SIZE ];
     uint8_t receiveQueue[ I2C_QUEUE_SIZE ];
+    uint8_t bytesWritten,
+            bytesRead;
 } TI2C;
 
 TI2C * i2c( uint8_t index );
@@ -52,9 +55,12 @@ uint8_t i2cStatus( uint8_t index );
 void i2cInit( uint8_t index );
 void i2cSetEn( uint8_t index, uint8_t en );
 void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed );
+void i2cSetTimeout( uint8_t index, uint32_t timeout );
 uint8_t * i2cSendQueue( uint8_t index );
 uint8_t * i2cReceiveQueue( uint8_t index );
 void i2cIo( uint8_t index, uint8_t address, uint8_t sendCnt, uint8_t receiveCnt, uint8_t * sendData );
+uint8_t i2cBytesWritten( uint8_t index );
+uint8_t i2cBytesRead( uint8_t index );
 
 #endif
 

@@ -104,13 +104,13 @@ void main(void)
     portBASE_TYPE res;
     //res = xTaskCreate( vTaskDbg, "d", 128, 0, tskIDLE_PRIORITY+1, 0 );
     //res = xCoRoutineCreate( crDbg,   1, 0 );
-    //res = xCoRoutineCreate( crUsbIo, 1, 0 );
-    //res = xCoRoutineCreate( crFuncs, 1, 0 );
+    res = xCoRoutineCreate( crUsbIo, 1, 0 );
+    res = xCoRoutineCreate( crFuncs, 1, 0 );
     res = xCoRoutineCreate( crI2c,   1, 0 );
     // res = xCoRoutineCreate( crI2c,   1, 1 );
     vTaskStartScheduler();   
-    for ( ;; )
-    {
+    //for ( ;; )
+    //{
         //printf( "ab!" );
         /*USB_Send_Data( 'a' );
         USB_Send_Data( 'b' );
@@ -118,10 +118,10 @@ void main(void)
         USB_Send_Data( 'b' );
         USB_Send_Data( '\r' );
         USB_Send_Data( '\n' );*/
-        volatile int i;
-        for ( i=0; i<100000; i++ )
-            ;
-    }
+        //volatile int i;
+        //for ( i=0; i<100000; i++ )
+        //    ;
+    //}
 }
 
 void vTaskDbg( void * args )

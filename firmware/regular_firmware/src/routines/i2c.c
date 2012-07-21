@@ -27,7 +27,10 @@ void i2cInit( uint8_t index )
     i2c->i2c     = ( index == 0 ) ? I2C1 : I2C2;
     i2c->address = 0;
     i2c->speed   = 100000;
-    i2c->timeout = 128;
+    i2c->timeout = 16;
+
+    i2c->bytesWritten = 0;
+    i2c->bytesRead    = 0;
 }
 
 void i2cSetEn( uint8_t index, uint8_t en )
@@ -55,7 +58,7 @@ void i2cSetEn( uint8_t index, uint8_t en )
         I2C_InitTypeDef   I2C_InitStructure;
         I2C_InitStructure.I2C_Mode                = I2C_Mode_I2C; //( idc->master ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
         I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_2;
-        I2C_InitStructure.I2C_OwnAddress1         = idc->address;
+        I2C_InitStructure.I2C_OwnAddress1         = idc->selfAddress;
         I2C_InitStructure.I2C_Ack                 = I2C_Ack_Enable;
         I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
         I2C_InitStructure.I2C_ClockSpeed          = idc->speed;
@@ -79,8 +82,14 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
 {
     TI2C * i2c = &(g_i2c[index]);
     i2c->master  = master;
-    i2c->address = address;
+    i2c->selfAddress = address;
     i2c->speed   = speed;
+}
+
+void i2cSetTimeout( uint8_t index, uint32_t timeout )
+{
+	TI2C * i2c = &(g_i2c[index]);
+	i2c->timeout = timeout;
 }
 
 uint8_t * i2cSendQueue( uint8_t index )
@@ -106,8 +115,21 @@ void i2cIo( uint8_t index, uint8_t address, uint8_t sendCnt, uint8_t receiveCnt,
     idc->sendCnt    = sendCnt;
     idc->receiveCnt = receiveCnt;
     idc->status     = I2C_IO_INVOKED;
+    idc->bytesWritten = 0;
+    idc->bytesRead    = 0;
 }
 
+uint8_t i2cBytesWritten( uint8_t index )
+{
+    TI2C * idc = i2c( index );
+    return idc->bytesWritten;
+}
+
+uint8_t i2cBytesRead( uint8_t index )
+{
+    TI2C * idc = i2c( index );
+    return idc->bytesRead;
+}
 
 
 

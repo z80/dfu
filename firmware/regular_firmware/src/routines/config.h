@@ -20,11 +20,22 @@
 #define I2C_SLAVE_RECEIVE  4
 // I2C possible status
 #define I2C_IO_INVOKED     1
-#define I2C_MASTER_IO      2
-#define I2C_ENTERED_IO     3
-#define I2C_STARTED        4
-#define I2C_ERROR          5
-#define I2C_WAIT_BUSY      6
+#define I2C_BUSY           2
+#define I2C_ERROR_BUSY     3
+#define I2C_MMS            4
+#define I2C_ERROR_MMS      5
+#define I2C_TMS            6
+#define I2C_ERROR_TMS      7
+#define I2C_MBT            8
+#define I2C_ERROR_MBT      9
+#define I2C_BTF            10
+#define I2C_ERROR_BTF      11
+#define I2C_MMS_R          12
+#define I2C_ERROR_MMS_R    13
+#define I2C_RMS            14
+#define I2C_ERROR_RMS      15
+#define I2C_MBR            16
+#define I2C_ERROR_MBR      17
 
 #define CMD_DATA 0
 #define CMD_FUNC 1
@@ -44,6 +55,10 @@
 #define FUNC_I2C_CONFIG     12
 #define FUNC_I2C_IO         13
 #define FUNC_I2C_RESULT     14
+#define FUNC_I2C_TIMEOUT    15
+#define FUNC_I2C_BYTES_WR   16
+#define FUNC_I2C_BYTES_RD   17
+#define FUNC_I2C_WR_QUEUE   18
 
 #endif
 

@@ -105,6 +105,25 @@ void crFuncs( xCoRoutineHandle xHandle,
         	sendCnt = buf[1];
         	out = i2cReceiveQueue( buf[0] );
         }
+        else if ( g_funcId == FUNC_I2C_TIMEOUT )
+        {
+            i2cSetTimeout( buf[0], *(uint32_t *)(&(buf[1])) );
+        }
+        else if ( g_funcId == FUNC_I2C_BYTES_WR )
+        {
+            uint8_t r = i2cBytesWritten( buf[0] );
+            crQUEUE_SEND( xHandle, q, &r, 0, &cr );
+        }
+        else if ( g_funcId == FUNC_I2C_BYTES_RD )
+        {
+            uint8_t r = i2cBytesRead( buf[0] );
+            crQUEUE_SEND( xHandle, q, &r, 0, &cr );
+        }
+        else if ( g_funcId == FUNC_I2C_WR_QUEUE )
+        {
+        	out = i2cSendQueue( buf[0] );
+            sendCnt = buf[1];
+        }
 
         static uint8_t i;
         for ( i=0; i<sendCnt; i++ )

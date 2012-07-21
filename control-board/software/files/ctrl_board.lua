@@ -16,7 +16,10 @@ local FUNC_I2C_EN     = 11
 local FUNC_I2C_CONFIG = 12
 local FUNC_I2C_IO     = 13
 local FUNC_I2C_RESULT = 14
-
+local FUNC_I2C_TIMEOUT  = 15
+local FUNC_I2C_BYTES_WR = 16
+local FUNC_I2C_BYTES_RD = 17
+local FUNC_I2C_WR_QUEUE = 18
 
 CtrlBoard = class()
 
@@ -162,4 +165,30 @@ function CtrlBoard:i2cResult( index, cnt )
    return t
 end
 
+function CtrlBoard:i2cSetTimeout( index, t )
+    self.dev:putUInt8( index )
+    self.dev:putUInt32( t )
+    self.dev:execFunc( FUNC_I2C_TIMEOUT )
+end
 
+function CtrlBoard:i2cBytesWritten( index )
+    self.dev:putUInt8( index )
+    self.dev:execFunc( FUNC_I2C_BYTES_WR )
+    local t = self.dev:readQueue( 1 )
+    return t[1]
+end
+
+function CtrlBoard:i2cBytesRead( index )
+    self.dev:putUInt8( index )
+    self.dev:execFunc( FUNC_I2C_BYTES_RD )
+    local t = self.dev:readQueue( 1 )
+    return t[1]
+end
+
+function CtrlBoard:i2cWriteQueue( index, cnt )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( cnt )
+    self.dev:execFunc( FUNC_I2C_WR_QUEUE )
+    local t = self.dev:readQueue( cnt )
+    return t
+end
