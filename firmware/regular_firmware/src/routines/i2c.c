@@ -53,22 +53,17 @@ void i2cSetEn( uint8_t index, uint8_t en )
         I2C_DeInit( i2c );
         // HDW_I2C Init
         I2C_InitTypeDef   I2C_InitStructure;
-        I2C_InitStructure.I2C_Mode                = ( idc->master ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
+        I2C_InitStructure.I2C_Mode                = I2C_Mode_I2C; //( idc->master ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
         I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_2;
         I2C_InitStructure.I2C_OwnAddress1         = idc->address;
         I2C_InitStructure.I2C_Ack                 = I2C_Ack_Enable;
-        I2C_InitStructure.I2C_AcknowledgedAddress = /*( _10bit ) ? I2C_AcknowledgedAddress_10bit :*/ I2C_AcknowledgedAddress_7bit;
+        I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
         I2C_InitStructure.I2C_ClockSpeed          = idc->speed;
-        //I2C_Init( i2c, &I2C_InitStructure );
-        // Enable SMBus Alert interrupt
-        //I2C_ITConfig( i2c, I2C_IT_ERR, ENABLE );
-        // HDW_I2C Init
-        //I2C_Cmd( i2c, ENABLE );
-        I2C_Cmd( i2c, ENABLE );
         I2C_Init( i2c, &I2C_InitStructure );
-        I2C_AcknowledgeConfig( i2c, ENABLE );
+        I2C_Cmd( i2c, ENABLE );
+        //I2C_AcknowledgeConfig( i2c, ENABLE );
 
-        I2C_GenerateSTOP( i2c, ENABLE );
+        //I2C_GenerateSTOP( i2c, ENABLE );
     }
     else
     {
