@@ -58,26 +58,21 @@ end
 
 function I2c:send01()
     print( "send01()" )
-    local found = false
-    for addr = 0, 255 do
-        print( string.format( "<b>addr = %i</b>", addr ) )
-        local st = self.dev:i2cStatus( 0 )
+    local addr = self.addr or 0
+    local st = self.dev:i2cStatus( 0 )
+    print( "status = " .. tostring( st ) )
+    self.dev:i2cIo( 0, 0xA0 + addr, {0, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 0 )
+    for i=1, 16 do
+        st = self.dev:i2cStatus( 0 )
         print( "status = " .. tostring( st ) )
-        self.dev:i2cIo( 0, addr, {1, 2}, 1 )
-        for i=1, 4 do
-            st = self.dev:i2cStatus( 0 )
-            print( "status = " .. tostring( st ) )
-            if ( st == 0 ) then
-                found = true
-                break
-            end
-        end
-        local res = self.dev:i2cResult( 0, 1 )
-        print( "length: " .. tostring( #res ) )
-        print( "result[1]: " .. tostring( res[1] ) )
-        if ( found ) then
+        if ( st == 0 ) then
             break
         end
+    end
+    local t = self.dev:i2cResult( 0, 10 )
+    print( "length: " .. tostring( #t ) )
+    for i=1, #t do
+        print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
     end
 end
 
@@ -86,7 +81,7 @@ function I2c:send02()
     local addr = self.addr or 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
-    self.dev:i2cIo( 0, 0xA0 + addr, {0, 0}, 1 )
+    self.dev:i2cIo( 0, 0xA0 + addr, {0}, 10 )
     for i=1, 16 do
         st = self.dev:i2cStatus( 0 )
         print( "status = " .. tostring( st ) )
@@ -94,9 +89,11 @@ function I2c:send02()
             break
         end
     end
-    local res = self.dev:i2cResult( 0, 1 )
-    print( "length: " .. tostring( #res ) )
-    print( "result[1]: " .. tostring( res[1] ) )
+    local t = self.dev:i2cResult( 0, 10 )
+    print( "length: " .. tostring( #t ) )
+    for i=1, #t do
+        print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
+    end
 end
 
 function I2c:send03()

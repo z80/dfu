@@ -7,6 +7,7 @@
 void crI2c( xCoRoutineHandle xHandle, 
             unsigned portBASE_TYPE uxIndex )
 {
+	static uint8_t i;
     crSTART( xHandle );
     for ( ;; )
     {
@@ -127,12 +128,11 @@ void crI2c( xCoRoutineHandle xHandle,
 
 
                     // Read data from send queue.
-					uint8_t data, i;
 					for ( i=0; i<idc->sendCnt; i++ )
 					{
 						idc = i2c( uxIndex );
 						// Transmit data.
-						data = idc->sendQueue[ i ];
+						uint8_t data = idc->sendQueue[ i ];
 						I2C_SendData( idc->i2c, data );
 
 						// Test for TXE flag (data sent).
@@ -203,7 +203,6 @@ void crI2c( xCoRoutineHandle xHandle,
 					}
 
 					// Receiving a number of bytes from slave.
-					uint8_t i;
 					for ( i=0; i<idc->receiveCnt; i++ )
 					{
 						// Turn acknowledge off when reading the last byte.

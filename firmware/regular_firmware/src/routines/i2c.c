@@ -99,7 +99,7 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
 
     I2C_AcknowledgeConfig( idc->i2c, ENABLE );
 
-    if ( ( index == 0 ) && (master == 1 ) && ( address == 0xA0 ) )
+    if ( ( index == 0 ) && (master == 1 ) && ( address == 0x00 ) )
     	idc->status = 101;
 }
 
