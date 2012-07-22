@@ -90,17 +90,17 @@ void crFuncs( xCoRoutineHandle xHandle,
 	    }
         else if ( g_funcId == FUNC_I2C_EN )
         {
-        	i2c( 0 )->status = 120;
+        	//i2c( 0 )->status = 120;
             i2cSetEn( buf[0], buf[1] );
         }
         else if ( g_funcId == FUNC_I2C_CONFIG )
         {
-        	i2c( 0 )->status = 121;
+        	//i2c( 0 )->status = 121;
             i2cConfig( buf[0], buf[1], buf[2], *(uint32_t *)(&(buf[3])) );
         }
         else if ( g_funcId == FUNC_I2C_IO )
         {
-        	i2c( 0 )->status = 122;
+        	//i2c( 0 )->status = 122;
 	        i2cIo( buf[0], buf[1], buf[2], buf[3], (uint8_t *)&(buf[4]) );
         }
         else if ( g_funcId == FUNC_I2C_RESULT )

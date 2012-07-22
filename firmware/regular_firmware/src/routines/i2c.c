@@ -66,8 +66,8 @@ void i2cSetEn( uint8_t index, uint8_t en )
 
         I2C_AcknowledgeConfig( idc->i2c, ENABLE );
         //I2C_GenerateSTOP( i2c, ENABLE );
-        if ( index == 0 )
-        	idc->status = 100;
+        //if ( index == 0 )
+        //	idc->status = 100;
     }
     else
     {
@@ -99,8 +99,8 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
 
     I2C_AcknowledgeConfig( idc->i2c, ENABLE );
 
-    if ( ( index == 0 ) && (master == 1 ) && ( address == 0x00 ) )
-    	idc->status = 101;
+    //if ( ( index == 0 ) && (master == 1 ) && ( address == 0x00 ) )
+    //	idc->status = 101;
 }
 
 void i2cSetTimeout( uint8_t index, uint32_t timeout )
