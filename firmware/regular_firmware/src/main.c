@@ -30,6 +30,7 @@
 #include "cr_i2c.h"
 #include "cr_dbg.h"
 #include "i2c.h"
+#include "i2c_lib.h"
 // FreeRTOS stuff.
 #include "FreeRTOS.h"
 #include "task.h"
@@ -68,6 +69,12 @@ void main(void)
     // Otherwise actual interrupts table location 
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
+
+    // I2C 3-rd party library test.
+    //I2C_Configuration();
+    //uint8_t data = I2C_EE_ByteRead( 0 );
+    //while ( 1 )
+        //;
 
     // USB setup.
     //Set_USBClock();

@@ -28,8 +28,8 @@
 #define HDW_I2C_SMBUSALERT_GPIO_CLK     RCC_APB2Periph_GPIOB
 #define HDW_I2C_DR                      ((uint32_t)0x40005410)
 */
-#define I2C_PORT     GPIOB
-#define RCC_I2C_GPIO_CLK  RCC_APB2Periph_GPIOB
+#define I2C_PORT          GPIOB
+#define RCC_I2C_GPIO_CLK  (RCC_APB2Periph_GPIOB| RCC_APB2Periph_AFIO)
 
 typedef struct
 {

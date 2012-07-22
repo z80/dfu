@@ -10,20 +10,22 @@ void crI2c( xCoRoutineHandle xHandle,
     crSTART( xHandle );
     for ( ;; )
     {
-    	/*static uint8_t one = 0;
-    	if ( one > 0 )
+
+    	static uint8_t one = 0;
+    	if ( one == 0 )
     	{
     		crDELAY( xHandle, 1 );
-    	    continue;
+            i2cSetEn( 0, 1 );
+            i2cConfig( 0, 1, 0, 10000 );
+            uint8_t buf[3];
+            buf[0] = 0;
+            buf[1] = 0x0;
+            buf[2] = 0xEA;
+            i2cIo( 0, 0xA0 + 0, 1, 1, buf );
+            one = 1;
         }
-    	one = 1;*/
-        /*i2cConfig( 0, 1, 0, 1000 );
-        i2cSetEn( 0, 1 );
-        uint8_t buf[3];
-        buf[0] = 0;
-        buf[1] = 0x0;
-        buf[2] = 0xEA;
-        i2cIo( 0, 0xA0 + 0, 1, 1, buf );*/
+
+
         TI2C * idc = i2c( uxIndex );
 
         /*

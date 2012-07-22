@@ -25,6 +25,7 @@ void i2cInit( uint8_t index )
     i2c->status  = I2C_IDLE;
     
     i2c->i2c     = ( index == 0 ) ? I2C1 : I2C2;
+    i2c->selfAddress = 0;
     i2c->address = 0;
     i2c->speed   = 100000;
     i2c->timeout = 16;
@@ -35,43 +36,41 @@ void i2cInit( uint8_t index )
 
 void i2cSetEn( uint8_t index, uint8_t en )
 {
-    I2C_TypeDef * i2c = ( index == 0 ) ? I2C1 : I2C2;
+    TI2C * idc = &(g_i2c[index]);
     uint32_t      periph = ( index == 0 ) ? RCC_APB1Periph_I2C1 : RCC_APB1Periph_I2C2;
     uint16_t      sckPin = ( index == 0 ) ? GPIO_Pin_6 : GPIO_Pin_10;
     uint16_t      sdaPin = ( index == 0 ) ? GPIO_Pin_7 : GPIO_Pin_11;
     if ( en )
     {
-        GPIO_InitTypeDef  gpio;
-        RCC_APB2PeriphClockCmd( RCC_I2C_GPIO_CLK, ENABLE );
         // HDW_I2C Periph clock enable
         RCC_APB1PeriphClockCmd( periph, ENABLE );
+        GPIO_InitTypeDef  gpio;
+        RCC_APB2PeriphClockCmd( RCC_I2C_GPIO_CLK, ENABLE );
         // Configure HDW_I2C pins: SCL and SDA
         gpio.GPIO_Pin   = sckPin | sdaPin;
         gpio.GPIO_Speed = GPIO_Speed_50MHz;
         gpio.GPIO_Mode  = GPIO_Mode_AF_OD;
         GPIO_Init( I2C_PORT, &gpio );
 
-
-        TI2C * idc = &(g_i2c[index]);
-        I2C_DeInit( i2c );
+        I2C_DeInit( idc->i2c );
         // HDW_I2C Init
         I2C_InitTypeDef   I2C_InitStructure;
         I2C_InitStructure.I2C_Mode                = I2C_Mode_I2C; //( idc->master ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
-        I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_2;
+        I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_16_9;
         I2C_InitStructure.I2C_OwnAddress1         = idc->selfAddress;
         I2C_InitStructure.I2C_Ack                 = I2C_Ack_Enable;
         I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
         I2C_InitStructure.I2C_ClockSpeed          = idc->speed;
-        I2C_Init( i2c, &I2C_InitStructure );
-        I2C_Cmd( i2c, ENABLE );
-        //I2C_AcknowledgeConfig( i2c, ENABLE );
+        I2C_Cmd( idc->i2c, ENABLE );
+        I2C_Init( idc->i2c, &I2C_InitStructure );
 
+        I2C_AcknowledgeConfig( idc->i2c, ENABLE );
         //I2C_GenerateSTOP( i2c, ENABLE );
     }
     else
     {
-        I2C_DeInit( i2c );
-        I2C_Cmd( i2c, DISABLE );
+        I2C_DeInit( idc->i2c );
+        I2C_Cmd( idc->i2c, DISABLE );
         // Because there are at least two of them don't turn off clock.
         RCC_APB1PeriphClockCmd( periph, DISABLE );
     }
@@ -80,28 +79,41 @@ void i2cSetEn( uint8_t index, uint8_t en )
 
 void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
 {
-    TI2C * i2c = &(g_i2c[index]);
-    i2c->master  = master;
-    i2c->selfAddress = address;
-    i2c->speed   = speed;
+    TI2C * idc = &(g_i2c[index]);
+    idc->master  = master;
+    idc->selfAddress = address;
+    idc->speed   = speed;
+
+    I2C_DeInit( idc->i2c );
+    // HDW_I2C Init
+    I2C_InitTypeDef   I2C_InitStructure;
+    I2C_InitStructure.I2C_Mode                = I2C_Mode_I2C; //( idc->master ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
+    I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_16_9;
+    I2C_InitStructure.I2C_OwnAddress1         = idc->selfAddress;
+    I2C_InitStructure.I2C_Ack                 = I2C_Ack_Enable;
+    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed          = idc->speed;
+    I2C_Init( idc->i2c, &I2C_InitStructure );
+
+    I2C_AcknowledgeConfig( idc->i2c, ENABLE );
 }
 
 void i2cSetTimeout( uint8_t index, uint32_t timeout )
 {
-	TI2C * i2c = &(g_i2c[index]);
-	i2c->timeout = timeout;
+	TI2C * idc = &(g_i2c[index]);
+	idc->timeout = timeout;
 }
 
 uint8_t * i2cSendQueue( uint8_t index )
 {
-    TI2C * i2c = &(g_i2c[index]);
-    return i2c->sendQueue;
+    TI2C * idc = &(g_i2c[index]);
+    return idc->sendQueue;
 }
 
 uint8_t * i2cReceiveQueue( uint8_t index )
 {
-    TI2C * i2c = &(g_i2c[index]);
-    return i2c->receiveQueue;
+    TI2C * idc = &(g_i2c[index]);
+    return idc->receiveQueue;
 }
 
 void i2cIo( uint8_t index, uint8_t address, uint8_t sendCnt, uint8_t receiveCnt, uint8_t * sendData )

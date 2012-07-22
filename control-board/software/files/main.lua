@@ -59,7 +59,7 @@ end
 function I2c:send01()
     print( "send01()" )
     local found = false
-    for addr = 0, 127 do
+    for addr = 0, 255 do
         print( string.format( "<b>addr = %i</b>", addr ) )
         local st = self.dev:i2cStatus( 0 )
         print( "status = " .. tostring( st ) )
@@ -86,7 +86,7 @@ function I2c:send02()
     local addr = self.addr or 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
-    self.dev:i2cIo( 0, 0xA0 + addr, {0, 123}, 0 )
+    self.dev:i2cIo( 0, 0xA0 + addr, {0, 0}, 1 )
     for i=1, 16 do
         st = self.dev:i2cStatus( 0 )
         print( "status = " .. tostring( st ) )
