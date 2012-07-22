@@ -132,13 +132,13 @@ end
 
 function CtrlBoard:i2cEn( index, en )
     self.dev:putUInt8( index )
-    self.dev:putUInt8( ( en ) and true or false )
+    self.dev:putUInt8( ( en ) and 1 or 0 )
     self.dev:execFunc( FUNC_I2C_EN )
 end
 
 function CtrlBoard:i2cConfig( index, master, address, speed )
     self.dev:putUInt8( index )
-    self.dev:putUInt8( master and 1 or 0 )
+    self.dev:putUInt8( ( master ) and 1 or 0 )
     self.dev:putUInt8( address )
     self.dev:putUInt32( speed )
     self.dev:execFunc( FUNC_I2C_CONFIG )
