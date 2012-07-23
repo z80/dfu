@@ -62,7 +62,7 @@ to exclude the API function. */
 	#define configPRIO_BITS       4        /* 15 priority levels */
 #endif
 
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			15
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			7
 #define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY	5
 
 /* The lowest priority. */
