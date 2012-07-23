@@ -154,6 +154,133 @@ uint8_t i2cBytesRead( uint8_t index )
 
 
 
+
+
+/*
+void I2C1_EV_IRQHandler(void)
+{
+    switch ( I2C_GetLastEvent(I2C1) )
+    {
+
+    case I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED:
+        STM_EVAL_LEDOn(LED3);
+        STM_EVAL_LEDOff(LED5);
+        break;
+
+    case I2C_EVENT_SLAVE_BYTE_RECEIVED:
+        STM_EVAL_LEDToggle(LED4);
+        STM_EVAL_LEDOff(LED3);
+        I2C_InputBuffer[I2C_InputBufferIndex++] = I2C_ReceiveData(I2C3);
+        break;
+
+    case I2C_EVENT_SLAVE_STOP_DETECTED:
+        STM_EVAL_LEDOn(LED6);
+        STM_EVAL_LEDOff(LED4);
+        break;
+    }
+
+   I2C_CleanADDRandSTOPF();
+
+   if(I2C_InputBufferIndex > MOTOR_PACKAGE_SIZE-1)
+   {
+     motorHandleEvent(I2C_InputBuffer);
+     I2C_InputBufferIndex = 0;
+     uint8_t resetIndex;
+     for(resetIndex = 0; resetIndex < MOTOR_PACKAGE_SIZE; resetIndex ++)
+       I2C_InputBuffer[resetIndex] = 0;
+   }
+}
+
+void I2C1_ER_IRQHandler(void)
+{
+
+}
+
+void I2C2_EV_IRQHandler(void)
+{
+
+}
+
+void I2C2_ER_IRQHandler(void)
+{
+
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+void I2C3_EV_IRQHandler()
+{
+    switch (I2C_GetLastEvent(I2C3))
+    {
+
+   case I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED:
+       STM_EVAL_LEDOn(LED3);
+       STM_EVAL_LEDOff(LED5);
+       break;
+
+   case I2C_EVENT_SLAVE_BYTE_RECEIVED:
+       STM_EVAL_LEDToggle(LED4);
+       STM_EVAL_LEDOff(LED3);
+       I2C_InputBuffer[I2C_InputBufferIndex++] = I2C_ReceiveData(I2C3);
+       break;
+
+   case I2C_EVENT_SLAVE_STOP_DETECTED:
+       STM_EVAL_LEDOn(LED6);
+       STM_EVAL_LEDOff(LED4);
+       break;
+   }
+
+   I2C_CleanADDRandSTOPF();
+
+   if(I2C_InputBufferIndex > MOTOR_PACKAGE_SIZE-1)
+   {
+     motorHandleEvent(I2C_InputBuffer);
+     I2C_InputBufferIndex = 0;
+     uint8_t resetIndex;
+     for(resetIndex = 0; resetIndex < MOTOR_PACKAGE_SIZE; resetIndex ++)
+       I2C_InputBuffer[resetIndex] = 0;
+   }
+}
+
+inline void I2C_CleanADDRandSTOPF()
+{
+ while ((I2C3->SR1 & I2C_SR1_ADDR) == I2C_SR1_ADDR)
+ {
+   volatile uint32_t temp;
+   temp=I2C3->SR1;
+   temp=I2C3->SR2;
+ }
+ while ((I2C3->SR1&I2C_SR1_STOPF) == I2C_SR1_STOPF)
+ {
+   volatile uint32_t temp;
+   temp=I2C3->SR1;
+   I2C3->CR1 |= 0x1;
+ }
+}
+*/
+
+
+
+
+
 /*
 uint32_t g_i2cTimeout = 1024;
 
