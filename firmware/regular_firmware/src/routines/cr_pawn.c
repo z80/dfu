@@ -1,6 +1,7 @@
 
 #include "cr_pawn.h"
-#include "pawn_loader.h"
+//#include "pawn_loader.h"
+#include "config.h"
 
 
 uint8_t invokePawn( void )
