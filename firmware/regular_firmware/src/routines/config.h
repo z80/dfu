@@ -36,6 +36,12 @@
 #define I2C_ERROR_RMS      15
 #define I2C_MBR            16
 #define I2C_ERROR_MBR      17
+#define I2C_SRAM           18
+#define I2C_STAM           19
+#define I2C_SBR            20
+#define I2C_SBT            21
+#define I2C_SAF            22
+#define I2C_SSD            23
 
 #define CMD_DATA 0
 #define CMD_FUNC 1

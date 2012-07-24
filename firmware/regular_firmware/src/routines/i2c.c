@@ -109,6 +109,7 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
     {
     	I2C_ITConfig( idc->i2c, I2C_IT_EVT, ENABLE );
     	idc->slaveStopped = 0;
+    	idc->status       = I2C_IDLE;
     }
     //if ( ( index == 0 ) && (master == 1 ) && ( address == 0x00 ) )
     //	idc->status = 101;
@@ -173,16 +174,19 @@ void i2cIrqHandler( uint8_t index )
 
     case I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED:
         idc->bytesRead = 0;
+        idc->status    = I2C_SRAM;
         break;
 
     case I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED:
         idc->bytesWritten = 0;
         idc->slaveStopped = 0;
+        idc->status = I2C_STAM;
         I2C_SendData( idc->i2c, idc->sendQueue[ idc->bytesWritten++ ] );
         break;
 
     case I2C_EVENT_SLAVE_BYTE_RECEIVED:
         idc->receiveQueue[ idc->bytesRead++ ] = I2C_ReceiveData( idc->i2c );
+        idc->status = I2C_SBR;
         break;
 
     case I2C_EVENT_SLAVE_BYTE_TRANSMITTED:
@@ -190,15 +194,18 @@ void i2cIrqHandler( uint8_t index )
     	{
             I2C_SendData( idc->i2c, idc->sendQueue[ idc->bytesWritten++ ] );
             idc->bytesWritten %= I2C_QUEUE_SIZE;
+            idc->status = I2C_SBT;
     	}
         break;
 
     case I2C_EVENT_SLAVE_ACK_FAILURE:
     	idc->slaveStopped = 1;
+    	idc->status       = I2C_SAF;
     	break;
 
     case I2C_EVENT_SLAVE_STOP_DETECTED:
     	idc->slaveStopped = 1;
+    	idc->status      = I2C_SSD;
         break;
     }
 
