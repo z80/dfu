@@ -81,7 +81,7 @@ void crDbg( xCoRoutineHandle xHandle,
             init();
             g_initialized = 255;
         }
-        while ( g_pulses-- > 0 )
+        while ( g_pulses > 0 )
         {
         	dbgSetHigh();
         	static uint8_t i;
@@ -98,6 +98,7 @@ void crDbg( xCoRoutineHandle xHandle,
         	    if ( !g_pulses )
         	    	goto DBG_END;
         	}
+        	g_pulses--;
         }
 DBG_END:
         // If not busy give other tasks time to live.

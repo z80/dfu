@@ -21,6 +21,12 @@ local FUNC_I2C_BYTES_WR = 16
 local FUNC_I2C_BYTES_RD = 17
 local FUNC_I2C_WR_QUEUE = 18
 
+local FUNC_DBG_SET_HIGH   = 200
+local FUNC_DBG_SET_LOW    = 201
+local FUNC_DBG_SET_PULSES = 202
+local FUNC_DBG_STOP       = 203
+
+
 CtrlBoard = class()
 
 function CtrlBoard:__init()
@@ -192,3 +198,32 @@ function CtrlBoard:i2cWriteQueue( index, cnt )
     local t = self.dev:readQueue( cnt )
     return t
 end
+
+function CtrlBoard:dbgSetHigh()
+    self.dev:execFunc( FUNC_DBG_SET_HIGH )
+end
+
+function CtrlBoard:dbgSetLow()
+    self.dev:execFunc( FUNC_DBG_SET_LOW )
+end
+
+function CtrlBoard:dbgSetPulses( low, high, cnt )
+    self.dev:putUInt8( low )
+    self.dev:putUInt8( high )
+    self.dev:putUInt32( cnt )
+    self.dev:execFunc( FUNC_DBG_SET_PULSES )
+end
+
+function CtrlBoard:dbgStop()
+    self.dev:execFunc( FUNC_DBG_STOP )
+end
+
+
+
+
+
+
+
+
+
+

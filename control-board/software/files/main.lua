@@ -25,6 +25,12 @@ function I2c:__init()
     qt.connect( self.wnd.send02,  'clicked', self, self.send02 )
     qt.connect( self.wnd.send03,  'clicked', self, self.send03 )
     
+    
+    qt.connect( self.wnd.low,    'clicked', self, self.low )
+    qt.connect( self.wnd.high,   'clicked', self, self.high )
+    qt.connect( self.wnd.pulses, 'clicked', self, self.pulses )
+    qt.connect( self.wnd.stop,   'clicked', self, self.stop )
+    
     self.addr = 0
 end
 
@@ -110,6 +116,22 @@ function I2c:send03()
     for i=1, #t do
         print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
     end
+end
+
+function I2c:low()
+    self.dev:dbgSetLow()
+end
+
+function I2c:high()
+    self.dev:dbgSetHigh()
+end
+
+function I2c:pulses()
+    self.dev:dbgSetPulses( 2, 1, 128 )
+end
+
+function I2c:stop()
+    self.dev:dbgStop()
 end
 
 if ( i2c ) then
