@@ -32,6 +32,8 @@ void i2cInit( uint8_t index )
 
     i2c->bytesWritten = 0;
     i2c->bytesRead    = 0;
+
+    i2c->slaveStopped = 0;
 }
 
 void i2cSetEn( uint8_t index, uint8_t en )
@@ -99,6 +101,15 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
 
     I2C_AcknowledgeConfig( idc->i2c, ENABLE );
 
+    if ( idc->master )
+    {
+    	I2C_ITConfig( idc->i2c, I2C_IT_EVT, DISABLE );
+    }
+    else
+    {
+    	I2C_ITConfig( idc->i2c, I2C_IT_EVT, ENABLE );
+    	idc->slaveStopped = 0;
+    }
     //if ( ( index == 0 ) && (master == 1 ) && ( address == 0x00 ) )
     //	idc->status = 101;
 }
@@ -153,42 +164,52 @@ uint8_t i2cBytesRead( uint8_t index )
 
 
 
-
-
-
-/*
-void I2C1_EV_IRQHandler(void)
+void i2cIrqHandler( uint8_t index )
 {
-    switch ( I2C_GetLastEvent(I2C1) )
+	TI2C * idc = i2c( index );
+	uint32_t reason = I2C_GetLastEvent( idc->i2c );
+    switch ( reason )
     {
 
     case I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED:
-        STM_EVAL_LEDOn(LED3);
-        STM_EVAL_LEDOff(LED5);
+        idc->bytesRead = 0;
+        break;
+
+    case I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED:
+        idc->bytesWritten = 0;
+        idc->slaveStopped = 0;
+        I2C_SendData( idc->i2c, idc->sendQueue[ idc->bytesWritten++ ] );
         break;
 
     case I2C_EVENT_SLAVE_BYTE_RECEIVED:
-        STM_EVAL_LEDToggle(LED4);
-        STM_EVAL_LEDOff(LED3);
-        I2C_InputBuffer[I2C_InputBufferIndex++] = I2C_ReceiveData(I2C3);
+        idc->receiveQueue[ idc->bytesRead++ ] = I2C_ReceiveData( idc->i2c );
         break;
 
+    case I2C_EVENT_SLAVE_BYTE_TRANSMITTED:
+    	if ( !idc->slaveStopped )
+    	{
+            I2C_SendData( idc->i2c, idc->sendQueue[ idc->bytesWritten++ ] );
+            idc->bytesWritten %= I2C_QUEUE_SIZE;
+    	}
+        break;
+
+    case I2C_EVENT_SLAVE_ACK_FAILURE:
+    	idc->slaveStopped = 1;
+    	break;
+
     case I2C_EVENT_SLAVE_STOP_DETECTED:
-        STM_EVAL_LEDOn(LED6);
-        STM_EVAL_LEDOff(LED4);
+    	idc->slaveStopped = 1;
         break;
     }
 
-   I2C_CleanADDRandSTOPF();
+   //I2C_CleanADDRandSTOPF();
+}
 
-   if(I2C_InputBufferIndex > MOTOR_PACKAGE_SIZE-1)
-   {
-     motorHandleEvent(I2C_InputBuffer);
-     I2C_InputBufferIndex = 0;
-     uint8_t resetIndex;
-     for(resetIndex = 0; resetIndex < MOTOR_PACKAGE_SIZE; resetIndex ++)
-       I2C_InputBuffer[resetIndex] = 0;
-   }
+
+
+void I2C1_EV_IRQHandler(void)
+{
+	i2cIrqHandler( 0 );
 }
 
 void I2C1_ER_IRQHandler(void)
@@ -198,14 +219,14 @@ void I2C1_ER_IRQHandler(void)
 
 void I2C2_EV_IRQHandler(void)
 {
-
+	i2cIrqHandler( 1 );
 }
 
 void I2C2_ER_IRQHandler(void)
 {
 
 }
-*/
+
 
 
 

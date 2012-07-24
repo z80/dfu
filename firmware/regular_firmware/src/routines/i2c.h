@@ -47,7 +47,8 @@ typedef struct
     uint8_t sendQueue[ I2C_QUEUE_SIZE ];
     uint8_t receiveQueue[ I2C_QUEUE_SIZE ];
     uint8_t bytesWritten,
-            bytesRead;
+            bytesRead,
+            slaveStopped;
 } TI2C;
 
 TI2C * i2c( uint8_t index );
