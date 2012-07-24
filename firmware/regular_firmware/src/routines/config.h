@@ -66,5 +66,13 @@
 #define FUNC_I2C_BYTES_RD   17
 #define FUNC_I2C_WR_QUEUE   18
 
+
+#define PIN_FLASH_MODE GPIO_Pin_14
+#define PIN_OP_MODE    GPIO_Pin_15
+#define PIN_PORT       GPIOC
+#define PIN_CLK        RCC_APB2Periph_GPIOC
+
+
+
 #endif
 
