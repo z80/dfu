@@ -127,6 +127,22 @@ void crFuncs( xCoRoutineHandle xHandle,
         	out = i2cSendQueue( buf[0] );
             sendCnt = buf[1];
         }
+        else if ( g_funcId == FUNC_DBG_SET_HIGH )
+        {
+        	dbgSetHigh();
+        }
+        else if ( g_funcId == FUNC_DBG_SET_LOW )
+        {
+        	dbgSetLow();
+        }
+        else if ( g_funcId == FUNC_DBG_SET_PULSES )
+        {
+        	dbgSetPulses( buf[0], buf[1], *(uint32_t *)(&(buf[2])) );
+        }
+        else if ( g_funcId == FUNC_DBG_STOP )
+        {
+        	dbgStop();
+        }
 
         static uint8_t i;
         for ( i=0; i<sendCnt; i++ )

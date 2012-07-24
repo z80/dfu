@@ -66,6 +66,12 @@
 #define FUNC_I2C_BYTES_RD   17
 #define FUNC_I2C_WR_QUEUE   18
 
+// DBG
+#define FUNC_DBG_SET_HIGH   200
+#define FUNC_DBG_SET_LOW    201
+#define FUNC_DBG_SET_PULSES 202
+#define FUNC_DBG_STOP       203
+
 
 #define PIN_FLASH_MODE GPIO_Pin_14
 #define PIN_OP_MODE    GPIO_Pin_15
