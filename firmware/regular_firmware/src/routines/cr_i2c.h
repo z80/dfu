@@ -9,7 +9,7 @@
 #include "croutine.h"
 #include "queue.h"
 
-void crI2c( xCoRoutineHandle xHandle, 
+void crI2c( xCoRoutineHandle xHandle,
             unsigned portBASE_TYPE uxIndex );
 
 #endif

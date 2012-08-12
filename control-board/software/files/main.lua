@@ -10,6 +10,7 @@ function I2c:__init()
     self.wnd:show()
 
     self.dev = CtrlBoard()
+    self.slDev = CtrlBoard()
     --self.dev:open()
     --print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
     --self.dev:gpioEn( 1, true )
@@ -31,35 +32,45 @@ function I2c:__init()
     qt.connect( self.wnd.pulses, 'clicked', self, self.pulses )
     qt.connect( self.wnd.stop,   'clicked', self, self.stop )
     
+    qt.connect( self.wnd.slaveStatus, 'clicked', self, self.slaveStatus )
+    
     self.addr = 0
 end
 
 function I2c:open()
     self.dev:open()
-    print( "result: "  ..tostring( self.dev:isOpen() ) )
+    self.slDev:open()
+    print( "result: "  ..tostring( self.dev:isOpen() ) .. ", " .. tostring( self.slDev:isOpen() ) )
 end
 
 function I2c:close()
     self.dev:close()
+    self.slDev:close()
     print( "closed" )
 end
 
 function I2c:enable()
     self.dev:i2cEn( 0, true )
+    self.slDev:i2cEn( 0, true )
     print( "enabled" )
 end
 
 function I2c:disable()
     self.dev:i2cEnable( 0, false )
+    self.slDev:i2cEnable( 0, false )
+    print( "disabled" )
 end
 
 function I2c:config()
     self.dev:i2cConfig( 0, true, 0, 10000 )
+    self.slDev:i2cConfig( 0, false, 123, 10000 )
+    print( "configured" )
 end
 
 function I2c:status()
     local st = self.dev:i2cStatus( 0 )
-    print( "status: " .. tostring( st ) )
+    local slSt = self.slDev:i2cStatus( 0 )
+    print( "status: " .. tostring( st ) .. ", " .. tostring( slSt ) )
 end
 
 function I2c:send01()
@@ -67,10 +78,11 @@ function I2c:send01()
     local addr = self.addr or 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
-    self.dev:i2cIo( 0, 0xA0 + addr, {0, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 0 )
+    self.dev:i2cIo( 0, 123, {0, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 0 )
     for i=1, 16 do
-        st = self.dev:i2cStatus( 0 )
-        print( "status = " .. tostring( st ) )
+        local st, slSt = self.dev:i2cStatus( 0 ), 
+                          self.slDev:i2cStatus( 0 )
+        print( "status = " .. tostring( st ) .. ", " .. tostring( slSt ) )
         if ( st == 0 ) then
             break
         end
@@ -132,6 +144,10 @@ end
 
 function I2c:stop()
     self.dev:dbgStop()
+end
+
+function I2c:slaveStatus()
+
 end
 
 if ( i2c ) then
