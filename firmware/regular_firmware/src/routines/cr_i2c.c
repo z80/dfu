@@ -4,72 +4,23 @@
 #include "config.h"
 #include "stm32f10x.h"
 
-void crI2c( xCoRoutineHandle xHandle, 
+void crI2c( xCoRoutineHandle xHandle,
             unsigned portBASE_TYPE uxIndex )
 {
 	static uint8_t i;
     crSTART( xHandle );
     for ( ;; )
     {
-        /*
-    	static uint8_t one = 0;
-    	if ( one == 0 )
+
+    	static uint8_t init = 0;
+    	if ( init == 0 )
     	{
-    		crDELAY( xHandle, 1 );
             i2cSetEn( 0, 1 );
-            i2cConfig( 0, 1, 0, 10000 );
-            uint8_t buf[3];
-            buf[0] = 0;
-            buf[1] = 0x0;
-            buf[2] = 0xEA;
-            i2cIo( 0, 0xA0 + 0, 1, 1, buf );
-            one = 1;
+            i2cConfig( 0, 0, 123, 10000 );
+            init = 1;
         }
-        */
 
         TI2C * idc = i2c( uxIndex );
-
-        /*
-        // Send START condition
-        I2C_GenerateSTART( idc->i2c, ENABLE );
-
-        // Test on EV5 and clear it
-        while(!I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_MODE_SELECT ) );
-
-        // Send EEPROM address for write
-        I2C_Send7bitAddress( idc->i2c, 0xA0, I2C_Direction_Transmitter );
-
-        // Test on EV6 and clear it
-        while(!I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ) );
-
-
-        // Send the EEPROM's internal address to write to : MSB of the address first
-        I2C_SendData( idc->i2c,  12 );
-
-        // Test on EV8 and clear it
-        while( !I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_BYTE_TRANSMITTED ) );
-
-
-
-        // Send the EEPROM's internal address to write to : LSB of the address
-        I2C_SendData( idc->i2c, 13 );
-
-        // Test on EV8 and clear it
-        while(! I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_BYTE_TRANSMITTED ) );
-
-
-        I2C_SendData(idc->i2c, 12 );
-
-        // Test on EV8 and clear it
-        while ( !I2C_CheckEvent( idc->i2c, I2C_EVENT_MASTER_BYTE_TRANSMITTED ) );
-
-
-        // Send STOP condition
-        I2C_GenerateSTOP( idc->i2c, ENABLE );
-
-
-        continue;
-        */
 
 		// Commands loop.
 		if ( idc->master )
@@ -103,6 +54,7 @@ void crI2c( xCoRoutineHandle xHandle,
 						if ( idc->elapsed++ > idc->timeout )
 						{
 							idc->status = I2C_ERROR_MMS;
+                            I2C_GenerateSTOP( idc->i2c, ENABLE );
 							goto i2c_end;
 						}
 						crDELAY( xHandle, 1 );
@@ -120,6 +72,7 @@ void crI2c( xCoRoutineHandle xHandle,
 						if ( idc->elapsed++ > idc->timeout )
 					    {
 						    idc->status = I2C_ERROR_TMS;
+                            I2C_GenerateSTOP( idc->i2c, ENABLE );
 						    goto i2c_end;
 					    }
 					    crDELAY( xHandle, 1 );
@@ -143,6 +96,7 @@ void crI2c( xCoRoutineHandle xHandle,
 							if ( idc->elapsed++ > idc->timeout )
 						    {
 							    idc->status = I2C_ERROR_MBT;
+                                I2C_GenerateSTOP( idc->i2c, ENABLE );
 							    goto i2c_end;
 							}
 							crDELAY( xHandle, 1 );
@@ -159,6 +113,7 @@ void crI2c( xCoRoutineHandle xHandle,
 						if ( idc->elapsed++ > idc->timeout )
                         {
 						    idc->status = I2C_ERROR_BTF;
+                            I2C_GenerateSTOP( idc->i2c, ENABLE );
 						    goto i2c_end;
 					    }
 						crDELAY( xHandle, 1 );
@@ -180,6 +135,7 @@ void crI2c( xCoRoutineHandle xHandle,
 						if ( idc->elapsed++ > idc->timeout )
 						{
 							idc->status = I2C_ERROR_MMS_R;
+                            I2C_GenerateSTOP( idc->i2c, ENABLE );
 							goto i2c_end;
 						}
 						crDELAY( xHandle, 1 );
@@ -196,6 +152,7 @@ void crI2c( xCoRoutineHandle xHandle,
 						if ( idc->elapsed++ > idc->timeout )
 						{
 							idc->status = I2C_ERROR_RMS;
+                            I2C_GenerateSTOP( idc->i2c, ENABLE );
 							goto i2c_end;
 						}
 						crDELAY( xHandle, 1 );
@@ -216,7 +173,8 @@ void crI2c( xCoRoutineHandle xHandle,
 							if ( idc->elapsed++ > idc->timeout )
                             {
 							    idc->status = I2C_ERROR_MBR;
-							    goto i2c_end;
+	                            I2C_GenerateSTOP( idc->i2c, ENABLE );
+ 						        goto i2c_end;
 						    }
 							crDELAY( xHandle, 1 );
 							idc = i2c( uxIndex );
@@ -240,7 +198,8 @@ void crI2c( xCoRoutineHandle xHandle,
 			// slave mode IO.
 			//...... implementation.....
             // Idle status when finished in regular way.
-            idc->status = I2C_IDLE;
+            //idc->status = I2C_IDLE;
+			crDELAY( xHandle, 1 );
 		}
 i2c_end:
 		// To prevent cyclic writes of zero data.
