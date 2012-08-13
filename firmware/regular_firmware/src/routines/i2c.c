@@ -105,8 +105,8 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
 	I2C_ITConfig( idc->i2c, I2C_IT_BUF, DISABLE );
 	I2C_ITConfig( idc->i2c, I2C_IT_ERR, DISABLE );
 	// For a particular I2C channel.
-    NVIC_ClearIRQChannelPendingBit( I2C1_EV_IRQChannel );
-    NVIC_ClearIRQChannelPendingBit( I2C1_ER_IRQChannel );
+    //NVIC_ClearIRQChannelPendingBit( I2C1_EV_IRQChannel );
+    //NVIC_ClearIRQChannelPendingBit( I2C1_ER_IRQChannel );
       if ( !idc->master )
     {
         NVIC_InitTypeDef NVIC_InitStructure;
@@ -229,8 +229,16 @@ void i2cIrqHandler( uint8_t index )
         //    I2C_ClearFlag( idc->i2c, I2C_FLAG_ADDR );
         //if(I2C_GetFlagStatus( idc->i2c, I2C_FLAG_STOPF ) == SET )
         //    I2C_ClearFlag( idc->i2c, I2C_FLAG_STOPF );
-    	I2C_ClearFlag( idc->i2c, I2C_FLAG_STOPF );
+        // This causes also infinite invocation.
+        I2C_ClearFlag( idc->i2c, I2C_FLAG_STOPF );
+        volatile uint32_t temp;
+        temp=idc->i2c->SR1;
+        idc->i2c->CR1 |= 0x1;
+        //I2C_ClearFlag( idc->i2c, 0x00FFFFFF );
         break;
+    default:
+    	I2C_ClearFlag( idc->i2c, 0x00FFFFFF );
+    	break;
     }
 
    //I2C_CleanADDRandSTOPF();
