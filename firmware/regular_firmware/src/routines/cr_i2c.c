@@ -7,18 +7,19 @@
 void crI2c( xCoRoutineHandle xHandle,
             unsigned portBASE_TYPE uxIndex )
 {
-	static uint8_t i;
+    static uint8_t i;
     crSTART( xHandle );
     for ( ;; )
     {
-
-    	static uint8_t init = 0;
-    	if ( init == 0 )
-    	{
+        /*
+        static uint8_t init = 0;
+        if ( init == 0 )
+        {
             i2cSetEn( 0, 1 );
             i2cConfig( 0, 0, 123, 10000 );
             init = 1;
         }
+        */
 
         TI2C * idc = i2c( uxIndex );
 
