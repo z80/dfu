@@ -70,48 +70,19 @@ void main(void)
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
 
-    // I2C 3-rd party library test.
-    //I2C_Configuration();
-    //uint8_t data = I2C_EE_ByteRead( 0 );
-    //while ( 1 )
-        //;
-
-    // USB setup.
-    //Set_USBClock();
-    //USB_Interrupts_Config();
-    //USB_Init();
-    // FatFS.
-    /*FRESULT rc;
-    FATFS   fatfs;
-    FIL     fil;
-    UINT    br;
-    char stri[] = "file content!\n";
-    disk_initialize( 0 );
-    f_mount( 0, &fatfs );
-    rc = f_open( &fil, "MESSAGE.TXT", FA_WRITE | FA_OPEN_ALWAYS );
-    if ( rc == FR_OK )
-    {
-        rc = f_lseek( &fil, fil.fsize );
-        if ( rc == FR_OK )
-        {
-            f_write( &fil, stri, sizeof(stri), &br );
-            f_close( &fil );
-
-            char res[128];
-            rc = f_open( &fil, "MESSAGE.TXT", FA_READ );
-            if ( rc == FR_OK )
-            {
-                rc = f_read( &fil, res, sizeof( res ), &br );
-                f_close( &fil );
-            }
-        }
-    }*/
     i2cInit( 0 );
-    i2cInit( 1 );
+    //i2cInit( 1 );
+    i2cSetEn( 0, 1 );
+    i2cConfig( 0, 0, 123, 10000 );
+    static uint32_t i = 0;
+    while ( 1 )
+    	i += 1;
+
+
     portBASE_TYPE res;
     //res = xCoRoutineCreate( crDbg,   1, 0 );
-    res = xCoRoutineCreate( crUsbIo, 1, 0 );
-    res = xCoRoutineCreate( crFuncs, 1, 0 );
+    //res = xCoRoutineCreate( crUsbIo, 1, 0 );
+    //res = xCoRoutineCreate( crFuncs, 1, 0 );
     res = xCoRoutineCreate( crI2c,   1, 0 );
     // res = xCoRoutineCreate( crI2c,   1, 1 );
     vTaskStartScheduler();

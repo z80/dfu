@@ -23,7 +23,7 @@ void i2cInit( uint8_t index )
     i2c->receiveCnt = 0;
     i2c->master  = 1;
     i2c->status  = I2C_IDLE;
-    
+
     i2c->i2c     = ( index == 0 ) ? I2C1 : I2C2;
     i2c->selfAddress = 0;
     i2c->address = 0;
@@ -101,15 +101,32 @@ void i2cConfig( uint8_t index, uint8_t master, uint8_t address, uint32_t speed )
 
     I2C_AcknowledgeConfig( idc->i2c, ENABLE );
 
-    if ( idc->master )
+	I2C_ITConfig( idc->i2c, I2C_IT_EVT, DISABLE );
+	I2C_ITConfig( idc->i2c, I2C_IT_BUF, DISABLE );
+	I2C_ITConfig( idc->i2c, I2C_IT_ERR, DISABLE );
+	// For a particular I2C channel.
+    NVIC_ClearIRQChannelPendingBit( I2C1_EV_IRQChannel );
+    NVIC_ClearIRQChannelPendingBit( I2C1_ER_IRQChannel );
+      if ( !idc->master )
     {
-    	I2C_ITConfig( idc->i2c, I2C_IT_EVT, DISABLE );
-    }
-    else
-    {
-    	I2C_ITConfig( idc->i2c, I2C_IT_EVT, ENABLE );
+        NVIC_InitTypeDef NVIC_InitStructure;
+
+        NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
+        // For a particular I2C channel.
+        NVIC_InitStructure.NVIC_IRQChannel = I2C1_EV_IRQn;
+        NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 9;
+        NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+        NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+        NVIC_Init(&NVIC_InitStructure);
+        // For a particular I2C channel.
+        NVIC_InitStructure.NVIC_IRQChannel = I2C1_ER_IRQn;
+        NVIC_Init(&NVIC_InitStructure);
+
     	idc->slaveStopped = 0;
     	idc->status       = I2C_IDLE;
+    	I2C_ITConfig( idc->i2c, I2C_IT_EVT, ENABLE );
+    	I2C_ITConfig( idc->i2c, I2C_IT_BUF, ENABLE );
+    	I2C_ITConfig( idc->i2c, I2C_IT_ERR, ENABLE );
     }
     //if ( ( index == 0 ) && (master == 1 ) && ( address == 0x00 ) )
     //	idc->status = 101;
@@ -175,6 +192,7 @@ void i2cIrqHandler( uint8_t index )
     case I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED:
         idc->bytesRead = 0;
         idc->status    = I2C_SRAM;
+        I2C_ClearFlag( idc->i2c, I2C_FLAG_ADDR );
         break;
 
     case I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED:
@@ -201,11 +219,17 @@ void i2cIrqHandler( uint8_t index )
     case I2C_EVENT_SLAVE_ACK_FAILURE:
     	idc->slaveStopped = 1;
     	idc->status       = I2C_SAF;
+    	I2C_ClearFlag( idc->i2c, I2C_FLAG_AF );
     	break;
 
     case I2C_EVENT_SLAVE_STOP_DETECTED:
     	idc->slaveStopped = 1;
     	idc->status      = I2C_SSD;
+        //if(I2C_GetFlagStatus( idc->i2c, I2C_FLAG_ADDR ) == SET )
+        //    I2C_ClearFlag( idc->i2c, I2C_FLAG_ADDR );
+        //if(I2C_GetFlagStatus( idc->i2c, I2C_FLAG_STOPF ) == SET )
+        //    I2C_ClearFlag( idc->i2c, I2C_FLAG_STOPF );
+    	I2C_ClearFlag( idc->i2c, I2C_FLAG_STOPF );
         break;
     }
 
@@ -221,7 +245,9 @@ void I2C1_EV_IRQHandler(void)
 
 void I2C1_ER_IRQHandler(void)
 {
-
+	TI2C * idc = i2c( 0 );
+	uint32_t reason = I2C_GetLastEvent( idc->i2c );
+	reason = reason;
 }
 
 void I2C2_EV_IRQHandler(void)
@@ -317,25 +343,25 @@ void i2cSetEn( uint8_t en )
     if ( en )
     {
         GPIO_InitTypeDef  GPIO_InitStructure;
-        
+
         // HDW_I2C Periph clock enable
         RCC_APB1PeriphClockCmd( HDW_I2C_CLK, ENABLE);
-        
-        // HDW_I2C_SCL_GPIO_CLK, HDW_I2C_SDA_GPIO_CLK 
+
+        // HDW_I2C_SCL_GPIO_CLK, HDW_I2C_SDA_GPIO_CLK
         //     and HDW_I2C_SMBUSALERT_GPIO_CLK Periph clock enable
         RCC_APB2PeriphClockCmd( HDW_I2C_SCL_GPIO_CLK | HDW_I2C_SDA_GPIO_CLK |
                                 HDW_I2C_SMBUSALERT_GPIO_CLK, ENABLE );
-        
+
         // Configure HDW_I2C pins: SCL
         GPIO_InitStructure.GPIO_Pin   = HDW_I2C_SCL_PIN;
         GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
         GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_OD;
         GPIO_Init( HDW_I2C_SCL_GPIO_PORT, &GPIO_InitStructure );
-        
+
         // Configure HDW_I2C pins: SDA
         GPIO_InitStructure.GPIO_Pin = HDW_I2C_SDA_PIN;
         GPIO_Init( HDW_I2C_SDA_GPIO_PORT, &GPIO_InitStructure );
-        
+
         // Configure HDW_I2C pin: SMBUS ALERT
         GPIO_InitStructure.GPIO_Pin  = HDW_I2C_SMBUSALERT_PIN;
         // GPIO mode internal pullup.
@@ -354,11 +380,11 @@ void i2cSetEn( uint8_t en )
 void i2cConfig( uint8_t host, uint16_t address, uint8_t _10bit, uint16_t speed )
 {
     I2C_InitTypeDef   I2C_InitStructure;
-    
+
     //LM75_LowLevel_Init();
-    
+
     I2C_DeInit( HDW_I2C );
-    
+
     // HDW_I2C Init
     I2C_InitStructure.I2C_Mode                = ( host ) ? I2C_Mode_SMBusHost : I2C_Mode_SMBusDevice;
     I2C_InitStructure.I2C_DutyCycle           = I2C_DutyCycle_2;
@@ -367,10 +393,10 @@ void i2cConfig( uint8_t host, uint16_t address, uint8_t _10bit, uint16_t speed )
     I2C_InitStructure.I2C_AcknowledgedAddress = ( _10bit ) ? I2C_AcknowledgedAddress_10bit : I2C_AcknowledgedAddress_7bit;
     I2C_InitStructure.I2C_ClockSpeed          = speed;
     I2C_Init( HDW_I2C, &I2C_InitStructure );
-    
+
     // Enable SMBus Alert interrupt
     //I2C_ITConfig( HDW_I2C, I2C_IT_ERR, ENABLE );
-    
+
     // HDW_I2C Init
     I2C_Cmd( HDW_I2C, ENABLE );
 }
@@ -387,7 +413,7 @@ uint8_t i2cSendByte( uint16_t address, uint8_t value )
     //uint8_t LM75_BufferTX[2] ={0,0};
     //LM75_BufferTX[0] = (uint8_t)(RegValue >> 8);
     //LM75_BufferTX[1] = (uint8_t)(RegValue);
-  
+
     // Test on BUSY Flag
     uint32_t timeout = g_i2cTimeout;
     while ( I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_BUSY ) )
@@ -395,21 +421,21 @@ uint8_t i2cSendByte( uint16_t address, uint8_t value )
         if ( ( timeout-- ) == 0 )
             return 1;
     }
-    
+
     // Enable the I2C peripheral
     I2C_GenerateSTART( HDW_I2C, ENABLE);
-  
+
     // Test on SB Flag
     timeout = g_i2cTimeout;
-    while ( I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_SB ) == RESET ) 
+    while ( I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_SB ) == RESET )
     {
         if ( ( timeout--) == 0 )
             return 2;
     }
-  
+
     // Transmit the slave address and enable writing operation
     I2C_Send7bitAddress( HDW_I2C, address, I2C_Direction_Transmitter );
-  
+
     // Test on ADDR Flag
     timeout = g_i2cTimeout;
     while (!I2C_CheckEvent( HDW_I2C, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED ) )
@@ -417,30 +443,30 @@ uint8_t i2cSendByte( uint16_t address, uint8_t value )
         if( ( timeout-- ) == 0 )
             return 3;
     }
-  
+
     // Transmit the first address for r/w operations
     I2C_SendData( HDW_I2C, value );
-  
+
     // Test on TXE FLag (data sent)
     timeout = g_i2cTimeout;
-    while ( ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_TXE ) ) && ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_BTF ) ) )  
+    while ( ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_TXE ) ) && ( !I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_BTF ) ) )
     {
         if ( ( timeout--) == 0 )
           return 4;
     }
-  
-  
+
+
     // Wait until BTF Flag is set before generating STOP
     timeout = g_i2cTimeout;
-    while ( I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_BTF ) )  
+    while ( I2C_GetFlagStatus( HDW_I2C, I2C_FLAG_BTF ) )
     {
         if ( ( timeout-- ) == 0 )
             return 5;
     }
-  
+
     // Send STOP Condition
     I2C_GenerateSTOP( HDW_I2C, ENABLE );
-  
+
     return 0;
 }
 
@@ -468,7 +494,7 @@ static uint8_t submitAddress( uint16_t address )
     {
         return 1;
     }
-      
+
     timeout = g_i2cTimeout;
 
     // Send STLM75 slave address for write

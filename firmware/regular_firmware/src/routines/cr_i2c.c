@@ -11,7 +11,7 @@ void crI2c( xCoRoutineHandle xHandle,
     crSTART( xHandle );
     for ( ;; )
     {
-        /*
+        
         static uint8_t init = 0;
         if ( init == 0 )
         {
@@ -19,7 +19,7 @@ void crI2c( xCoRoutineHandle xHandle,
             i2cConfig( 0, 0, 123, 10000 );
             init = 1;
         }
-        */
+        
 
         TI2C * idc = i2c( uxIndex );
 
