@@ -8,13 +8,9 @@ I2c = class()
 function I2c:__init()
     self.wnd = qt.load_ui( "./i2c/i2c.ui" )
     self.wnd:show()
-
+    
     self.dev = CtrlBoard()
-    self.slDev = CtrlBoard()
-    --self.dev:open()
-    --print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
-    --self.dev:gpioEn( 1, true )
-    --self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_IPD )
+    --self.slDev = CtrlBoard()
     
     qt.connect( self.wnd.open,    'clicked', self, self.open )
     qt.connect( self.wnd.close,   'clicked', self, self.close )
@@ -39,8 +35,9 @@ end
 
 function I2c:open()
     self.dev:open()
-    self.slDev:open()
-    print( "result: "  ..tostring( self.dev:isOpen() ) .. ", " .. tostring( self.slDev:isOpen() ) )
+    --self.slDev:open()
+    print( "result: "  ..tostring( self.dev:isOpen() ) )
+    -- .. ", " .. tostring( self.slDev:isOpen() ) )
 end
 
 function I2c:close()
@@ -51,25 +48,25 @@ end
 
 function I2c:enable()
     self.dev:i2cEn( 0, true )
-    self.slDev:i2cEn( 0, true )
+    --self.slDev:i2cEn( 0, true )
     print( "enabled" )
 end
 
 function I2c:disable()
     self.dev:i2cEnable( 0, false )
-    self.slDev:i2cEnable( 0, false )
+    --self.slDev:i2cEnable( 0, false )
     print( "disabled" )
 end
 
 function I2c:config()
     self.dev:i2cConfig( 0, true, 0, 10000 )
-    self.slDev:i2cConfig( 0, false, 123, 10000 )
+    --self.slDev:i2cConfig( 0, false, 123, 10000 )
     print( "configured" )
 end
 
 function I2c:status()
     local st = self.dev:i2cStatus( 0 )
-    local slSt = self.slDev:i2cStatus( 0 )
+    --local slSt = self.slDev:i2cStatus( 0 )
     print( "status: " .. tostring( st ) .. ", " .. tostring( slSt ) )
 end
 
@@ -78,10 +75,10 @@ function I2c:send01()
     local addr = self.addr or 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
-    self.dev:i2cIo( 0, 123, {0, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 0 )
+    self.dev:i2cIo( 0, 123, {1, 2}, 0 )
     for i=1, 16 do
-        local st, slSt = self.dev:i2cStatus( 0 ), 
-                          self.slDev:i2cStatus( 0 )
+        local st, slSt = self.dev:i2cStatus( 0 ), 0 
+                          --self.slDev:i2cStatus( 0 )
         print( "status = " .. tostring( st ) .. ", " .. tostring( slSt ) )
         if ( st == 0 ) then
             break
@@ -95,7 +92,7 @@ function I2c:send01()
 end
 
 function I2c:send02()
-    print( "send02()" )
+    --[[print( "send02()" )
     local addr = self.addr or 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
@@ -111,11 +108,11 @@ function I2c:send02()
     print( "length: " .. tostring( #t ) )
     for i=1, #t do
         print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
-    end
+    end]]
 end
 
 function I2c:send03()
-    print( "send03()" )
+    --[[print( "send03()" )
     local addr = self.addr or 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
@@ -127,7 +124,7 @@ function I2c:send03()
     print( "writeQueue len: " .. tostring( #t ) )
     for i=1, #t do
         print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
-    end
+    end]]
 end
 
 function I2c:low()
