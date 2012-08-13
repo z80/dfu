@@ -3,58 +3,159 @@ require( "debugger" )
 require( "ctrl_board" )
 require( "bit" )
 
-Joystick = class()
+I2c = class()
 
-function Joystick:__init()
-    self.wnd = qt.load_ui( "joystick.ui" )
+function I2c:__init()
+    self.wnd = qt.load_ui( "./i2c/i2c.ui" )
     self.wnd:show()
 
     self.dev = CtrlBoard()
-    self.dev:open()
-    print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
-    self.dev:gpioEn( 1, true )
-    self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_IPD )
-    --self.dev:gpioSet( 1, 65535, 65535 )
+    self.slDev = CtrlBoard()
+    --self.dev:open()
+    --print( "Device open attempt " .. ( self.dev:isOpen() and "<b>succeeded</b>" or "<b>failed</b>" ) )
+    --self.dev:gpioEn( 1, true )
+    --self.dev:gpioConfig( 1, 0xffff, self.dev.GPIO_IPD )
+    
+    qt.connect( self.wnd.open,    'clicked', self, self.open )
+    qt.connect( self.wnd.close,   'clicked', self, self.close )
+    qt.connect( self.wnd.enable,  'clicked', self, self.enable )
+    qt.connect( self.wnd.disable, 'clicked', self, self.disable )
+    qt.connect( self.wnd.config,  'clicked', self, self.config )
+    qt.connect( self.wnd.status,  'clicked', self, self.status )
+    qt.connect( self.wnd.send01,  'clicked', self, self.send01 )
+    qt.connect( self.wnd.send02,  'clicked', self, self.send02 )
+    qt.connect( self.wnd.send03,  'clicked', self, self.send03 )
+    
+    
+    qt.connect( self.wnd.low,    'clicked', self, self.low )
+    qt.connect( self.wnd.high,   'clicked', self, self.high )
+    qt.connect( self.wnd.pulses, 'clicked', self, self.pulses )
+    qt.connect( self.wnd.stop,   'clicked', self, self.stop )
+    
+    qt.connect( self.wnd.slaveStatus, 'clicked', self, self.slaveStatus )
+    
+    self.addr = 0
 end
 
-function Joystick:refresh()
-    print( "Refresh" )
-    if ( self.dev:isOpen() ) then
-        local ver = self.dev:version()
-        print( "version = " .. tostring( ver ) )
-        local val = self.dev:gpio( 1 ) or 0
-        --val = bit.band( val, 2 + 4 + 1024 + 2048 )
-        local stri = bit.tohex( val )
-        self.wnd.hex:setText( stri )
-        stri = ""
-        if ( bit.band( val, 2 ) > 0 ) then
-            stri = stri .. "Up"
+function I2c:open()
+    self.dev:open()
+    self.slDev:open()
+    print( "result: "  ..tostring( self.dev:isOpen() ) .. ", " .. tostring( self.slDev:isOpen() ) )
+end
+
+function I2c:close()
+    self.dev:close()
+    self.slDev:close()
+    print( "closed" )
+end
+
+function I2c:enable()
+    self.dev:i2cEn( 0, true )
+    self.slDev:i2cEn( 0, true )
+    print( "enabled" )
+end
+
+function I2c:disable()
+    self.dev:i2cEnable( 0, false )
+    self.slDev:i2cEnable( 0, false )
+    print( "disabled" )
+end
+
+function I2c:config()
+    self.dev:i2cConfig( 0, true, 0, 10000 )
+    self.slDev:i2cConfig( 0, false, 123, 10000 )
+    print( "configured" )
+end
+
+function I2c:status()
+    local st = self.dev:i2cStatus( 0 )
+    local slSt = self.slDev:i2cStatus( 0 )
+    print( "status: " .. tostring( st ) .. ", " .. tostring( slSt ) )
+end
+
+function I2c:send01()
+    print( "send01()" )
+    local addr = self.addr or 0
+    local st = self.dev:i2cStatus( 0 )
+    print( "status = " .. tostring( st ) )
+    self.dev:i2cIo( 0, 123, {0, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 0 )
+    for i=1, 16 do
+        local st, slSt = self.dev:i2cStatus( 0 ), 
+                          self.slDev:i2cStatus( 0 )
+        print( "status = " .. tostring( st ) .. ", " .. tostring( slSt ) )
+        if ( st == 0 ) then
+            break
         end
-        if ( bit.band( val, 4 ) > 0 ) then
-            stri = stri .. "Down"
-        end
-        if ( bit.band( val, 1024 ) > 0 ) then
-            stri = stri .. "Left"
-        end
-        if ( bit.band( val, 2048 ) > 0 ) then
-            stri = stri .. "Right"
-        end
-        self.wnd.text:setText( stri )
+    end
+    local t = self.dev:i2cResult( 0, 10 )
+    print( "length: " .. tostring( #t ) )
+    for i=1, #t do
+        print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
     end
 end
 
-function Joystick:closed()
-    j = nil
+function I2c:send02()
+    print( "send02()" )
+    local addr = self.addr or 0
+    local st = self.dev:i2cStatus( 0 )
+    print( "status = " .. tostring( st ) )
+    self.dev:i2cIo( 0, 0xA0 + addr, {0}, 10 )
+    for i=1, 16 do
+        st = self.dev:i2cStatus( 0 )
+        print( "status = " .. tostring( st ) )
+        if ( st == 0 ) then
+            break
+        end
+    end
+    local t = self.dev:i2cResult( 0, 10 )
+    print( "length: " .. tostring( #t ) )
+    for i=1, #t do
+        print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
+    end
 end
 
-if ( j ) then
-    j = nil
+function I2c:send03()
+    print( "send03()" )
+    local addr = self.addr or 0
+    local st = self.dev:i2cStatus( 0 )
+    print( "status = " .. tostring( st ) )
+    local wr = self.dev:i2cBytesWritten( 0 )
+    print( "written: " .. tostring( wr ) )
+    local rd = self.dev:i2cBytesRead( 0 )
+    print( "read: " .. tostring( rd ) )
+    local t = self.dev:i2cWriteQueue( 0, 5 )
+    print( "writeQueue len: " .. tostring( #t ) )
+    for i=1, #t do
+        print( "t[" .. tostring( i ) .. "] = " .. tostring( t[i] ) )
+    end
+end
+
+function I2c:low()
+    self.dev:dbgSetLow()
+end
+
+function I2c:high()
+    self.dev:dbgSetHigh()
+end
+
+function I2c:pulses()
+    self.dev:dbgSetPulses( 2, 1, 128 )
+end
+
+function I2c:stop()
+    self.dev:dbgStop()
+end
+
+function I2c:slaveStatus()
+
+end
+
+if ( i2c ) then
+    i2c = nil
     collectgarbage()
 end
-j = Joystick()
-while ( true ) do
-    j:refresh()
-end
+i2c = I2c()
+
 
 
 

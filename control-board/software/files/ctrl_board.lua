@@ -11,6 +11,22 @@ local FUNC_GPIO_CONFIG = 3
 local FUNC_GPIO_SET    = 4
 local FUNC_GPIO        = 5
 
+local FUNC_I2C_STATUS = 10
+local FUNC_I2C_EN     = 11
+local FUNC_I2C_CONFIG = 12
+local FUNC_I2C_IO     = 13
+local FUNC_I2C_RESULT = 14
+local FUNC_I2C_TIMEOUT  = 15
+local FUNC_I2C_BYTES_WR = 16
+local FUNC_I2C_BYTES_RD = 17
+local FUNC_I2C_WR_QUEUE = 18
+
+local FUNC_DBG_SET_HIGH   = 200
+local FUNC_DBG_SET_LOW    = 201
+local FUNC_DBG_SET_PULSES = 202
+local FUNC_DBG_STOP       = 203
+
+
 CtrlBoard = class()
 
 function CtrlBoard:__init()
@@ -47,6 +63,11 @@ end
 
 function CtrlBoard:putUInt16( val )
     local res = self.dev:putUInt16( val )
+    return res
+end
+
+function CtrlBoard:putUInt32( val )
+    local res = self.dev:putUInt32( val )
     return res
 end
 
@@ -103,6 +124,105 @@ function CtrlBoard:gpio( index )
     local res = t[1] + t[2] * 256
     return res
 end
+
+function CtrlBoard:i2cStatus( index )
+    self.dev:putUInt8( index )
+    self.dev:execFunc( FUNC_I2C_STATUS )
+    local t = self.dev:readQueue( 1 )
+    if ( #t < 1 ) then
+        return nil, "ERROR: Nothing returned"
+    end
+    local res = t[1]
+    return res
+end
+
+function CtrlBoard:i2cEn( index, en )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( ( en ) and 1 or 0 )
+    self.dev:execFunc( FUNC_I2C_EN )
+end
+
+function CtrlBoard:i2cConfig( index, master, address, speed )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( ( master ) and 1 or 0 )
+    self.dev:putUInt8( address )
+    self.dev:putUInt32( speed )
+    self.dev:execFunc( FUNC_I2C_CONFIG )
+end
+
+function CtrlBoard:i2cIo( index, address, sendQueue, receiveCnt )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( address )
+    local sendCnt = #sendQueue
+    self.dev:putUInt8( sendCnt )
+    self.dev:putUInt8( receiveCnt )
+    for i=1,sendCnt do
+        local v = sendQueue[i]
+        self.dev:putUInt8( v )
+    end
+    self.dev:execFunc( FUNC_I2C_IO )
+end
+
+function CtrlBoard:i2cResult( index, cnt )
+   self.dev:putUInt8( index )
+   self.dev:putUInt8( cnt )
+   self.dev:execFunc( FUNC_I2C_RESULT )
+   local t = self.dev:readQueue( cnt )
+   return t
+end
+
+function CtrlBoard:i2cSetTimeout( index, t )
+    self.dev:putUInt8( index )
+    self.dev:putUInt32( t )
+    self.dev:execFunc( FUNC_I2C_TIMEOUT )
+end
+
+function CtrlBoard:i2cBytesWritten( index )
+    self.dev:putUInt8( index )
+    self.dev:execFunc( FUNC_I2C_BYTES_WR )
+    local t = self.dev:readQueue( 1 )
+    return t[1]
+end
+
+function CtrlBoard:i2cBytesRead( index )
+    self.dev:putUInt8( index )
+    self.dev:execFunc( FUNC_I2C_BYTES_RD )
+    local t = self.dev:readQueue( 1 )
+    return t[1]
+end
+
+function CtrlBoard:i2cWriteQueue( index, cnt )
+    self.dev:putUInt8( index )
+    self.dev:putUInt8( cnt )
+    self.dev:execFunc( FUNC_I2C_WR_QUEUE )
+    local t = self.dev:readQueue( cnt )
+    return t
+end
+
+function CtrlBoard:dbgSetHigh()
+    self.dev:execFunc( FUNC_DBG_SET_HIGH )
+end
+
+function CtrlBoard:dbgSetLow()
+    self.dev:execFunc( FUNC_DBG_SET_LOW )
+end
+
+function CtrlBoard:dbgSetPulses( low, high, cnt )
+    self.dev:putUInt8( low )
+    self.dev:putUInt8( high )
+    self.dev:putUInt32( cnt )
+    self.dev:execFunc( FUNC_DBG_SET_PULSES )
+end
+
+function CtrlBoard:dbgStop()
+    self.dev:execFunc( FUNC_DBG_STOP )
+end
+
+
+
+
+
+
 
 
 

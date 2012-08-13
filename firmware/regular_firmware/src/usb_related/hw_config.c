@@ -145,8 +145,8 @@ void USB_Interrupts_Config(void)
   NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
 
   NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 16;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 16;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 8;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 8;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 

@@ -6,7 +6,42 @@
 
 #define IN_QUEUE_SIZE  64
 #define OUT_QUEUE_SIZE 64
+
 #define STATE_RESET_TIMEOUT 50
+
+
+#define I2C_QUEUE_SIZE 64
+// Idle command or status.
+#define I2C_IDLE       0
+// I2C commands.
+#define I2C_MASTER_SEND    1
+#define I2C_MASTER_RECEIVE 2
+#define I2C_SLAVE_SEND     3
+#define I2C_SLAVE_RECEIVE  4
+// I2C possible status
+#define I2C_IO_INVOKED     1
+#define I2C_BUSY           2
+#define I2C_ERROR_BUSY     3
+#define I2C_MMS            4
+#define I2C_ERROR_MMS      5
+#define I2C_TMS            6
+#define I2C_ERROR_TMS      7
+#define I2C_MBT            8
+#define I2C_ERROR_MBT      9
+#define I2C_BTF            10
+#define I2C_ERROR_BTF      11
+#define I2C_MMS_R          12
+#define I2C_ERROR_MMS_R    13
+#define I2C_RMS            14
+#define I2C_ERROR_RMS      15
+#define I2C_MBR            16
+#define I2C_ERROR_MBR      17
+#define I2C_SRAM           18
+#define I2C_STAM           19
+#define I2C_SBR            20
+#define I2C_SBT            21
+#define I2C_SAF            22
+#define I2C_SSD            23
 
 #define CMD_DATA 0
 #define CMD_FUNC 1
@@ -20,6 +55,29 @@
 #define FUNC_GPIO_CONFIG    3
 #define FUNC_GPIO_SET       4
 #define FUNC_GPIO           5
+// I2C
+#define FUNC_I2C_STATUS     10
+#define FUNC_I2C_EN         11
+#define FUNC_I2C_CONFIG     12
+#define FUNC_I2C_IO         13
+#define FUNC_I2C_RESULT     14
+#define FUNC_I2C_TIMEOUT    15
+#define FUNC_I2C_BYTES_WR   16
+#define FUNC_I2C_BYTES_RD   17
+#define FUNC_I2C_WR_QUEUE   18
+
+// DBG
+#define FUNC_DBG_SET_HIGH   200
+#define FUNC_DBG_SET_LOW    201
+#define FUNC_DBG_SET_PULSES 202
+#define FUNC_DBG_STOP       203
+
+
+#define PIN_FLASH_MODE GPIO_Pin_14
+#define PIN_OP_MODE    GPIO_Pin_15
+#define PIN_PORT       GPIOC
+#define PIN_CLK        RCC_APB2Periph_GPIOC
+
 
 
 #endif

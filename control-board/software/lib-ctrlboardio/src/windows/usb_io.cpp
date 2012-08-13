@@ -69,9 +69,12 @@ bool UsbIo::open( const std::string & arg )
     pd->handle = libusb_open_device_with_vid_pid( pd->cxt, PD::VENDOR_ID, PD::PRODUCT_ID );
     libusb_free_device_list( l, 1 );
     bool result = (pd->handle != 0);
-
-    int res = libusb_set_configuration( pd->handle, 1 );
-    res = libusb_claim_interface( pd->handle, 1 );
+    if ( result )
+    {
+        // If opened select configuration and intrface.
+        int res = libusb_set_configuration( pd->handle, 1 );
+        res = libusb_claim_interface( pd->handle, 1 );
+    }
 	return result;
 }
 

@@ -27,7 +27,10 @@
 // Coroutines for hardware control and USB interaction.
 #include "cr_usbio.h"
 #include "cr_funcs.h"
+#include "cr_i2c.h"
 #include "cr_dbg.h"
+#include "i2c.h"
+#include "i2c_lib.h"
 // FreeRTOS stuff.
 #include "FreeRTOS.h"
 #include "task.h"
@@ -67,6 +70,12 @@ void main(void)
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
 
+    // I2C 3-rd party library test.
+    //I2C_Configuration();
+    //uint8_t data = I2C_EE_ByteRead( 0 );
+    //while ( 1 )
+        //;
+
     // USB setup.
     //Set_USBClock();
     //USB_Interrupts_Config();
@@ -97,14 +106,18 @@ void main(void)
             }
         }
     }*/
+    i2cInit( 0 );
+    i2cInit( 1 );
     portBASE_TYPE res;
     //res = xTaskCreate( vTaskDbg, "d", 128, 0, tskIDLE_PRIORITY+1, 0 );
     res = xCoRoutineCreate( crDbg,   1, 0 );
     res = xCoRoutineCreate( crUsbIo, 1, 0 );
     res = xCoRoutineCreate( crFuncs, 1, 0 );
+    res = xCoRoutineCreate( crI2c,   1, 0 );
+    // res = xCoRoutineCreate( crI2c,   1, 1 );
     vTaskStartScheduler();   
-    for ( ;; )
-    {
+    //for ( ;; )
+    //{
         //printf( "ab!" );
         /*USB_Send_Data( 'a' );
         USB_Send_Data( 'b' );
@@ -112,10 +125,10 @@ void main(void)
         USB_Send_Data( 'b' );
         USB_Send_Data( '\r' );
         USB_Send_Data( '\n' );*/
-        volatile int i;
-        for ( i=0; i<100000; i++ )
-            ;
-    }
+        //volatile int i;
+        //for ( i=0; i<100000; i++ )
+        //    ;
+    //}
 }
 
 void vTaskDbg( void * args )

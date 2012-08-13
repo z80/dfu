@@ -11,6 +11,11 @@ uint8_t red( void );
 void setGreen( uint8_t val );
 uint8_t green( void );
 
+void dbgSetLow( void );
+void dbgSetHigh( void );
+void dbgSetPulses( uint8_t low, uint8_t high, uint32_t cnt );
+void dbgStop( void );
+
 void crDbg( xCoRoutineHandle xHandle, 
             unsigned portBASE_TYPE uxIndex );
 

@@ -18,10 +18,10 @@
 #define configUSE_IDLE_HOOK				1
 #define configUSE_TICK_HOOK				0
 #define configCPU_CLOCK_HZ				( 48000000UL )	
-#define configTICK_RATE_HZ				( ( portTickType ) 50 )
+#define configTICK_RATE_HZ				( ( portTickType ) 1000 )
 #define configMAX_PRIORITIES			( ( unsigned portBASE_TYPE )5 )
 #define configMINIMAL_STACK_SIZE		( ( unsigned short )70 )
-#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 6 * 1024 ) )
+#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 1024 ) )
 #define configMAX_TASK_NAME_LEN			( 6 )
 #define configUSE_TRACE_FACILITY		0
 #define configUSE_16_BIT_TICKS			0
@@ -40,7 +40,7 @@
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
 
 /* Software timer definitions. */
-#define configUSE_TIMERS				1
+#define configUSE_TIMERS				0
 #define configTIMER_TASK_PRIORITY		( 3 )
 #define configTIMER_QUEUE_LENGTH		5
 #define configTIMER_TASK_STACK_DEPTH	( configMINIMAL_STACK_SIZE )
@@ -48,10 +48,10 @@
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
 #define INCLUDE_vTaskPrioritySet		1
-#define INCLUDE_uxTaskPriorityGet		1
-#define INCLUDE_vTaskDelete				1
-#define INCLUDE_vTaskCleanUpResources	1
-#define INCLUDE_vTaskSuspend			1
+#define INCLUDE_uxTaskPriorityGet		0
+#define INCLUDE_vTaskDelete				0
+#define INCLUDE_vTaskCleanUpResources	0
+#define INCLUDE_vTaskSuspend			0
 #define INCLUDE_vTaskDelayUntil			1
 #define INCLUDE_vTaskDelay				1
 
@@ -62,7 +62,7 @@ to exclude the API function. */
 	#define configPRIO_BITS       4        /* 15 priority levels */
 #endif
 
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			15
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			7
 #define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY	5
 
 /* The lowest priority. */

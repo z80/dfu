@@ -79,6 +79,15 @@ static int putUInt16( lua_State * L )
     return 1;
 }
 
+static int putUInt32( lua_State * L )
+{
+    CtrlboardIo * io = *reinterpret_cast<CtrlboardIo * *>( lua_touserdata( L, 1 ) );
+    unsigned long arg = static_cast<unsigned long>( lua_tonumber( L, 2 ) );
+    int res = io->putUInt32( arg );
+    lua_pushnumber( L, static_cast<lua_Number>( res ) );
+    return 1;
+}
+
 static int execFunc( lua_State * L )
 {
     CtrlboardIo * io = *reinterpret_cast<CtrlboardIo * *>( lua_touserdata( L, 1 ) );
@@ -119,6 +128,7 @@ static const struct luaL_reg META_FUNCTIONS[] = {
     // The lowest possible level
     { "putUInt8",                putUInt8 },
     { "putUInt16",               putUInt16 }, 
+    { "putUInt32",               putUInt32 }, 
     { "execFunc",                execFunc }, 
     { "readQueue",               readQueue }, 
 

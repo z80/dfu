@@ -65,21 +65,21 @@ void crUsbIo( xCoRoutineHandle xHandle,
     static uint8_t bufferIndex = 0;
     static uint32_t stateResetTimeout = 0;
     
-    if ( !g_usbInitialized )
-    {
-        initUsbIo();
-        // USB setup.
-        Set_USBClock();
-        USB_Interrupts_Config();
-        USB_Init();
-
-        g_usbInitialized = 1;
-    }
-
     crSTART( xHandle );
 
     for ( ;; )
     {
+        if ( !g_usbInitialized )
+        {
+            initUsbIo();
+            // USB setup.
+            Set_USBClock();
+            USB_Interrupts_Config();
+            USB_Init();
+
+            g_usbInitialized = 1;
+        }
+
         /*if ( !g_usbInitialized )
         {
             // Data for gpioEn.
