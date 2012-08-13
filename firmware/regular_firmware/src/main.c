@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    Project/STM32F10x_StdPeriph_Template/main.c 
+  * @file    Project/STM32F10x_StdPeriph_Template/main.c
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    08-April-2011
@@ -17,7 +17,7 @@
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
-  */  
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
@@ -63,10 +63,10 @@ void vTaskDbg( void * args );
   */
 void main(void)
 {
-    // The very first line should remap NVIC table 
-    // in order to make remapped firmware work with 
+    // The very first line should remap NVIC table
+    // in order to make remapped firmware work with
     // interrupts in the right way.
-    // Otherwise actual interrupts table location 
+    // Otherwise actual interrupts table location
     // and one MCU tries to work with would be different.
     NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x5000 );
 
@@ -79,7 +79,7 @@ void main(void)
     // USB setup.
     //Set_USBClock();
     //USB_Interrupts_Config();
-    //USB_Init();       
+    //USB_Init();
     // FatFS.
     /*FRESULT rc;
     FATFS   fatfs;
@@ -109,26 +109,13 @@ void main(void)
     i2cInit( 0 );
     i2cInit( 1 );
     portBASE_TYPE res;
-    //res = xTaskCreate( vTaskDbg, "d", 128, 0, tskIDLE_PRIORITY+1, 0 );
-    res = xCoRoutineCreate( crDbg,   1, 0 );
+    //res = xCoRoutineCreate( crDbg,   1, 0 );
     res = xCoRoutineCreate( crUsbIo, 1, 0 );
     res = xCoRoutineCreate( crFuncs, 1, 0 );
     res = xCoRoutineCreate( crI2c,   1, 0 );
     // res = xCoRoutineCreate( crI2c,   1, 1 );
-    vTaskStartScheduler();   
-    //for ( ;; )
-    //{
-        //printf( "ab!" );
-        /*USB_Send_Data( 'a' );
-        USB_Send_Data( 'b' );
-        USB_Send_Data( 'a' );
-        USB_Send_Data( 'b' );
-        USB_Send_Data( '\r' );
-        USB_Send_Data( '\n' );*/
-        //volatile int i;
-        //for ( i=0; i<100000; i++ )
-        //    ;
-    //}
+    vTaskStartScheduler();
+
 }
 
 void vTaskDbg( void * args )
@@ -159,7 +146,7 @@ void vApplicationIdleHook( void )
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
+{
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
@@ -171,10 +158,10 @@ void assert_failed(uint8_t* file, uint32_t line)
 #endif
 
 
-/*static void clockConfig( void ) 
+/*static void clockConfig( void )
 {
     RCC_DeInit();
-    
+
     RCC_HSEConfig( RCC_HSE_ON );
     RCC_WaitForHSEStartUp();
     while( RCC_GetFlagStatus( RCC_FLAG_HSERDY ) != SET )
@@ -199,7 +186,7 @@ static void gpioConfig( void )
 {
     RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE );
     GPIO_InitTypeDef GPIO_InitStructure;
-  
+
     GPIO_InitStructure.GPIO_Pin = GREEN_GPIO_PIN | RED_GPIO_PIN;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -216,11 +203,11 @@ void vTaskDisplay( void * args )
         lcdStrConst( FONT_1X, "Hello!" );
         lcdUpdate();
         vTaskDelay( 1000 );
-        
+
         lcdClear();
         lcdGotoXy( 1, 1 );
         lcdStrConst( FONT_1X, "Hi!" );
-        lcdUpdate(); 
+        lcdUpdate();
         vTaskDelay( 1000 );
 
         // Disc utility.
