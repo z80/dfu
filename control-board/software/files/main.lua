@@ -28,7 +28,7 @@ function I2c:__init()
     qt.connect( self.wnd.pulses, 'clicked', self, self.pulses )
     qt.connect( self.wnd.stop,   'clicked', self, self.stop )
     
-    qt.connect( self.wnd.slaveStatus, 'clicked', self, self.slaveStatus )
+    --qt.connect( self.wnd.slaveStatus, 'clicked', self, self.slaveStatus )
     
     self.addr = 0
 end
@@ -75,7 +75,7 @@ function I2c:send01()
     local addr = self.addr or 0
     local st = self.dev:i2cStatus( 0 )
     print( "status = " .. tostring( st ) )
-    self.dev:i2cIo( 0, 123, {1, 2}, 0 )
+    self.dev:i2cIo( 0, 123, {1, 2}, 1 )
     for i=1, 16 do
         local st, slSt = self.dev:i2cStatus( 0 ), 0 
                           --self.slDev:i2cStatus( 0 )
