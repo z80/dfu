@@ -204,14 +204,17 @@ void i2cIrqHandler( uint8_t index )
 
     case I2C_EVENT_SLAVE_BYTE_RECEIVED:
         idc->receiveQueue[ idc->bytesRead++ ] = I2C_ReceiveData( idc->i2c );
+        idc->bytesRead %= idc->receiveCnt;
         idc->status = I2C_SBR;
         break;
 
     case I2C_EVENT_SLAVE_BYTE_TRANSMITTED:
-    	if ( !idc->slaveStopped )
+    	// Second condition makes sense only when there is just one byte to send.
+    	// And it is already sent in I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED case.
+    	if ( ( !idc->slaveStopped ) && ( idc->bytesWritten < idc->sendCnt ) )
     	{
             I2C_SendData( idc->i2c, idc->sendQueue[ idc->bytesWritten++ ] );
-            idc->bytesWritten %= I2C_QUEUE_SIZE;
+            idc->bytesWritten %= idc->sendCnt;
             idc->status = I2C_SBT;
     	}
         break;

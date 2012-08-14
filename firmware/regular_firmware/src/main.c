@@ -73,6 +73,9 @@ void main(void)
     i2cInit( 0 );
     //i2cInit( 1 );
     i2cSetEn( 0, 1 );
+    uint8_t data[1];
+    data[0] = 77;
+    i2cIo( 0, 0, 1, 1, data );
     i2cConfig( 0, 0, 123, 10000 );
     static uint32_t i = 0;
     while ( 1 )

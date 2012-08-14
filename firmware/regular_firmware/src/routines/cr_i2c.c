@@ -17,7 +17,7 @@ void crI2c( xCoRoutineHandle xHandle,
         {
             i2cSetEn( 0, 1 );
             uint8_t data[1];
-            data[0] = 21;
+            data[0] = 77;
             i2cIo( 0, 0, 1, 1, data );
             i2cConfig( 0, 0, 123, 10000 );
             init = 1;
