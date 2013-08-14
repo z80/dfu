@@ -7,7 +7,7 @@ add_subdirectory( "./widgets" )
 add_subdirectory( "./pawn" )
 if ( UNIX )
     add_subdirectory( "./qextserialport" )
-    add_subdirectory( "./libftdi1-1.0" )
+    #add_subdirectory( "./libftdi1-1.0" )
 endif ( UNIX )
 
 

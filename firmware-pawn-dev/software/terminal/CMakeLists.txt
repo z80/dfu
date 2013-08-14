@@ -10,7 +10,7 @@ include( ${QT_USE_FILE} )
 
 include_directories( "./src" 
                      "${ROOT}/3dparty/lua-5.1.5/src" 
-                     "${ROOT}/3dparty/libqtlua-1.4/src" 
+                     "${ROOT}/3dparty/qtlua-1.4/src" 
                      "${ROOT}/luamcuctrl/src" 
                      ${Boost_INCLUDE_DIRS} 
                      ${CMAKE_CURRENT_BINARY_DIR} )
@@ -38,7 +38,7 @@ else ( WIN32 )
 endif ( WIN32 )
 
 add_executable( terminal ${BUILD_TYPE} ${src} )
-target_link_libraries( terminal liblua-5.1.5 luaftdi luamcuctrl qtlua ${QT_LIBRARIES} )
+target_link_libraries( terminal liblua-5.1.5 luamcuctrl qtlua ${QT_LIBRARIES} )
 install( TARGETS terminal DESTINATION "." )
 install( DIRECTORY "./src_lua/" DESTINATION "." )
 

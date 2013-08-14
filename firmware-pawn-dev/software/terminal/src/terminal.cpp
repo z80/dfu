@@ -20,7 +20,7 @@ Terminal::Terminal( QWidget * parent )
     state->openlib( QtLua::AllLibs );
     msleep.register_( *state, "msleep" );
     // Register luaftdi module.
-    state->lua_do( reg_luamcuctrl );
+    state->lua_do( reg_register );
 
     QSettings settings( "history.ini", QSettings::IniFormat, this );
     ui.terminal->load_history( settings );
