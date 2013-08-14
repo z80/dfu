@@ -13,6 +13,8 @@ uint16_t pawnWriteFlash( uint8_t page );
 void     pawnRun( void );
 uint8_t  pawnIsRunning( void );
 void     pawnStop( void );
+int      pawnResult( void );
+int      pawnError( void );
 
 #endif
 

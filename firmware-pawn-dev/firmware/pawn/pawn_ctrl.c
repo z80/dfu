@@ -20,7 +20,6 @@ Pawn g_pawn;
 
 static cell n_io( AMX * amx, const cell * params );
 static cell n_setIo( AMX * amx, const cell * params );
-static cell n_setLeds( AMX * amx, const cell * params );
 
 AMX_NATIVE const g_nativetable[] =
 {
@@ -188,6 +187,18 @@ void pawnStop( void )
         amx_SetDebugHook( &(g_pawn.amx), aux_Monitor );
     chSysUnlock();
 }
+
+int pawnResult( void )
+{
+    return g_pawn.result;
+}
+
+int pawnError( void )
+{
+    return g_pawn.error;
+}
+
+
 
 static msg_t execThread( void *arg )
 {

@@ -394,12 +394,69 @@ static void cmd_pawnWriteFlash(BaseChannel *chp, int argc, char *argv[])
         chprintf( chp, "ERROR: 0 based page index expected\r\n" );
 }
 
+static void cmd_pawnRun(BaseChannel *chp, int argc, char *argv[])
+{
+    (void)argc;
+    (void)argv;
+    pawnRun();
+    chprintf( chp, "Running...\r\n" );
+}
+
+static void cmd_pawnIsRunning(BaseChannel *chp, int argc, char *argv[])
+{
+    (void)argc;
+    (void)argv;
+    if ( pawnIsRunning() )
+        chprintf( chp, "true\r\n" );
+    else
+        chprintf( chp, "false\r\n" );
+}
+
+static void cmd_pawnStop(BaseChannel *chp, int argc, char *argv[])
+{
+    (void)argc;
+    (void)argv;
+    pawnStop();
+    chprintf( chp, "stopped\r\n" );
+}
+
+static void cmd_pawnResult( BaseChannel *chp, int argc, char *argv[] )
+{
+    (void)argc;
+    (void)argv;
+    int res = pawnResult();
+    chprintf( chp, "%d\r\n", res );
+}
+
+static void cmd_pawnError( BaseChannel *chp, int argc, char *argv[] )
+{
+    (void)argc;
+    (void)argv;
+    int res = pawnError();
+    chprintf( chp, "%d\r\n", res );
+}
+
+
+
+
+
 static const ShellCommand commands[] =
 {
     // Commands for inputs/outputs.
-    { "mem",     cmd_mem },
-    { "threads", cmd_threads },
-    { NULL,         NULL }
+    { "mem",            cmd_mem },
+    { "threads",        cmd_threads },
+
+    { "pawnSetIo",      cmd_pawnSetIo }, 
+    { "pawnIo",         cmd_pawnIo }, 
+    { "pawnSetMem",     cmd_pawnSetMem }, 
+    { "pawnWriteFlash", cmd_pawnWriteFlash }, 
+    { "pawnRun",        cmd_pawnRun }, 
+    { "pawnIsRunning",  cmd_pawnIsRunning }, 
+    { "pawnStop",       cmd_pawnStop }, 
+    { "pawnResult",     cmd_pawnResult }, 
+    { "pawnError",      cmd_pawnError }, 
+
+    { NULL,             NULL }
 };
 
 static const ShellConfig shell_cfg1 =
@@ -463,7 +520,8 @@ void processShell( void )
 {
     if (!shelltp && (SDU1.config->usbp->state == USB_ACTIVE))
         shelltp = shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
-    else if (chThdTerminated(shelltp)) {
+    else if (chThdTerminated(shelltp))
+    {
         chThdRelease( shelltp );    // Recovers memory of the previous shell.
         shelltp = NULL;             // Triggers spawning of a new shell.
     }
