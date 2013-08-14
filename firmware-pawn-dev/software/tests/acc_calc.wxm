@@ -1,0 +1,35 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+kill( all );
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+numer: true;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+g: 65535;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+R: matrix( [0, 0,  g, 0], 
+           [0, 0,  0, g], 
+           [g, -g, 0, 0], 
+           [1, 1,  1, 1] );
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+r: matrix( [-256,   -128,  0,     -16640], 
+           [384,    320,   16448, 576], 
+           [-17984, 14784, -1664, -1664], 
+           [1,      1,     1,     1] );
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+A: R . invert(r);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
