@@ -638,7 +638,7 @@ Discarded input sections
  .text.RCC_RTCCLKCmd
                 0x00000000        0xc target/periph/stm32f10x_rcc.o
  .text.RCC_GetClocksFreq
-                0x00000000       0xa8 target/periph/stm32f10x_rcc.o
+                0x00000000       0x98 target/periph/stm32f10x_rcc.o
  .text.RCC_AHBPeriphClockCmd
                 0x00000000       0x18 target/periph/stm32f10x_rcc.o
  .text.RCC_APB2PeriphClockCmd
@@ -1088,7 +1088,7 @@ Discarded input sections
  .data          0x00000000        0x0 target/src/system_stm32f10x.o
  .bss           0x00000000        0x0 target/src/system_stm32f10x.o
  .text.SystemCoreClockUpdate
-                0x00000000       0x78 target/src/system_stm32f10x.o
+                0x00000000       0x68 target/src/system_stm32f10x.o
  .data.AHBPrescTable
                 0x00000000       0x10 target/src/system_stm32f10x.o
  .data.SystemCoreClock
@@ -2025,7 +2025,7 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_info    0x0000fe11      0x180 target/usb/usb_sil.o
  .debug_info    0x0000ff91       0x6a target/cmsis/startup_stm32f10x_md.o
 
-.debug_line     0x00000000     0x6225
+.debug_line     0x00000000     0x6223
  .debug_line    0x00000000      0x242 target/cmsis/core_cm3.o
  .debug_line    0x00000242      0x14c target/periph/misc.o
  .debug_line    0x0000038e      0x428 target/periph/stm32f10x_adc.o
@@ -2043,30 +2043,30 @@ OUTPUT(target/target.elf elf32-littlearm)
  .debug_line    0x0000221b      0x3f3 target/periph/stm32f10x_i2c.o
  .debug_line    0x0000260e      0x145 target/periph/stm32f10x_iwdg.o
  .debug_line    0x00002753      0x1c2 target/periph/stm32f10x_pwr.o
- .debug_line    0x00002915      0x3a4 target/periph/stm32f10x_rcc.o
- .debug_line    0x00002cb9      0x1fd target/periph/stm32f10x_rtc.o
- .debug_line    0x00002eb6      0x377 target/periph/stm32f10x_sdio.o
- .debug_line    0x0000322d      0x350 target/periph/stm32f10x_spi.o
- .debug_line    0x0000357d      0x9b1 target/periph/stm32f10x_tim.o
- .debug_line    0x00003f2e      0x3d8 target/periph/stm32f10x_usart.o
- .debug_line    0x00004306      0x173 target/periph/stm32f10x_wwdg.o
- .debug_line    0x00004479      0x122 target/src/dfu_mal.o
- .debug_line    0x0000459b      0x145 target/src/flash_if.o
- .debug_line    0x000046e0      0x204 target/src/hw_config.o
- .debug_line    0x000048e4       0xda target/src/main.o
- .debug_line    0x000049be       0xec target/src/stm32f10x_it.o
- .debug_line    0x00004aaa      0x14d target/src/system_stm32f10x.o
- .debug_line    0x00004bf7       0xc0 target/src/usb_desc.o
- .debug_line    0x00004cb7      0x13e target/src/usb_istr.o
- .debug_line    0x00004df5      0x3ba target/src/usb_prop.o
- .debug_line    0x000051af      0x192 target/src/usb_pwr.o
- .debug_line    0x00005341      0x3d5 target/usb/usb_core.o
- .debug_line    0x00005716       0xf5 target/usb/usb_init.o
- .debug_line    0x0000580b      0x179 target/usb/usb_int.o
- .debug_line    0x00005984      0x11d target/usb/usb_mem.o
- .debug_line    0x00005aa1      0x5fe target/usb/usb_regs.o
- .debug_line    0x0000609f      0x114 target/usb/usb_sil.o
- .debug_line    0x000061b3       0x72 target/cmsis/startup_stm32f10x_md.o
+ .debug_line    0x00002915      0x3a3 target/periph/stm32f10x_rcc.o
+ .debug_line    0x00002cb8      0x1fd target/periph/stm32f10x_rtc.o
+ .debug_line    0x00002eb5      0x377 target/periph/stm32f10x_sdio.o
+ .debug_line    0x0000322c      0x350 target/periph/stm32f10x_spi.o
+ .debug_line    0x0000357c      0x9b1 target/periph/stm32f10x_tim.o
+ .debug_line    0x00003f2d      0x3d8 target/periph/stm32f10x_usart.o
+ .debug_line    0x00004305      0x173 target/periph/stm32f10x_wwdg.o
+ .debug_line    0x00004478      0x122 target/src/dfu_mal.o
+ .debug_line    0x0000459a      0x145 target/src/flash_if.o
+ .debug_line    0x000046df      0x204 target/src/hw_config.o
+ .debug_line    0x000048e3       0xda target/src/main.o
+ .debug_line    0x000049bd       0xec target/src/stm32f10x_it.o
+ .debug_line    0x00004aa9      0x14c target/src/system_stm32f10x.o
+ .debug_line    0x00004bf5       0xc0 target/src/usb_desc.o
+ .debug_line    0x00004cb5      0x13e target/src/usb_istr.o
+ .debug_line    0x00004df3      0x3ba target/src/usb_prop.o
+ .debug_line    0x000051ad      0x192 target/src/usb_pwr.o
+ .debug_line    0x0000533f      0x3d5 target/usb/usb_core.o
+ .debug_line    0x00005714       0xf5 target/usb/usb_init.o
+ .debug_line    0x00005809      0x179 target/usb/usb_int.o
+ .debug_line    0x00005982      0x11d target/usb/usb_mem.o
+ .debug_line    0x00005a9f      0x5fe target/usb/usb_regs.o
+ .debug_line    0x0000609d      0x114 target/usb/usb_sil.o
+ .debug_line    0x000061b1       0x72 target/cmsis/startup_stm32f10x_md.o
 
 .debug_loc      0x00000000     0x7528
  .debug_loc     0x00000000      0x280 target/cmsis/core_cm3.o

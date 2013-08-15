@@ -85,6 +85,7 @@ CSRC = $(PORTSRC) \
        $(CHIBIOS)/os/various/shell.c \
        $(CHIBIOS)/os/various/chprintf.c \
        stm32f10x_flash.c \
+       misc.c \
        main.c \
        usb_ctrl.c \
        conf_ctrl.c \

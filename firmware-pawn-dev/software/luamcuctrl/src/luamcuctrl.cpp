@@ -82,151 +82,14 @@ static int read( lua_State * L )
     return 1;
 }
 
-static int setOutputs( lua_State * L )
+static int flash( lua_State * L )
 {
     McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int cnt = lua_gettop( L );
-    std::basic_string<unsigned long> args;
-    args.resize( cnt - 1 );
-    for ( int i=2; i<=cnt; i++ )
-        args[i-2] = static_cast<unsigned long>( lua_tonumber( L, i ) );
-    bool res = io->setOutputs( const_cast<unsigned long *>( args.data() ), static_cast<int>( args.size() ) );
+    std::string stri = lua_tostring( L, 2 );
+    std::string result;
+    bool res = io->flash( stri, result );
     lua_pushboolean( L, res ? 1 : 0 );
     return 1;
-}
-
-static int inputs( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int cnt;
-    if ( lua_gettop( L ) > 1 )
-        cnt = static_cast<int>( lua_tonumber( L, 2 ) );
-    else
-        cnt = 3;
-    std::basic_string<unsigned long> args;
-    args.resize( cnt );
-    bool res = io->inputs( const_cast<unsigned long *>( args.data() ), cnt );
-    if ( res )
-    {
-        for ( int i=0; i<cnt; i++ )
-            lua_pushnumber( L, static_cast<lua_Number>( args[i] ) );
-        return cnt;
-    }
-    return 0;
-}
-
-static int accInit( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    bool res = io->accInit();
-    lua_pushboolean( L, res ? 1 : 0 );
-    return 1;
-}
-
-static int accAcc( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int x, y, z;
-    bool res = io->accAcc( x, y, z );
-    lua_pushboolean( L, res ? 1 : 0 );
-    if ( !res )
-        return 1;
-    lua_pushnumber( L, static_cast<lua_Number>( x ) );
-    lua_pushnumber( L, static_cast<lua_Number>( y ) );
-    lua_pushnumber( L, static_cast<lua_Number>( z ) );
-    return 4;
-}
-
-static int accMag( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int x, y, z;
-    bool res = io->accMag( x, y, z );
-    lua_pushboolean( L, res ? 1 : 0 );
-    if ( !res )
-        return 1;
-    lua_pushnumber( L, static_cast<lua_Number>( x ) );
-    lua_pushnumber( L, static_cast<lua_Number>( y ) );
-    lua_pushnumber( L, static_cast<lua_Number>( z ) );
-    return 4;
-}
-
-static int accTemp( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int t;
-    bool res = io->accTemp( t );
-    lua_pushboolean( L, res ? 1 : 0 );
-    if ( !res )
-        return 1;
-    lua_pushnumber( L, static_cast<lua_Number>( t ) );
-    return 2;
-}
-
-static int i2cSetAddr( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int addr = static_cast<int>( lua_tonumber( L, 2 ) );
-    bool res = io->i2cSetAddr( addr );
-    lua_pushboolean( L, res ? 1 : 0 );
-    return 1;
-}
-
-static int i2cSetBuf( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int start = static_cast<int>( lua_tonumber( L, 2 ) );
-    int cnt = lua_gettop( L );
-    for ( int i=3; i<=cnt; i++ )
-    {
-        unsigned char val = static_cast<unsigned char>( lua_tonumber( L, i ) );
-        bool res = io->i2cSetBuf( start, &val, 1 );
-        start++;
-        if ( !res )
-        {
-            lua_pushboolean( L, 0 );
-            return 1;
-        }
-    }
-    lua_pushboolean( L, 1 );
-    return 1;
-}
-
-static int i2cIo( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int txCnt = static_cast<int>( lua_tonumber( L, 2 ) );
-    int rxCnt = static_cast<int>( lua_tonumber( L, 2 ) );
-    bool res = io->i2cIo( txCnt, rxCnt );
-    lua_pushboolean( L, res ? 1 : 0 );
-    return 1;
-}
-
-static int i2cStatus( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int status;
-    bool res = io->i2cStatus( status );
-    lua_pushboolean( L, res ? 1 : 0 );
-    if ( res )
-        lua_pushnumber( L, static_cast<lua_Number>( status ) );
-    else
-        lua_pushnumber( L, static_cast<lua_Number>( -1 ) );
-    return 2;
-}
-
-static int i2cBuffer( lua_State * L )
-{
-    McuCtrl * io = *reinterpret_cast<McuCtrl * *>( lua_touserdata( L, 1 ) );
-    int cnt = static_cast<int>( lua_tonumber( L, 2 ) );
-    std::basic_string<unsigned char> vals;
-    vals.resize( cnt );
-    bool res = io->i2cBuffer( cnt, const_cast<unsigned char *>( vals.data() ) );
-    if ( !res )
-        return 0;
-    for ( int i=0; i<cnt; i++ )
-        lua_pushnumber( L, static_cast<lua_Number>( vals[i] ) );
-    return cnt;
 }
 
 
@@ -240,18 +103,8 @@ static const struct luaL_reg META_FUNCTIONS[] = {
     // The lowest possible level
     { "write",         write },
     { "read",          read },
-    { "setOutputs",    setOutputs },
-    { "inputs",        inputs },
-    { "accInit",       accInit },
-    { "accAcc",        accAcc },
-    { "accMag",        accMag },
-    { "accTemp",       accTemp },
-
-    { "i2cSetAddr", i2cSetAddr },
-    { "i2cSetBuf",  i2cSetBuf },
-    { "i2cIo",      i2cIo },
-    { "i2cStatus",  i2cStatus },
-    { "i2cBuffer",  i2cBuffer },
+    // Flash write.
+    { "flash",         flash },
 
     { NULL,            NULL },
 };

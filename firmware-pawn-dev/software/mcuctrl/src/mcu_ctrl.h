@@ -10,6 +10,9 @@ public:
     McuCtrl();
     ~McuCtrl();
 
+    bool flash( const std::string & fileName, std::string & result );
+
+    /*
     bool inputs( unsigned long * data, int len = 2 );
     bool setOutputs( unsigned long * data, int len = 2 );
 
@@ -23,6 +26,7 @@ public:
     bool i2cIo( int txCnt, int rxCnt );
     bool i2cStatus( int & status );
     bool i2cBuffer( int cnt, unsigned char * data );
+    */
 };
 
 

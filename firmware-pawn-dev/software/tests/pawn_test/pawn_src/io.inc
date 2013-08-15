@@ -1,3 +1,7 @@
 
-native print( o )            = -1;
-native setOuts( o1, o2, o3 ) = -2;
+
+native io( ind )            = -1;
+native setIo( ind, value )  = -2;
+
+
+

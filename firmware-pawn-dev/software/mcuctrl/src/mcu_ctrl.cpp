@@ -3,6 +3,17 @@
 #include <sstream>
 #include <boost/regex.hpp>
 
+#include <QtGui>
+
+class Sleep: public QThread
+{
+public:
+    static void msleep( int ms )
+    {
+        QThread::msleep( ms );
+    }
+};
+
 McuCtrl::McuCtrl()
 : UsbIo()
 {
@@ -14,6 +25,50 @@ McuCtrl::~McuCtrl()
 
 }
 
+bool McuCtrl::flash( const std::string & fileName, std::string & result )
+{
+    // Read all data from file.
+    std::basic_string<unsigned char> data;
+    const int SZ = 1024;
+    data.resize( SZ );
+    int cnt = 0;
+    FILE * fp = fopen( fileName.c_str(), "r" );
+    do
+    {
+        if ( !fp )
+            return false;
+        int flashPage = 0;
+        cnt = fread( const_cast<unsigned char *>( data.data() ), 1, SZ, fp );
+        for ( int i=0; i<cnt; i++ )
+        {
+            std::ostringstream out;
+            out << "pawnSetMem ";
+            out << i;
+            out << " ";
+            out << data[i];
+            out << "\r\n";
+            this->write( out.str() );
+            Sleep::msleep( 1 );
+        }
+        std::ostringstream out;
+        out << "pawnWriteFlash ";
+        out << flashPage++;
+        out << "\r\n";
+        this->write( out.str() );
+        Sleep::msleep( 1 );
+
+        // Read back result.
+        // ......
+
+    }
+    while ( cnt >= SZ );
+
+    fclose( fp );
+
+    return true;
+}
+
+/*
 bool McuCtrl::inputs( unsigned long * data, int len )
 {
     std::string stri = "st\r\n";
@@ -350,7 +405,7 @@ bool McuCtrl::i2cBuffer( int cnt, unsigned char * data )
     }
     return false;
 }
-
+*/
 
 
 

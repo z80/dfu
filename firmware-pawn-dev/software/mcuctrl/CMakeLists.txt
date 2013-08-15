@@ -1,4 +1,9 @@
 
+find_package( Qt4 )
+set( QT_USE_QTCORE    True )
+set( QT_USE_QTGUI     True )
+include( ${QT_USE_FILE} )
+
 set( Boost_USE_STATIC_LIBS True )
 set( Boost_USE_MULTITHREADED True )
 find_package( Boost COMPONENTS regex REQUIRED )
@@ -23,9 +28,9 @@ set( src ${src} ${s} )
 
 add_library( mcuctrl STATIC ${src} )
 if ( UNIX )
-    target_link_libraries( mcuctrl ${LIBUSB_1_LIBRARIES} ${Boost_LIBRARIES} )
+    target_link_libraries( mcuctrl ${LIBUSB_1_LIBRARIES} ${Boost_LIBRARIES} ${QT_LIBRARIES} )
 elseif ( WIN32 )
-    find_library( libusb NAMES libusb-1.0.lib PATHS "${LIBUSB_LIB_PATH}" )
+    find_library( libusb NAMES libusb-1.0.lib PATHS "${LIBUSB_LIB_PATH}" ${QT_LIBRARIES} )
     target_link_libraries( mcuctrl ${libusb} ${Boost_LIBRARIES} )
 endif ( UNIX )
 

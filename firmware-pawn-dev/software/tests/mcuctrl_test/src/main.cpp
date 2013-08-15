@@ -188,6 +188,7 @@ int main( int argc, char * argv[] )
 
     unsigned char addr = 10;
 
+    /*
     res = c.i2cSetAddr( addr );
     res = c.i2cSetAddr( addr );
     unsigned char data[6];
@@ -214,7 +215,7 @@ int main( int argc, char * argv[] )
 
         res = c.i2cBuffer( 4, data );
         std::cout << data[0] << " " << data[1] << " " << data[2] << " " << data [3] << "\n";
-
+    */
     return 0;
 }
 
