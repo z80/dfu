@@ -381,6 +381,19 @@ static void cmd_pawnSetMem(BaseChannel *chp, int argc, char *argv[])
         chprintf( chp, "ERROR: more arguments expected\r\n" );
 }
 
+static void cmd_pawnMem(BaseChannel *chp, int argc, char *argv[])
+{
+    (void)chp;
+    if ( argc > 0 )
+    {
+        int at = atoi( argv[0] );
+	uint8_t res = pawnMem( at );
+	chprintf( chp, "%d\r\n", res );
+    }
+    else
+        chprintf( chp, "ERROR: more arguments expected\r\n" );
+}
+
 static void cmd_pawnWriteFlash(BaseChannel *chp, int argc, char *argv[])
 {
     (void)chp;
@@ -449,6 +462,7 @@ static const ShellCommand commands[] =
     { "pawnSetIo",      cmd_pawnSetIo }, 
     { "pawnIo",         cmd_pawnIo }, 
     { "pawnSetMem",     cmd_pawnSetMem }, 
+    { "pawnMem",        cmd_pawnMem }, 
     { "pawnWriteFlash", cmd_pawnWriteFlash }, 
     { "pawnRun",        cmd_pawnRun }, 
     { "pawnIsRunning",  cmd_pawnIsRunning }, 

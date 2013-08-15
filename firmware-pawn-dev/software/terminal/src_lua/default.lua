@@ -9,9 +9,6 @@ function init()
     local res = f:open()
     print( "opened: " .. tostring( res ) )
     g_mcu = f;
-    if ( res ) then
-        reset()
-    end
 end
 
 function write( t )
@@ -33,6 +30,11 @@ function reopen()
     local res = g_mcu:open()
     print( "opened: " .. tostring( res ) )
     return res
+end
+
+function flash()
+    local res = g_mcu:flash( "./pawn/pawn.amx" )
+    print( "result = " .. tostring( res ) )
 end
 
 init()

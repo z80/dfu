@@ -138,8 +138,15 @@ void pawnIo( uint8_t cnt, uint8_t * vals )
 void pawnSetMem( uint8_t cnt, uint16_t at, uint8_t * vals )
 {
     uint16_t i;
+    uint8_t * mem = (uint8_t *)(g_pawn.memblock);
     for ( i=0; i<cnt; i++ )
-        g_pawn.memblock[at+i] = vals[i];
+        mem[at+i] = vals[i];
+}
+
+uint8_t pawnMem( uint16_t at )
+{
+    uint8_t * mem = (uint8_t *)(g_pawn.memblock);
+    return mem[ at ]; 
 }
 
 uint16_t pawnWriteFlash( uint8_t page )
@@ -154,9 +161,10 @@ uint16_t pawnWriteFlash( uint8_t page )
     }
     uint32_t * memD   = (uint32_t *)( g_pawn.memblock );
     uint32_t   i;
-    for ( i=0; i<PAWN_MEM_SIZE; i+=4 )
+    for ( i=0; i<PAWN_MEM_SIZE; i++ )
     {
-        st = FLASH_ProgramWord( flashD+i, memD[i] );
+        // WORD size is 4 bytes
+        st = FLASH_ProgramWord( flashD+i*4, memD[i] );
         if ( st != FLASH_COMPLETE )
         {
 	        FLASH_Lock();

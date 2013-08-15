@@ -33,7 +33,8 @@ __process_stack_size__  = 0x0400;
 
 MEMORY
 {
-    flash : org = 0x08002800, len = 54k
+    /*flash : org = 0x08002800, len = 54k*/
+    flash : org = 0x08000000, len = 64k
     ram :   org = 0x20000000, len = 20k
 }
 

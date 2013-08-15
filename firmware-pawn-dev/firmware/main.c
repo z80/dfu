@@ -3,6 +3,7 @@
 #include "hal.h"
 
 #include "usb_ctrl.h"
+#include "pawn_ctrl.h"
 #include "misc.h"
 
 //*
@@ -10,13 +11,15 @@
 //*
 int main(void)
 {
-  NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x2800 );
+  //NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x2800 );
 
   halInit();
   chSysInit();
 
+  pawnInit();
   initUsb();
 
+  pawnRun();
   while ( 1 )
   {
       processShell();

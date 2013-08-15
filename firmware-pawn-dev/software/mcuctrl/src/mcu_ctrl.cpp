@@ -45,17 +45,19 @@ bool McuCtrl::flash( const std::string & fileName, std::string & result )
             out << "pawnSetMem ";
             out << i;
             out << " ";
-            out << data[i];
+            out << static_cast<int>( data[i] );
             out << "\r\n";
+            qDebug() << out.str().c_str();
             this->write( out.str() );
-            Sleep::msleep( 1 );
+            Sleep::msleep( 30 );
         }
         std::ostringstream out;
         out << "pawnWriteFlash ";
         out << flashPage++;
         out << "\r\n";
+        qDebug() << out.str().c_str();
         this->write( out.str() );
-        Sleep::msleep( 1 );
+        Sleep::msleep( 30 );
 
         // Read back result.
         // ......

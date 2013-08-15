@@ -10,7 +10,7 @@
 // FLASH parameters.
 #define PAWN_PAGE_SIZE     1024
 // Start FLASH block to keep pawn program in.
-#define PAWN_START_PAGE    21
+#define PAWN_START_PAGE    40
 // Start of FLASH memory
 #define PAWN_FLASH_START   0x8000000
 // Chibios PAWN thread stack depth.
